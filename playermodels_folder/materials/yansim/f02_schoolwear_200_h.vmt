@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "YanSim/f02_schoolwear_200_h"
+	"$alphatest" 1
+	"$nocull" 1
+	"$nodecal" 1
+	
+}

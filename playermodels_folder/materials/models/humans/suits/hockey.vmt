@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models\humans\suits\hockey"
+	"$bumpmap" "models\humans\suits\hockey_normal"
+}

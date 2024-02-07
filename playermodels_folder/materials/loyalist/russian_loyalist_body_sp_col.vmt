@@ -1,0 +1,16 @@
+"vertexlitgeneric"
+{
+	"$baseTexture" "loyalist/russian_loyalist_body_sp_col"
+        "$bumpmap" "loyalist/russian_loyalist_body_sp_nml4"
+	"$halflambert" 1
+	"$nodecal" "1"
+	"$model" "1"
+
+//	"$phong" "1"
+//	"$phongexponent" 5
+//	"$phongexponenttexture" "loyalist/russian_loyalist_body_sp_nml4"
+//	"$phongboost"	"1"
+//	"$phongfresnelranges"	"[0.05 0.5 1]"
+
+
+}

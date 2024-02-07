@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/player/smith/smithhead"
+	"$bumpmap" "models/player/smith/smithhead-normal"
+	
+	"$halflambert" 1
+}

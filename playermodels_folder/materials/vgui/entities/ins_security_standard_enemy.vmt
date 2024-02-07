@@ -1,0 +1,7 @@
+"UnlitGeneric" 
+{ 
+	"$basetexture"		"vgui/entities/ins_security_standard_enemy"
+	"$nolod" 1
+	"$vertexalpha" 1
+	"$vertexcolor" 1
+} 

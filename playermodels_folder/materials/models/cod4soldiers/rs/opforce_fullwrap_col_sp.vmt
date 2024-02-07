@@ -1,0 +1,8 @@
+"vertexlitgeneric"
+{
+	"$baseTexture" "models/cod4soldiers\rs/opforce_fullwrap_col_sp"
+
+        "$bumpmap" "models/cod4soldiers\rs/opforce_fullwrap_nml_sp"
+
+}
+

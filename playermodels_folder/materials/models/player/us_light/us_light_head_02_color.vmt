@@ -1,0 +1,23 @@
+"VertexLitGeneric"
+{
+	$basetexture 	"models\player\us_light\us_light_head_02_color"
+	$bumpmap 	"models\player\us_light\us_light_head_normals"
+	$phong 		"1"
+	$phongboost 	".06"
+	$phongexponent 	"5"
+	$phongtint	"[0.5 0.425 0.36]"
+	$halflambert 	"0"
+	$rimlight 	"0"
+	
+	"$detail"				"vgui/white"
+	"$detailblendfactor"	"0"
+	"$detailscale"			"2"
+	
+	"Proxies"
+	{
+		"CauseOfDeath"
+		{
+			"resultVar"		"$detail"
+		}
+	}
+}

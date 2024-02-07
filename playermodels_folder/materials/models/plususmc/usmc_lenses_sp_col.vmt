@@ -1,0 +1,14 @@
+"vertexlitgeneric"
+{
+	"$baseTexture" "models/plususmc/usmc_lenses_sp_col"
+ 	"$bumpmap" "models/plususmc/usmc_lenses_sp_nml"
+	"$translucent" 1
+	"$phong" "1"
+	"$phongexponent" "1000"
+	"$phongboost" "2"
+	"$phongfresnelranges" "[.05 .5 1]"
+	"$halflambert" "1"
+	"$model" 1
+
+}
+

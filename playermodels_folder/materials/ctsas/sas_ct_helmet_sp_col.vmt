@@ -1,0 +1,14 @@
+"vertexlitgeneric"
+{
+	"$baseTexture" "CTSAS/sas_ct_helmet_sp_col"
+        "$bumpmap" "CTSAS/sas_ct_head_sp_nml"
+ 	"$phong" 		"1"
+	"$phongboost" 		"1"
+	"$phongfresnelranges" 	"[1 1 1]"
+	"$phongexponent" 	"10"
+	"$phongalbedotint" 	"1"
+	"$phongexponenttexture" "CTSAS/sas_ct_price_sp_nml"
+// 	"$halflambert" "1"
+
+}
+

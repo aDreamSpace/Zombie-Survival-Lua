@@ -1,0 +1,14 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/survivors/ricardo/body"
+	"$halflambert" "1"
+
+                 "$phong" 1
+	"$phongboost" ".8"
+	"$phongexponent" 10
+	"$phongtint" "[.85 .85 1]"
+	"$phongfresnelranges" "[.3 .65 30]"
+                "$BasemapAlphaPhongMask" "1"
+
+}
+

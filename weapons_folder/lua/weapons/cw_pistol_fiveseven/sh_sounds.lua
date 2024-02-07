@@ -1,0 +1,10 @@
+CustomizableWeaponry:addFireSound("CW_FIVESEVEN_FIRE", "weapons/fiveseven/fiveseven-1.wav", 1, 100, CHAN_STATIC)
+CustomizableWeaponry:addFireSound("CW_FIVESEVEN_FIRE_SUPPRESSED", "Weapons/silenced2.wav", 1, 75, CHAN_STATIC)
+
+CustomizableWeaponry:addReloadSound("CW_FIVESEVEN_MAGOUT", "weapons/fiveseven/magout.wav")
+CustomizableWeaponry:addReloadSound("CW_FIVESEVEN_MAGIN", "weapons/fiveseven/magin.wav")
+CustomizableWeaponry:addReloadSound("CW_FIVESEVEN_SLIDEBACK", "weapons/fiveseven/SlideBack.wav")
+CustomizableWeaponry:addReloadSound("CW_FIVESEVEN_SLIDERELEASE", "weapons/fiveseven/sliderelease.wav")
+CustomizableWeaponry:addReloadSound("CW_FIVESEVEN_MAGPOUCH", "weapons/fiveseven/magpouch.wav")
+CustomizableWeaponry:addReloadSound("CW_FIVESEVEN_MAGTAP", "weapons/fiveseven/magtap.wav")
+CustomizableWeaponry:addReloadSound("CW_FIVESEVEN_SAFETY", "weapons/fiveseven/safety.wav")

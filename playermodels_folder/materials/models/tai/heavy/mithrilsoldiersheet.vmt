@@ -1,0 +1,14 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" 	"Models/TAI/heavy/Mithrilsoldiersheet"
+      "$bumpmap"        "models/TAI/heavy/Mithrilsoldiersheet_normal"
+	"$envmap" "env_cubemap"	
+	"$envmapmask" "Models/af/heavy/Mithrilsoldiersheet_mask"
+	"$envmapcontrast" 1
+	"$surfaceprop" "flesh"
+	"$selfillum" 1
+	"$model" 1
+}
+
+
+

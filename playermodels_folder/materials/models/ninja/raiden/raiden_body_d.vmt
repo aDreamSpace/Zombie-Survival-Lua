@@ -1,0 +1,27 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/ninja/Raiden/Raiden_Body_D"
+	"$bumpmap" "models/ninja/Raiden/Raiden_Body_N"
+	"$model" "1"
+
+	"$basetexturealphaenvmapmask" 1
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[ .5 .5 .7 ]"
+	"$envmapsaturation" ".01"
+	"$envmapcontrast" "0.05"
+ 	"$envmapFresnel" "0"
+
+	"$phong" "1"
+//	"$phongexponenttexture" "models\ninja/talime2\PTY_Tali_Body_specb_1024"
+	"$phongexponent" 20
+	"$phongboost" "1.5"
+	"$phongfresnelranges"	"[ .53 .72 20]"
+//	"$PhongAlbedoTint" "1"
+
+//	"$rimlight" "1"						
+	"$rimlightexponent" "255"				
+	"$rimlightboost" ".3"
+	"$rimmask" "1"
+$halflambert 1
+$nocull 1
+}

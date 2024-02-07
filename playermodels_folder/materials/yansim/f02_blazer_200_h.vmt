@@ -1,0 +1,7 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "YanSim/f02_blazer_200_h"
+	"$alphatest" 1
+	"$nocull" 1
+	"$nodecal" 1
+}

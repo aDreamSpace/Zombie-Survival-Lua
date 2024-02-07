@@ -1,0 +1,27 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/player/the303/doritos_custom"
+	"$bumpmap" "models/player/the303/doritos_n"
+	"$phong" "1"
+
+
+	"$phongexponent" "80"
+	"$phongboost"	"15"
+	"$phongfresnelranges"	"[0.05 0.5 1]"
+ 	"$blendtintbybasealpha" "1" 
+ 	"$blendtintcoloroverbase" "0"  
+	Proxies
+	{
+		PlayerColor
+		{
+			resultVar	$color2 // pass the player color value to Gmod
+			default		0.23 0.35 0.41 // unused for now.
+		}
+		Multiply // multiply $phongtint by this new float value.
+		{
+			srcVar1 "$phongtint"
+			srcVar2 "$phongBrightnessScalar"
+			resultVar "$phongtint"
+		}
+}
+}

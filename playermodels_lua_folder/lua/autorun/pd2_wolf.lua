@@ -1,0 +1,18 @@
+local NPC = { 	Name = "Wolf", 
+				Class = "npc_Citizen",
+				Model = "models/shaklin/payday2/pd2_wolf.mdl",
+				Health = "1500",
+				KeyValues = { citizentype = 4 },
+				Category = "PAYDAY 2 NPCs"	}
+
+
+list.Set( "NPC", "npc_pd2_wolf", NPC )
+
+
+/*
+	Addon by Shaklin	
+*/
+
+player_manager.AddValidModel( "Wolf", 		"models/player/pd2_wolf_p.mdl" );
+player_manager.AddValidHands( "Wolf", "models/shaklin/payday2/weapons/arms/c_arms_wolf.mdl", 0, "00000000" )
+list.Set( "PlayerOptionsModel", "Wolf", 	"models/player/pd2_wolf_p.mdl" );

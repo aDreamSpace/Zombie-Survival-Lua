@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/wood/head_beret_col"
+
+        "$bumpmap" "models/wood/head_beret_col_nomal"
+}

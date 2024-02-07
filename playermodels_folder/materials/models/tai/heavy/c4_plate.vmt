@@ -1,0 +1,7 @@
+VertexLitGeneric
+{
+	"$basetexture"	"models/TAI/heavy\c4_plate"
+	"$envmap" "env_cubemap"
+	"$envmapmask" "models/TAI/heavy\panels_ref"
+}
+

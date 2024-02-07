@@ -1,0 +1,15 @@
+"vertexlitgeneric"
+{
+	"$baseTexture" "loyalist/head_alex_r_col"
+        "$bumpmap" "loyalist/head_alex_r_nml"
+	"$halflambert" 1
+	"$nodecal" "1"
+	"$model" "1"
+
+	"$phong" "1"
+	"$phongexponent" 5
+	"$phongexponenttexture" "loyalist/head_alex_r_nml"
+	"$phongboost"	"1"
+	"$phongfresnelranges"	"[0.05 0.5 1]"
+}
+

@@ -1,0 +1,7 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "YanSim/f02_bathtowel_00_h_2"
+	"$alphatest" 1
+	"$nocull" 1
+	"$nodecal" 1
+}

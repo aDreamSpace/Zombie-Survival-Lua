@@ -1,0 +1,25 @@
+
+"VertexLitGeneric"
+{
+$phong "1"
+$phongboost "1"
+$phongexponent "10"
+$phongtint "[.85 .85 1]"
+$phongfresnelranges "[.3 .65 30]"
+$halflambert "0"
+$rimlight "0"
+//$rimlightexponent "20"
+//$rimlightboost ".2"
+$ambientocclusion "1"
+//$lightwarptexture "models\player\skin_warp"
+
+$blendtintbybasealpha "1"
+
+"Proxies"
+{
+	"TeamTintMaterialProxy"               
+	{
+		"resultVar" "$color"
+	}
+}
+}

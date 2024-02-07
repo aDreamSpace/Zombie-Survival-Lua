@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/player/smith/soria-env"
+	//"$nodecal" "1"
+	"$envmap" "models/player/smith/soria-env"
+	//"$envmapcontrast" 1.1
+	//"$envmapsaturation" 0
+
+	"$halflambert" 1
+	
+}

@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/survivors/ricardo/mouth"
+	"$model" 1
+	"$halflambert" 1
+}

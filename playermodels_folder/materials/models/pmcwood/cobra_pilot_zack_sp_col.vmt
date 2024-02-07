@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/wood/cobra_pilot_zack_sp_col.vmt"
+
+        "$bumpmap" "models/wood/cobra_pilot_zack_sp_col_nomal"
+}

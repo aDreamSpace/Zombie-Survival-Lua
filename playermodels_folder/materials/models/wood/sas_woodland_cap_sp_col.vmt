@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/wood/sas_woodland_cap_sp_col"
+
+        "$bumpmap" "models/wood/sas_woodland_cap_sp_col_nomal"
+}

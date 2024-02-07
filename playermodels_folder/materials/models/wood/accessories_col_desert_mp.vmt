@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/wood/accessories_col_desert_mp"
+
+        "$bumpmap" "models/wood/accessories_col_desert_mp_nomal"
+}

@@ -1,0 +1,5 @@
+"vertexlitgeneric"
+{
+	"$basetexture" "models/nia/bass/zero_body"
+	"$lightwarptexture" "models/nia/bass/lightwarp"
+}

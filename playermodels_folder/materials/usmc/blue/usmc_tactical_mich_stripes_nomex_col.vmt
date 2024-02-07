@@ -1,0 +1,10 @@
+"vertexlitgeneric"
+{
+	"$baseTexture" "usmc/BLUE/usmc_tactical_mich_stripes_nomex_col"
+        "$bumpmap" "usmc/BLUE/usmc_tactical_mich_stripes_nomex_nml"
+
+      "$phongexponenttexture" "usmc/BLUE/usmc_tactical_mich_stripes_nomex_nml"
+ 	"$halflambert" "1"
+
+}
+

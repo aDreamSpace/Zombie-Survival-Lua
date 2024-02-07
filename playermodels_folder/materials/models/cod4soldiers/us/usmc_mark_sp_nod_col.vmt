@@ -1,0 +1,8 @@
+"vertexlitgeneric"
+{
+	"$baseTexture" "models/cod4soldiers\us/usmc_mark_sp_nod_col"
+
+        "$bumpmap" "models/cod4soldiers\us/usmc_mark_sp_nod_nml"
+
+}
+

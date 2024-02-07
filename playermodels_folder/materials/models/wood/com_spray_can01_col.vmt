@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/wood/com_spray_can01_col"
+
+        "$bumpmap" "models/wood/com_spray_can01_col_nomal"
+}

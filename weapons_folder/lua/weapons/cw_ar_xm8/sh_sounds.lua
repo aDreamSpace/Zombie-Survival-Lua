@@ -1,0 +1,10 @@
+CustomizableWeaponry:addFireSound("CW_XM8_FIRE", "weapons/xm8/fire.wav", 1, 100, CHAN_STATIC)
+CustomizableWeaponry:addFireSound("CW_XM8_FIRE_SUPPRESSED", "weapons/silenced3.wav", 1, 75, CHAN_STATIC)
+
+CustomizableWeaponry:addReloadSound("CW_XM8_FOLEY", "weapons/scarh/scarh_foley.wav")
+CustomizableWeaponry:addReloadSound("CW_XM8_MAGOUT", "weapons/scarh/scarh_magout.wav")
+CustomizableWeaponry:addReloadSound("CW_XM8_MAGIN", "weapons/scarh/scarh_magin.wav")
+CustomizableWeaponry:addReloadSound("CW_XM8_MAGTAP", "weapons/scarh/scarh_magtap.wav")
+CustomizableWeaponry:addReloadSound("CW_XM8_BOLT", "weapons/xm8/Boltpull.wav")
+CustomizableWeaponry:addReloadSound("CW_XM8_CLOTH", "weapons/xm8/Cloth.wav")
+CustomizableWeaponry:addReloadSound("CW_XM8_SAFETY", "weapons/xm8/safety.wav")

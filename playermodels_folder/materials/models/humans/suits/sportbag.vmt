@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$baseTexture "models\Humans/suits/sportbag"
+$bumpmap "models\Humans/suits/sportbag_normal"
+$nocull "1"
+}

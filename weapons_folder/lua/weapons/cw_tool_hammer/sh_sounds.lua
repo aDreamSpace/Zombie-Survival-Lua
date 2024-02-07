@@ -1,0 +1,2 @@
+CustomizableWeaponry:addFireSound("CW_HAMMER_HIT", {"phx/epicmetal_hard6.ogg", "phx/epicmetal_hard7.ogg"}, 1, 105, CHAN_STATIC, 120, 130)
+CustomizableWeaponry:addFireSound("CW_HAMMER_STRESS", "npc/strider/creak1.ogg", 1, 105, CHAN_STATIC)

@@ -1,0 +1,15 @@
+"vertexlitgeneric"
+{
+	"$baseTexture" "loyalist/head_tom_col"
+        "$bumpmap" "loyalist/head_tom_nml2"
+	"$halflambert" 1
+	"$nodecal" "1"
+	"$model" "1"
+
+	"$phong" "1"
+	"$phongexponent" 5
+	"$phongexponenttexture" "loyalist/head_tom_nml2"
+	"$phongboost"	"1"
+	"$phongfresnelranges"	"[0.05 0.5 1]"
+}
+

@@ -1,0 +1,8 @@
+"vertexlitgeneric"
+{
+	"$baseTexture" "models/plususmc/usmc_sami_sp_nod_col"
+ "$bumpmap" "models/plususmc/usmc_sami_sp_nml"
+
+
+}
+

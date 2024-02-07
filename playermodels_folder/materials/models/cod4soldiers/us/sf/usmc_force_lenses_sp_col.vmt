@@ -1,0 +1,15 @@
+"vertexlitgeneric"
+{
+	"$baseTexture" "models\cod4soldiers\us\SF/usmc_force_lenses_sp_col"
+	
+
+// Specularity
+	"$envmap" 			"env_cubemap"
+
+	"$envmapmask" "models/cod4soldiers\us\SF/glass_spec"
+
+// Transparency
+	"$translucent" 1
+	
+	
+}

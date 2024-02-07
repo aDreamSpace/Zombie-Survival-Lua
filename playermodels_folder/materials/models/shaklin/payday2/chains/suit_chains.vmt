@@ -1,0 +1,7 @@
+"vertexlitGeneric"
+{
+	"$basetexture" "models/shaklin/payday2/chains/suit_chains"
+	"$bumpmap" "models/shaklin/payday2/suit_xn"
+	"$alphatest" 1
+	"$halflambert" 1
+}
