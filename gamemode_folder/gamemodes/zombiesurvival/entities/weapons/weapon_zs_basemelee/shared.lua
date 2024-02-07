@@ -217,16 +217,6 @@ function SWEP:MeleeSwing()
 				dmginfo:SetInflictor(self)
 				dmginfo:SetDamageType(self.DamageType)
 				if hitent:IsPlayer() then
-					if hitent:Team() == TEAM_HUMAN then
-						hitent:MeleeViewPunch(damage)
-					else
-						hitent:MeleeViewPunch(damage * 0.1)
-					end
-					
-					if hitent:IsHeadcrab() then
-						damage = damage * 2
-						dmginfo:SetDamage(damage)
-					end
 					gamemode.Call("ScalePlayerDamage", hitent, tr.HitGroup, dmginfo)
 
 					if self.MeleeKnockBack > 0 then

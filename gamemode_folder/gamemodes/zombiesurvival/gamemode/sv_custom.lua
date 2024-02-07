@@ -1011,6 +1011,9 @@ hook.Add("ZombieKilledHuman", "botshittalk", function(victim, attacker, inflicto
 	end
 end)
 
+
+
+
 --debug stuff, to find out what is causing io hangs
 local debugmode = false
 

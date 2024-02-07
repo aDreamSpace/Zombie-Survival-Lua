@@ -197,7 +197,6 @@ end
 
 function SWEP:MeleeHitPlayer(ent, trace, damage, forcescale)
 	ent:ThrowFromPositionSetZ(self.Owner:GetPos(), damage * 2.5 * (forcescale or self.MeleeForceScale))
-	ent:MeleeViewPunch(damage)
 	local nearest = ent:NearestPoint(trace.StartPos)
 	util.Blood(nearest, math.Rand(damage * 0.5, damage * 0.75), (nearest - trace.StartPos):GetNormalized(), math.Rand(damage * 5, damage * 10), true)
 end

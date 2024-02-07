@@ -93,7 +93,6 @@ function SWEP:Think()
 
 				ent:TakeSpecialDamage(damage, self.PounceDamageType, owner, self, trace.HitPos)
 
-				owner:ViewPunch(Angle(math.Rand(-20, 20), math.Rand(-20, 20), math.Rand(-20, 20)))
 			elseif trace.HitWorld then
 				if SERVER then
 					self:EmitHitSound()
