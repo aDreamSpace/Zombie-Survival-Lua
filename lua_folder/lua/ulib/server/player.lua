@@ -66,7 +66,6 @@ function ULib.slap( ent, damage, power, nosound )
 	if math.random( 0, 1 ) == 1 then
 		angle_punch_yaw = angle_punch_yaw * -1
 	end
-	ent:ViewPunch( Angle( angle_punch_pitch, angle_punch_yaw, 0 ) )
 
 	local newHp = ent:Health() - damage
 	if newHp <= 0 then

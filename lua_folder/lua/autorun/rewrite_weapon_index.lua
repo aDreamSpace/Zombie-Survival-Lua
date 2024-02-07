@@ -6,12 +6,13 @@ local E_GetOwner = M_Entity.GetOwner
 
 local val
 local wt
+local nilValue = nil
 function M_Weapon:__index(key)
 	val = M_Weapon[key]
-	if val ~= nil then return val end
+	if val ~= nilValue then return val end
 
 	val = M_Entity[key]
-	if val ~= nil then return val end
+	if val ~= nilValue then return val end
 
 	-- Deprecated
 	if key == "Owner" then return E_GetOwner(self) end

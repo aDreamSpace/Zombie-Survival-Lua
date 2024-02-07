@@ -34,7 +34,6 @@ net.Receive("DR_Experienced",function(l,ply)
 	end	
 end)
 
-
 hook.Add("HUDPaint","DrawDRHUD",function()
 	if GetGlobalBool("enable_cuttas_leveling_skills", true) then
 		local scrW = ScrW()
