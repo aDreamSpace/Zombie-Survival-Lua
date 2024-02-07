@@ -1442,115 +1442,85 @@ local wl, ws
 
 local strSafe = "safe"
 local strLowerAim = "CW_LOWERAIM"
+
+
 function SWEP:Think()
-	-- in vehicle? can't do anything, also prevent needless calculations of stuff
-	if self.Owner:InVehicle() and not self.Owner:GetAllowWeaponsInVehicle() then
-		self.dt.State = CW_ACTION
-		return
-	end
+	local inVehicle = self.Owner:InVehicle()
+	local allowWeaponsInVehicle = self.Owner:GetAllowWeaponsInVehicle()
 
-	-- run faster when in safe, set back to default if something else
-	if self.FireMode ~= strSafe and self.SpeedDec ~= nil then
-		self.SpeedDecOrig = self.SpeedDecOrig or self.SpeedDec
+if inVehicle and not allowWeaponsInVehicle then
+	self.dt.State = CW_ACTION
+	return
+end
+
+-- run faster when in safe, set back to default if something else
+if self.SpeedDec ~= nil then
+	self.SpeedDecOrig = self.SpeedDecOrig or self.SpeedDec
+
+	if self.FireMode ~= strSafe then
 		self.SpeedDec = self.SpeedDecOrig
-
-	elseif self.FireMode == strSafe and self.SpeedDec ~= nil then
+	elseif self.FireMode == strSafe then
 		self.SpeedDec = self.SpeedDecOrig * 0.3
 	end
+end
 
-	CustomizableWeaponry.actionSequence.process(self)
-	
-	if self.dt.State == CW_HOLSTER_START then
-		return
+CustomizableWeaponry.actionSequence.process(self)
+
+if self.dt.State == CW_HOLSTER_START then
+	return
+end
+
+local CT = CurTime()
+
+if CLIENT then
+	if self.SubCustomizationCycleTime and UnPredictedCurTime() > self.SubCustomizationCycleTime then
+		CustomizableWeaponry.cycleSubCustomization(self)
 	end
-	
-	CT = CurTime()
-	
-	if CLIENT then
-		if self.SubCustomizationCycleTime then
-			if UnPredictedCurTime() > self.SubCustomizationCycleTime then
-				CustomizableWeaponry.cycleSubCustomization(self)
+end
+
+if self.HoldToAim then
+	if (SP and SERVER) or not SP then
+		if self.dt.State == CW_AIMING then
+			local owner = self.Owner
+			if not owner:OnGround() or Length(GetVelocity(owner)) >= owner:GetWalkSpeed() * self.LoseAimVelocity or not owner:KeyDown(IN_ATTACK2) then
+				self.dt.State = CW_IDLE
+				self:SetNextSecondaryFire(CT + 0.2)
+				local strLowerAim = "CW_LOWERAIM" -- replace with your sound path
+				self:EmitSound(strLowerAim)
 			end
 		end
 	end
-	
-	if self.HoldToAim then
-		if (SP and SERVER) or not SP then
-			if self.dt.State == CW_AIMING then
-				if not self.Owner:OnGround() or Length(GetVelocity(self.Owner)) >= self.Owner:GetWalkSpeed() * self.LoseAimVelocity or not self.Owner:KeyDown(IN_ATTACK2) then
-					self.dt.State = CW_IDLE
-					self:SetNextSecondaryFire(CT + 0.2)
-					self:EmitSound(strLowerAim)
-				end
-			end
-		end
-	end
-	
-	if self.IndividualThink then
-		self:IndividualThink()
-		
-		if not IsValid(self) or not IsValid(self.Owner) then
-			return
-		end
-	end
+end
 
-	if self.CW20Melee then
-		self:MeleeThink()
+if self.IndividualThink then
+	self:IndividualThink()
+end
 
-		if not IsValid(self) or not IsValid(self.Owner) then
-			return
-		end
-	end
-	
-	vel = Length(GetVelocity(self.Owner))
-	IFTP = IsFirstTimePredicted()
-	
-	if (not SP and IFTP) or SP then
-		self:CalculateSpread(vel, FrameTime())
-	end
-	
-	if CT > self.GlobalDelay then
-		wl = self.Owner:WaterLevel()
+if self.CW20Melee then
+	self:MeleeThink()
+end
 
-		if self.Owner:OnGround() then
-			-- prone mod compatibility starts
-			if self:isPlayerEnteringProne() then
-				self.dt.State = CW_PRONE_BUSY
-			elseif self:isPlayerProne() and vel >= self.BusyProneVelocity and not self.ShootWhileProne then
-				self.dt.State = CW_PRONE_MOVING
-			else
-				-- prone mod compatibility ends
-				if wl >= 3 and self.HolsterUnderwater then
-					if self.ShotgunReloadState == 1 then
-						self.ShotgunReloadState = 2
-					end
-					
-					self.dt.State = CW_ACTION
-					self.FromActionToNormalWait = CT + 0.3
-				else
-					ws = self.Owner:GetWalkSpeed()
-					
-					if ((vel > ws * self.RunStateVelocity and self.Owner:KeyDown(IN_SPEED)) or vel > ws * 3 or (self.ForceRunStateVelocity and vel > self.ForceRunStateVelocity)) and self.SprintingEnabled then
-						self.dt.State = CW_RUNNING
-					else
-						if self.dt.State != CW_AIMING and self.dt.State != CW_CUSTOMIZE then
-							if CT > self.FromActionToNormalWait then
-								if self.dt.State != CW_IDLE then
-									self.dt.State = CW_IDLE
-									
-									if not self.ReloadDelay then
-										self:SetNextPrimaryFire(CT + 0.3)
-										self:SetNextSecondaryFire(CT + 0.3)
-										self.ReloadWait = CT + 0.3
-									end
-								end
-							end
-						end
-					end
-				end
-			end
+if not IsValid(self) or not IsValid(self.Owner) then
+	return
+end
+
+vel = Length(GetVelocity(self.Owner))
+IFTP = IsFirstTimePredicted()
+
+if (not SP and IFTP) or SP then
+	self:CalculateSpread(vel, FrameTime())
+end
+
+if CT > self.GlobalDelay then
+	wl = self.Owner:WaterLevel()
+
+	if self.Owner:OnGround() then
+		if self:isPlayerEnteringProne() then
+			self.dt.State = CW_PRONE_BUSY
+		elseif self:isPlayerProne() and vel >= self.BusyProneVelocity and not self.ShootWhileProne then
+			self.dt.State = CW_PRONE_MOVING
 		else
-			if (wl > 1 and self.HolsterUnderwater) or (self.Owner:GetMoveType() == MOVETYPE_LADDER and self.HolsterOnLadder) then
+			if wl >= 3 and self.HolsterUnderwater then
 				if self.ShotgunReloadState == 1 then
 					self.ShotgunReloadState = 2
 				end
@@ -1558,9 +1528,14 @@ function SWEP:Think()
 				self.dt.State = CW_ACTION
 				self.FromActionToNormalWait = CT + 0.3
 			else
-				if CT > self.FromActionToNormalWait then
-					if self.dt.State != CW_IDLE then
-						self.dt.State = CW_IDLE
+				ws = self.Owner:GetWalkSpeed()
+				
+				if ((vel > ws * self.RunStateVelocity and self.Owner:KeyDown(IN_SPEED)) or vel > ws * 3 or (self.ForceRunStateVelocity and vel > self.ForceRunStateVelocity)) and self.SprintingEnabled then
+					self.dt.State = CW_RUNNING
+				elseif self.dt.State != CW_AIMING and self.dt.State != CW_CUSTOMIZE and CT > self.FromActionToNormalWait and self.dt.State != CW_IDLE then
+					self.dt.State = CW_IDLE
+					
+					if not self.ReloadDelay then
 						self:SetNextPrimaryFire(CT + 0.3)
 						self:SetNextSecondaryFire(CT + 0.3)
 						self.ReloadWait = CT + 0.3
@@ -1568,47 +1543,52 @@ function SWEP:Think()
 				end
 			end
 		end
+	elseif (wl > 1 and self.HolsterUnderwater) or (self.Owner:GetMoveType() == MOVETYPE_LADDER and self.HolsterOnLadder) then
+		if self.ShotgunReloadState == 1 then
+			self.ShotgunReloadState = 2
+		end
+		
+		self.dt.State = CW_ACTION
+		self.FromActionToNormalWait = CT + 0.3
+	elseif CT > self.FromActionToNormalWait and self.dt.State != CW_IDLE then
+		self.dt.State = CW_IDLE
+		self:SetNextPrimaryFire(CT + 0.3)
+		self:SetNextSecondaryFire(CT + 0.3)
+		self.ReloadWait = CT + 0.3
 	end
-	
-	if SERVER then
-		if self.CurSoundTable then
-			local t = self.CurSoundTable[self.CurSoundEntry]
+end
 
-			if CT >= self.SoundTime + t.time / self.SoundSpeed then
-				if t.sound and t.sound ~= "" then
-					self:EmitSound(t.sound, 70, 100)
-				end
-				
-				if t.callback then
-					t.callback(self)
-				end
-				
-				if self.CurSoundTable[self.CurSoundEntry + 1] then
-					self.CurSoundEntry = self.CurSoundEntry + 1
-				else
-					self.CurSoundTable = nil
-					self.CurSoundEntry = nil
-					self.SoundTime = nil
-				end
-			end
+if SERVER and self.CurSoundTable then
+	local t = self.CurSoundTable[self.CurSoundEntry]
+
+	if CT >= self.SoundTime + t.time / self.SoundSpeed then
+		if t.sound and t.sound ~= "" then
+			self:EmitSound(t.sound, 70, 100)
+		end
+		
+		if t.callback then
+			t.callback(self)
+		end
+		
+		if self.CurSoundTable[self.CurSoundEntry + 1] then
+			self.CurSoundEntry = self.CurSoundEntry + 1
+		else
+			self.CurSoundTable = nil
+			self.CurSoundEntry = nil
+			self.SoundTime = nil
 		end
 	end
-	
-	if self.dt.Shots > 0 then
-		if not self.Owner:KeyDown(IN_ATTACK) then
-			if self.BurstAmount and self.BurstAmount > 0 then
-				self.dt.Shots = 0
-				self:SetNextPrimaryFire(CT + self.FireDelay * self.BurstCooldownMul)
-				self.ReloadWait = CT + self.FireDelay * self.BurstCooldownMul
-			end
-		end
-	end
-	
-	if not self.ShotgunReload then
-		if self.ReloadDelay and CT >= self.ReloadDelay then
-			self:finishReload() -- more like finnishReload ;0
-		end
-	end
+end
+
+if self.dt.Shots > 0 and not self.Owner:KeyDown(IN_ATTACK) and self.BurstAmount and self.BurstAmount > 0 then
+	self.dt.Shots = 0
+	self:SetNextPrimaryFire(CT + self.FireDelay * self.BurstCooldownMul)
+	self.ReloadWait = CT + self.FireDelay * self.BurstCooldownMul
+end
+
+if not self.ShotgunReload and self.ReloadDelay and CT >= self.ReloadDelay then
+	self:finishReload()
+end
 	
 	if IFTP then
 		if self.ShotgunReloadState == 1 then
