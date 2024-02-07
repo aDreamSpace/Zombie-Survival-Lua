@@ -353,67 +353,31 @@ end
 
 -- Called a lot, so optimized
 -- vararg was culled out because it created tables. Should call the one with appropriate # of args.
+
+-- CallZombieFunction Rewrite
 local zctab
 local zcfunc
-function meta:CallZombieFunction0(funcname)
-	if P_Team(self) == TEAM_UNDEAD then
-		zctab = ZombieClasses[E_GetTable(self).Class or GAMEMODE.DefaultZombieClass]
-		zcfunc = zctab[funcname]
-		if zcfunc then
-			return zcfunc(zctab, self)
-		end
-	end
-end
+local cache = {}
 
-function meta:CallZombieFunction1(funcname, a1)
-	if P_Team(self) == TEAM_UNDEAD then
-		zctab = ZombieClasses[E_GetTable(self).Class or GAMEMODE.DefaultZombieClass]
-		zcfunc = zctab[funcname]
-		if zcfunc then
-			return zcfunc(zctab, self, a1)
-		end
-	end
-end
+function meta:CallZombieFunction(funcname, ...)
+    if P_Team(self) == TEAM_UNDEAD then
+        local class = E_GetTable(self).Class or GAMEMODE.DefaultZombieClass
+        zctab = ZombieClasses[class]
+        
+        -- Check if the function is in the cache.
+        if cache[class] and cache[class][funcname] then
+            zcfunc = cache[class][funcname]
+        else
+            -- If not in the cache, get the function and store it in the cache.
+            zcfunc = zctab[funcname]
+            cache[class] = cache[class] or {}
+            cache[class][funcname] = zcfunc
+        end
 
-function meta:CallZombieFunction2(funcname, a1, a2)
-	if P_Team(self) == TEAM_UNDEAD then
-		zctab = ZombieClasses[E_GetTable(self).Class or GAMEMODE.DefaultZombieClass]
-		zcfunc = zctab[funcname]
-		if zcfunc then
-			return zcfunc(zctab, self, a1, a2)
-		end
-	end
-end
-
-function meta:CallZombieFunction3(funcname, a1, a2, a3)
-	if P_Team(self) == TEAM_UNDEAD then
-		zctab = ZombieClasses[E_GetTable(self).Class or GAMEMODE.DefaultZombieClass]
-		zcfunc = zctab[funcname]
-		if zcfunc then
-			return zcfunc(zctab, self, a1, a2, a3)
-		end
-	end
-end
-
-function meta:CallZombieFunction4(funcname, a1, a2, a3, a4)
-	if P_Team(self) == TEAM_UNDEAD then
-		zctab = ZombieClasses[E_GetTable(self).Class or GAMEMODE.DefaultZombieClass]
-		zcfunc = zctab[funcname]
-		if zcfunc then
-			return zcfunc(zctab, self, a1, a2, a3, a4)
-		end
-	end
-end
-meta.CallZombieFunction = meta.CallZombieFunction4 -- 4 should be enough for legacy.
-
-function meta:CallZombieFunction5(funcname, a1, a2, a3, a4, a5)
-	if P_Team(self) == TEAM_UNDEAD then
-		zctab = ZombieClasses[E_GetTable(self).Class or GAMEMODE.DefaultZombieClass]
-		zcfunc = zctab[funcname]
-		if zcfunc then
-			return zcfunc(zctab, self, a1, a2, a3, a4, a5)
-		end
-	end
+        if zcfunc then
+            return zcfunc(zctab, self, ...)
+        end
+    end
 end
 
 function meta:TraceLine(distance, mask, filter, start)

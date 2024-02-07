@@ -1860,6 +1860,7 @@ net.Receive("zs_dmg_prop", function(length)
 	end
 end)
 
+
 net.Receive("zs_lifestats", function(length)
 	local barricadedamage = net.ReadUInt(24)
 	local humandamage = net.ReadUInt(24)

@@ -4,7 +4,6 @@ ENT.NextEmit = 0
 
 function ENT:Initialize()
 	self:DrawShadow(false)
-
 	self.Size = math.Rand(10, 14)
 end
 
@@ -18,20 +17,20 @@ function ENT:Draw()
 	render.DrawSprite(pos, size, size, colFlesh)
 
 	if CurTime() < self.NextEmit then return end
-	self.NextEmit = CurTime() + 0.05
+	self.NextEmit = CurTime() + 0.1 -- Increase the delay between emissions
 
 	local emitter = ParticleEmitter(pos)
 	emitter:SetNearClip(36, 44)
 
-	local particle = emitter:Add("decals/Yblood"..math.random(6), pos + VectorRand():GetNormalized() * math.Rand(1, 4))
-	particle:SetVelocity(VectorRand():GetNormalized() * math.Rand(1, 4))
-	particle:SetDieTime(math.Rand(0.6, 0.9))
+	local particle = emitter:Add("decals/Yblood"..math.random(1, 6), pos + VectorRand():GetNormalized())
+	particle:SetVelocity(VectorRand():GetNormalized())
+	particle:SetDieTime(math.Rand(0.3, 0.45)) -- Reduce the lifespan of particles
 	particle:SetStartAlpha(255)
 	particle:SetEndAlpha(255)
-	particle:SetStartSize(size * math.Rand(0.1, 0.22))
+	particle:SetStartSize(size * 0.1) -- Reduce the start size
 	particle:SetEndSize(0)
 	particle:SetRoll(math.Rand(0, 360))
-	particle:SetRollDelta(math.Rand(-4, 4))
+	particle:SetRollDelta(math.Rand(-2, 2)) -- Reduce the roll delta
 	particle:SetLighting(true)
 
 	emitter:Finish()

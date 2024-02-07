@@ -1598,39 +1598,18 @@ function GM:PlayerInitialSpawn(pl)
 end
 
 
-local isSongPlaying = false
-
-hook.Add("PlayerSpawn", "PlayRandomHL2Song", function(ply)
-    local hl2SongCount = 34 -- Total number of HL2 songs
-    local randomSongIndex = math.random(1, hl2SongCount)
-    local songPath = "music/hl2_song" .. randomSongIndex .. ".mp3"
-
-    -- Only play the song if no song is currently playing
-    if not isSongPlaying then
-        -- Set the flag to indicate that a song is now playing
-        isSongPlaying = true
-
-        -- Play the selected song globally (for all players)
-        for _, targetPly in pairs(player.GetAll()) do
-            targetPly:EmitSound(songPath)
+-- Stop the music when the game is over
+hook.Add("OnEndRound", "StopMusic", function(winner)
+    if isSongPlaying then
+        -- Stop the music for all players
+        for _, ply in pairs(player.GetAll()) do
+            ply:StopSound(songPath)
         end
 
-        -- Set a timer to play the next song after the current one finishes
-        local songDuration = SoundDuration(songPath) -- Get the duration of the current song
-        timer.Simple(songDuration, function()
-            -- Reset the flag to allow the next song to play
-            isSongPlaying = false
-
-            -- Play another random song globally
-            local newRandomSongIndex = math.random(1, hl2SongCount)
-            local newSongPath = "music/hl2_song" .. newRandomSongIndex .. ".mp3"
-            for _, targetPly in pairs(player.GetAll()) do
-                targetPly:EmitSound(newSongPath)
-            end
-        end)
+        -- Reset the flag
+        isSongPlaying = false
     end
 end)
-
 function GM:PlayerInitialSpawnRound(pl)
 	pl:SprintDisable()
 	if pl:KeyDown(IN_WALK) then
@@ -1981,6 +1960,51 @@ function GM:GiveRandomEquipment(pl)
 	end
 end
 
+
+
+    local isSongPlaying = false
+
+    hook.Add("PlayerSpawn", "PlayRandomHL2Song", function(ply)
+        local hl2SongCount = 34 -- Total number of HL2 songs
+        local randomSongIndex = math.random(1, hl2SongCount)
+        local songPath = "music/hl2_song" .. randomSongIndex .. ".mp3"
+
+        -- Only play the song if no song is currently playing
+        if not isSongPlaying then
+            -- Set the flag to indicate that a song is now playing
+            isSongPlaying = true
+
+            -- Play the selected song for the spawned player
+            ply:SendLua("surface.PlaySound('" .. songPath .. "')")
+
+            -- Set a timer to play the next song after the current one finishes
+            local songDuration = SoundDuration(songPath) -- Get the duration of the current song
+            timer.Simple(songDuration, function()
+                -- Reset the flag to allow the next song to play
+                isSongPlaying = false
+
+                -- Play another random song for the player
+                local newRandomSongIndex = math.random(1, hl2SongCount)
+                local newSongPath = "music/hl2_song" .. newRandomSongIndex .. ".mp3"
+                ply:SendLua("surface.PlaySound('" .. newSongPath .. "')")
+            end)
+        end
+    end)
+
+    -- Stop the music when the game is over
+    hook.Add("OnEndRound", "StopMusic", function(winner)
+        if isSongPlaying then
+            -- Stop the music for all players
+            for _, ply in pairs(player.GetAll()) do
+                ply:SendLua("RunConsoleCommand('stopsound')")
+            end
+
+            -- Reset the flag
+            isSongPlaying = false
+        end
+    end)
+
+	
 function GM:PlayerCanCheckout(pl)
 	return pl:IsValid() and pl:Team() == TEAM_HUMAN and pl:Alive() and not self.CheckedOut[pl:UniqueID()] and not self.StartingLoadout and not self.ZombieEscape and self.StartingWorth > 0 and self:GetWave() < 2
 end
@@ -3771,7 +3795,7 @@ function GM:PlayerSpawn(pl)
 			if current and current:IsValid() then
 				current:SetModel(overridemodel)
 				current:ResetBones()
-				pl:CallZombieFunction1("ManipulateOverrideModel", current)
+				pl:CallZombieFunction("ManipulateOverrideModel", current)
 			end
 		else
 			pl:RemoveStatus("overridemodel", false, true)
