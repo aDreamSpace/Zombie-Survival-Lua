@@ -1,3 +1,4 @@
+
 return function(lib)
 	local from = lib.From
 
@@ -6,7 +7,6 @@ return function(lib)
 		if not trR.Hit then return end
 		return trR.HitPos
 	end
-
 	local function getCursoredNodeOrNil(pl)
 		local item = lib.MapNavMesh:GetCursoredItemOrNil(pl)
 		if not item or item.Type ~= "node" then return end
@@ -20,14 +20,12 @@ return function(lib)
 		selectedNodesOrNilByPl[pl] = nil
 		pl:SendLua(lib.GlobalK .. ".ClearMapNavMeshViewHighlights()")
 	end
-
 	local function trySelectCursoredNode(pl)
-		if not selectedNodesOrNilByPl[pl] then selectedNodesOrNilByPl[pl] = {} end
 		local cursoredNodeOrNil = getCursoredNodeOrNil(pl)
+		if not selectedNodesOrNilByPl[pl] then selectedNodesOrNilByPl[pl] = {} end
 		table.insert(selectedNodesOrNilByPl[pl], cursoredNodeOrNil)
-		if cursoredNodeOrNil then
-			pl:SendLua(lib.GlobalK .. ".HighlightInMapNavMeshView(" .. cursoredNodeOrNil.Id .. ")")
-		end
+		if not cursoredNodeOrNil then return end
+		pl:SendLua(lib.GlobalK .. ".HighlightInMapNavMeshView(" .. cursoredNodeOrNil.Id .. ")")
 	end
 	
 	local function round(num) return math.Round(num * 10) / 10 end
@@ -44,9 +42,7 @@ return function(lib)
 		if not excludeZOrNil and getCursoredDirection(angs.p) == 0 then return "Z" end
 		return getCursoredDirection(angs.y) == 1 and "X" or "Y"
 	end
-end
-
-
+	
 	local editModes = {
 		{	Name = "Create Node",
 			FuncByKey = {

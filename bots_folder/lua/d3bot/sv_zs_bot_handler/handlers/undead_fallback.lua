@@ -8,8 +8,6 @@ HANDLER.BotClasses = {
 	"Ghoul", "Ghoul", "Ghoul", 
    	 "Alpha Crab", "Alpha Crab", "Alpha Crab",
 	"Wraith", "Wraith", "Wraith",
-	"Brute", "Giga Crab", "Carni",
-	"The Butcher", "Puker", "Giga Crab",
 	"Bloated Zombie", "Bloated Zombie", "Bloated Zombie",
 	"Gore Buster", "Gore Buster", "Gore Buster", 
 	"Fast Zombie", "Fast Zombie", "Fast Zombie",

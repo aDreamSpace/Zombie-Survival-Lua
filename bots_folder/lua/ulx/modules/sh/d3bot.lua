@@ -98,6 +98,7 @@ if engine.ActiveGamemode() == "zombiesurvival" then
 	cmd:help("If you're a zombie, you can use this command to instantly respawn as a human with a default loadout.")
 end
 
+
 local function registerCmd(camelCaseName, access, ...)
 	local func
 	local params = {}
@@ -126,6 +127,26 @@ local numParam = { type = ULib.cmds.NumArg }
 local strParam = { type = ULib.cmds.StringArg }
 local strRestParam = { type = ULib.cmds.StringArg, ULib.cmds.takeRestOfLine }
 local optionalStrParam = { type = ULib.cmds.StringArg, ULib.cmds.optional }
+
+local function voteBotMod(calling_ply, num)
+	local formerZombiesCountAddition = D3bot.ZombiesCountAddition
+	local newZombiesCountAddition = math.Round(num)
+	local question = "Change zombies count from [formula + (" .. formerZombiesCountAddition .. ")] to [formula + (" .. newZombiesCountAddition .. ")]?"
+
+	ulx.doVote(question, {"Yes", "No"}, function(results)
+		if results[1] and results[2] and results[1] > results[2] then -- If "Yes" votes are more than "No" votes
+			D3bot.ZombiesCountAddition = newZombiesCountAddition
+			ulx.fancyLogAdmin(calling_ply, "Zombies count changed to [formula + (" .. newZombiesCountAddition .. ")].")
+		else
+			ulx.fancyLogAdmin(calling_ply, "Vote failed. Zombies count remains at [formula + (" .. formerZombiesCountAddition .. ")].")
+		end
+	end, _, _, _, calling_ply)
+end
+
+ulx.voteBotMod = ulx.command("Bot", "ulx voteBotMod", voteBotMod, "!voteBotMod")
+ulx.voteBotMod:addParam{ type=ULib.cmds.NumArg, min=0, default=0, hint="num", ULib.cmds.round }
+ulx.voteBotMod:defaultAccess(ULib.ACCESS_ALL)
+ulx.voteBotMod:help("Starts a vote to change the bot mod.")
 
 registerAdminCmd("BotMod", numParam, function(caller, num)
 	local formerZombiesCountAddition = D3bot.ZombiesCountAddition
