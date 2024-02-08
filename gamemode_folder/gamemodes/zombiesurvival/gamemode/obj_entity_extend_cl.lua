@@ -4,7 +4,8 @@ local P_Team = M_Player.Team
 
 function meta:TransAlphaToMe()
 	local radius = GAMEMODE.TransparencyRadius / 9
-	if radius > 0 and P_Team(MySelf) == TEAM_HUMAN then
+	local team = P_Team(MySelf)
+	if radius > 0 and (team == TEAM_HUMAN or team == TEAM_UNDEAD) then
 		local dist = self:GetPos():DistToSqr(EyePos())
 		if dist < radius then
 			return math.max(0.1, (dist / radius) ^ 0.5)

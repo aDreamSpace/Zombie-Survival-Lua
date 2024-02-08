@@ -174,30 +174,42 @@ function ENT:GenerateParticles()
 end
 
 function ENT:RenderInfo(pos, ang, owner)
-
-		local h = MySelf:Team() == TEAM_HUMAN
+	local h = MySelf:Team() == TEAM_HUMAN
+	self:DrawModel()
 	
-		self:DrawModel()
+	if (h) then
+		local dist = self:GetPos():DistToSqr(MySelf:GetPos())
+		if dist > 500*500 then return end -- Don't render if more than 500 units away
+
+		local hpfrac = self:GetObjectHealth() / self:GetMaxObjectHealth()
+	
+		local pos = self:GetPos() + Vector(0, 0, 40) -- Adjust this as needed
+		local ang = (MySelf:GetPos() - pos):Angle()
+		ang:RotateAroundAxis(ang:Right(), -90)
+		ang:RotateAroundAxis(ang:Up(), 90)
 		
-		if (h) then
-			local hpfrac = self:GetObjectHealth() / self:GetMaxObjectHealth()
-		
-			local pos, ang = self:GetPos(), self:GetAngles()
-			ang:RotateAroundAxis(ang:Up() * 0.5, -90)
-			ang:RotateAroundAxis(ang:Forward() * 1.5, 60)
-			pos = pos + ang:Up() * 17 + ang:Forward() * 3 + ang:Right() * -26
-			cam.Start3D2D(pos, ang, 0.05)
-				draw.RoundedBox(8, -280, -50, 560, 400, Color(44, 0, 66, 180))
-				draw.SimpleText("Medical Sigil", "ZS3D2DFont2", 0, -10, COLOR_ORANGE, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-		
-				draw.RoundedBox(math.min(hpfrac * 542.5, 8), -275, 105, math.Round(542.5 * hpfrac), 40, Color(255 - 255 * hpfrac, 255 * hpfrac, 0))
-				draw.SimpleText("Health: " .. math.Round(hpfrac * 100) .. "%", "ZS3D2DFont2Small", -135, 85, COLOR_PURPLE, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-				draw.SimpleText("Heals nearby players", "ZS3D2DFont2Smaller", 0, 200, COLOR_GREEN, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-				draw.SimpleText("Heals nearby players", "ZS3D2DFont2Smaller", 0, 200, COLOR_GREEN, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-				draw.SimpleText("Gives 5% healing bonus", "ZS3D2DFont2Smaller", 0, 240, COLOR_GREEN, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-			cam.End3D2D()
-		end
+		cam.Start3D2D(pos, ang, 0.05)
+			cam.IgnoreZ(true) -- Ignore the Z-buffer
+			draw.SimpleText("Medical Sigil", "ZS3D2DFont2", 0, -10, COLOR_ORANGE, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	
+			draw.RoundedBox(math.min(hpfrac * 542.5, 8), -275, 105, math.Round(542.5 * hpfrac), 40, Color(255 - 255 * hpfrac, 255 * hpfrac, 0))
+			draw.SimpleText("Health: " .. math.Round(hpfrac * 100) .. "%", "ZS3D2DFont2Small", -135, 85, COLOR_PURPLE, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleText("Heals nearby players", "ZS3D2DFont2Smaller", 0, 200, COLOR_GREEN, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleText("Gives 5% healing bonus", "ZS3D2DFont2Smaller", 0, 240, COLOR_GREEN, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			cam.IgnoreZ(false) -- Stop ignoring the Z-buffer
+		cam.End3D2D()
+	end
 end
+
+hook.Add("PreDrawHalos", "AddBlueHalo", function()
+	local ply = LocalPlayer()
+	for _, ent in pairs(ents.FindByClass("sigil_medicaltower")) do
+		if IsValid(ent) and ply:GetPos():Distance(ent:GetPos()) <= 100 then
+			halo.Add({ent}, Color(8, 0, 249), 1, 1, 2, true, true)
+		end
+	end
+end)
+
 
 function ENT:Draw()
 	self:DrawModel()

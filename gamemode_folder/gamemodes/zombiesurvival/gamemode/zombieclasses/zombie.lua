@@ -34,7 +34,8 @@ CLASS.ZTraits = {
 if SERVER then
     function CLASS:OnSpawned(pl)
         if pl:IsBot() then
-            if pl:GetZombieClassTable().Name == "Zombie" then
+            local zombieClassName = pl:GetZombieClassTable().Name
+            if zombieClassName == "Zombie" then
                 pl:SetBodygroup( 1, 1 )
             end
         end
@@ -42,7 +43,8 @@ if SERVER then
 
     function CLASS:OnKilled(pl, attacker, inflictor, suicide, headshot, dmginfo, assister)
         if pl:IsBot() then
-            if pl:GetZombieClassTable().Name == "Zombie" then
+            local zombieClassName = pl:GetZombieClassTable().Name
+            if zombieClassName == "Zombie" then
                 pl:SetBodygroup( 1, 0 )
             end
         end
@@ -54,6 +56,7 @@ local math_Rand = math.Rand
 local math_min = math.min
 local math_ceil = math.ceil
 local CurTime = CurTime
+local IsValid = IsValid -- New addition
 
 local ACT_HL2MP_SWIM_PISTOL = ACT_HL2MP_SWIM_PISTOL
 local ACT_HL2MP_IDLE_CROUCH_ZOMBIE = ACT_HL2MP_IDLE_CROUCH_ZOMBIE
@@ -114,9 +117,6 @@ function CLASS:DoAnimationEvent(pl, event, data)
 	end
 end
 
-
-
 if not CLIENT then return end
 
 CLASS.Icon = "materials/zombiesurvival/killicons2/zombie.png"
-

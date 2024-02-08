@@ -119,6 +119,35 @@ roundactive:addParam{ type=ULib.cmds.BoolArg, hint="Round State"}
 roundactive:defaultAccess(ULib.ACCESS_ADMIN)
 roundactive:help( "Sets the current wave to active or inactive" )
 
+
+if SERVER then
+    function ulx.setwave(calling_ply, wave)
+        if wave then
+            GAMEMODE:SetWave(wave)
+            ulx.fancyLogAdmin(calling_ply, "#A set the wave to #s", wave)
+        end
+    end
+    local setwave = ulx.command("Zombie Survival", "ulx setwave", ulx.setwave, "!setwave")
+    setwave:addParam{type=ULib.cmds.NumArg, min=0, default=0, hint="wave", ULib.cmds.round}
+    setwave:defaultAccess(ULib.ACCESS_ADMIN)
+    setwave:help("Set the wave in Zombie Survival.")
+end
+
+if SERVER then
+    function ulx.addwavetime(calling_ply, additional_time)
+        if GAMEMODE:GetWave() == 0 then
+            GAMEMODE:SetWaveStart(CurTime() + additional_time)
+        else
+            GAMEMODE:SetWaveEnd(GAMEMODE:GetWaveEnd() + additional_time)
+        end
+        ulx.fancyLogAdmin(calling_ply, "#A added #s seconds to the current wave", additional_time)
+    end
+    local addwavetime = ulx.command("Zombie Survival", "ulx addwavetime", ulx.addwavetime, "!addwavetime")
+    addwavetime:addParam{type=ULib.cmds.NumArg, min=0, default=0, hint="additional_time", ULib.cmds.round}
+    addwavetime:defaultAccess(ULib.ACCESS_ADMIN)
+    addwavetime:help("Add more time to the current wave or the start time of wave 0.")
+end
+
 --Force Boss--
 
 function ulx.forceboss( calling_ply, target_plys )

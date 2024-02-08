@@ -7,10 +7,13 @@ function ENT:DrawTranslucent()
 	self:DrawModel()
 	
 	if (h) then
+		if not self.ns then self.ns = CurTime() + 45 end -- Initialize ns if it's nil
+
 		local dist = self:GetPos():DistToSqr(MySelf:GetPos())
 		if dist > 500*500 then return end -- Don't render if more than 500 units away
 
 		local hpfrac = self:GetObjectHealth() / self:GetMaxObjectHealth()
+		local nextRegen = math.max(0, self.ns - CurTime()) -- Time until next ammo regeneration
 	
 		local pos = self:GetPos() + Vector(0, 0, 40) -- Adjust this as needed
 		local ang = (MySelf:GetPos() - pos):Angle()
@@ -19,12 +22,13 @@ function ENT:DrawTranslucent()
 		
 		cam.Start3D2D(pos, ang, 0.05)
 			cam.IgnoreZ(true) -- Ignore the Z-buffer
-			draw.SimpleText("Barricade Sigil", "ZS3D2DFont2", 0, -10, COLOR_ORANGE, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleText("Ammo Sigil", "ZS3D2DFont2", 0, -10, COLOR_ORANGE, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	
 			draw.RoundedBox(math.min(hpfrac * 542.5, 8), -275, 105, math.Round(542.5 * hpfrac), 40, Color(255 - 255 * hpfrac, 255 * hpfrac, 0))
 			draw.SimpleText("Health: " .. math.Round(hpfrac * 100) .. "%", "ZS3D2DFont2Small", -135, 85, COLOR_PURPLE, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-			draw.SimpleText("Heals nearby nails", "ZS3D2DFont2Smaller", 0, 200, COLOR_GREEN, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-			draw.SimpleText("Grants 10% repair bonus", "ZS3D2DFont2Smaller", 0, 240, COLOR_GREEN, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleText("Regenerates ammo to nearby users", "ZS3D2DFont2Smaller", 0, 200, COLOR_GREEN, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleText("10% discount off ammo in the pointshop", "ZS3D2DFont2Smaller", 0, 240, COLOR_GREEN, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleText("Next ammo regen in: " .. math.Round(nextRegen) .. "s", "ZS3D2DFont2Smaller", 0, 280, COLOR_WHITE, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 			cam.IgnoreZ(false) -- Stop ignoring the Z-buffer
 		cam.End3D2D()
 	end
@@ -32,12 +36,13 @@ end
 
 hook.Add("PreDrawHalos", "AddBlueHalo", function()
 	local ply = LocalPlayer()
-	for _, ent in pairs(ents.FindByClass("sigil_barricadetower")) do
+	for _, ent in pairs(ents.FindByClass("sigil_ammotower")) do
 		if IsValid(ent) and ply:GetPos():Distance(ent:GetPos()) <= 100 then
-			halo.Add({ent}, Color(49, 245, 0), 1, 1, 2, true, true)
+			halo.Add({ent}, Color(249, 215, 0), 1, 1, 2, true, true)
 		end
 	end
 end)
+
 
 ENT.NextUpdate = 0.5
 ENT.NextEmit = 0.5

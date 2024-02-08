@@ -3,6 +3,48 @@
 --Some functions are here to complement other features elsewhere in the gamemode
 
 
+-- Demi Boss System Primitive
+-- Define the table of zombie boss classes
+local zombieBossClasses = {"Carni", "Spitter", "Puker", "Brute", "The Butcher", "Giga Crab"}
+
+-- Function to set a random zombie boss class to a player
+local function setZombieBossClass(ply)
+    if ply:Team() == TEAM_ZOMBIES then
+        -- Check if the player is already one of the boss classes
+        local currentClass = ply:GetZombieClass()
+        if table.HasValue(zombieBossClasses, currentClass) then
+            return
+        end
+
+        local bossClass = table.Random(zombieBossClasses)
+        -- Set the player's class
+        ply:KillSilent()
+        ply:SetZombieClassName(bossClass)
+        ply:UnSpectateAndSpawn()
+
+        -- Display a notification
+        PrintMessage(HUD_PRINTTALK, ply:Nick() .. " has become a " .. bossClass .. "!", COLOR_ORANGE)
+    end
+end
+
+-- Set zombie boss classes every 30 seconds
+timer.Create("ZombieBossClassSetter", 30, 0, function()
+    -- Get all players and bots
+    local players = player.GetAll()
+
+    -- Check if there are more than 16 players
+    if #players <= 16 then
+        return
+    end
+
+    -- Select three random players/bots
+    for i = 1, 3 do
+        local ply = table.Random(players)
+        setZombieBossClass(ply)
+    end
+end)
+
+
 --credit system
 local RewardHKill = 30
 local RewardZKill = 1

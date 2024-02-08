@@ -4,6 +4,83 @@ end
 
 local SKIN = {}
 
+local colorVariables = {
+    "bg_color",
+    "bg_color_sleep",
+    "bg_color_dark",
+    "bg_color_bright",
+    "Colors.Panel.Normal",
+    "color_frame_background",
+    "color_frame_border",
+    "colTextEntryText",
+    "colTextEntryTextHighlight",
+    "colTextEntryTextBorder",
+    "colPropertySheet",
+    "colTab",
+    "colTabInactive",
+    "colTabShadow",
+    "colTabText",
+    "colTabTextInactive"
+}
+
+-- Create ConVars for the RGB values of each color variable
+for _, var in ipairs(colorVariables) do
+    CreateClientConVar(var .. "_r", 255, true, false)
+    CreateClientConVar(var .. "_g", 255, true, false)
+    CreateClientConVar(var .. "_b", 255, true, false)
+end
+
+-- Create a console command to open the color menu
+concommand.Add("open_color_menu", function(ply, cmd, args)
+    -- Create the menu
+    local menu = vgui.Create("DFrame")
+    menu:SetSize(700, 700)
+    menu:Center()
+    menu:SetTitle("Color Menu")
+    menu:MakePopup()
+
+    -- Create the color variable list
+    local varList = vgui.Create("DListView", menu)
+    varList:Dock(LEFT)
+    varList:SetWidth(200)
+    varList:SetMultiSelect(false)
+    varList:AddColumn("Color Variable")
+
+    -- Add the color variables to the list
+    for _, var in ipairs(colorVariables) do
+        varList:AddLine(var)
+    end
+
+    -- Create the color mixer
+    local colorMixer = vgui.Create("DColorMixer", menu)
+    colorMixer:Dock(FILL)
+    colorMixer:SetPalette(true)
+    colorMixer:SetAlphaBar(true)
+    colorMixer:SetWangs(true)
+
+    -- Update the color mixer when a color variable is selected
+    varList.OnRowSelected = function(lst, index, pnl)
+        local var = pnl:GetColumnText(1)
+        colorMixer:SetColor(Color(GetConVarNumber(var .. "_r"), GetConVarNumber(var .. "_g"), GetConVarNumber(var .. "_b")))
+    end
+
+    -- Create the "Save" button
+    local saveButton = vgui.Create("DButton", menu)
+    saveButton:SetText("Save")
+    saveButton:Dock(BOTTOM)
+    saveButton.DoClick = function()
+        -- Save the RGB values to the ConVars of the selected color variable
+        local selectedLine = varList:GetSelectedLine()
+        if selectedLine then
+            local var = varList:GetLine(selectedLine):GetValue(1)
+            local color = colorMixer:GetColor()
+            RunConsoleCommand(var .. "_r", color.r)
+            RunConsoleCommand(var .. "_g", color.g)
+            RunConsoleCommand(var .. "_b", color.b)
+        end
+    end
+end)
+
 SKIN.PrintName = "Zombie Survival Derma Skin"
 SKIN.Author = "William \"JetBoom\" Moodhe"
 SKIN.DermaVersion = 1

@@ -541,29 +541,31 @@ function MakepWorth()
 	frame:MakePopup()
 
 	local attframe = vgui.Create("DFrame")
-	attframe:SetSize(200, frame:GetTall())
+	attframe:SetSize(200, frame:GetTall() / 2) -- Half the height of the menu
 	attframe:SetTitle("")
 	attframe:ShowCloseButton(false)
 	attframe:SetAlpha(255)
 	attframe:AlphaTo(255, 0, 0)
+	attframe:SetDraggable(true) -- Make the vgui box movable
+	attframe:SetSizable(true) -- Make the vgui box resizable
 	attframe.Think = function(self)
 		local x, y = pWorth:GetPos()
 		self:SetPos(x - self:GetWide() - 50, y)
 	end
-
+	
 	frame.OnClose = function() attframe:Close() end
 	pWorth.AttFrame = frame
 	local scroll = vgui.Create("DScrollPanel", attframe)
 	scroll:Dock(FILL)
-
+	
 	pWorth.AttFrame.List = scroll
-
-	local lab = EasyLabel(scroll, " Attachments ", "ZSHUDFontSmall")
+	
+	local lab = EasyLabel(scroll, "Attachments ", "ZSHUDFontSmall")
 	scroll:Add(lab)
 	lab:Dock(TOP)
-
+	
 	AddSnowToPanel(pWorth) --seasonal
-
+	
 	return frame
 end
 
@@ -634,7 +636,7 @@ end
 
 function PANEL:SetWorthID(id, id2)
 	self.ID = id
-
+	
 	local tab = FindStartingItem(id)
 
 	if not tab then

@@ -50,10 +50,10 @@ if CLIENT then
 			self:SetColor(pcolor)
 
 			if not (owner.SpawnProtection and owner:GetZombieClassTable().NoHideMainModel) then
-				if not owner:CallZombieFunction1("PrePlayerDrawOverrideModel", self) then
+				if not owner:CallZombieFunction("PrePlayerDrawOverrideModel", self) then
 					self:DrawModel()
 
-					owner:CallZombieFunction1("PostPlayerDrawOverrideModel", self)
+					owner:CallZombieFunction("PostPlayerDrawOverrideModel", self)
 				end
 			end
 
