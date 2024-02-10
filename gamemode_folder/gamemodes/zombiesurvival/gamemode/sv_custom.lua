@@ -35,6 +35,19 @@
         end
     end)
 
+    -- Console command to delete all nodes
+    concommand.Add("sigil_deleteallnodes", function(ply, cmd, args)
+        if ply:IsAdmin() then
+            for _, ent in ipairs(ents.GetAll()) do
+                if table.HasValue(entities, ent:GetClass()) then
+                    ent:Remove()
+                end
+            end
+            nodeLocations = {}
+            print("All nodes deleted!")
+        end
+    end)
+
     -- Console command to save the nodes
     concommand.Add("sigil_savenodes", function(ply, cmd, args)
         if ply:IsAdmin() then
@@ -46,14 +59,6 @@
             print("Nodes saved!")
         end
     end)
-
-    -- Function to shuffle a table
-    local function shuffleTable(t)
-        for i = #t, 2, -1 do
-            local j = math.random(i)
-            t[i], t[j] = t[j], t[i]
-        end
-    end
 
     -- Spawn the entities and set up the spawn points
     hook.Add("InitPostEntity", "SpawnEntities", function()
@@ -67,9 +72,6 @@
             for i = 1, #nodeLocations do
                 table.insert(repeatedEntities, entities[(i - 1) % #entities + 1])
             end
-
-            -- Shuffle the entities array
-            shuffleTable(repeatedEntities)
 
             -- Spawn an entity at each node and set it as a spawn point
             for i, entityName in ipairs(repeatedEntities) do
