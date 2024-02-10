@@ -54,17 +54,17 @@
             -- Convert the table to a string
             local str = util.TableToJSON(nodeLocations)
 
-            -- Save the string to a file
-            file.Write("nodes.txt", str)
+            -- Save the string to a file, named after the current map
+            file.Write(game.GetMap() .. "_nodes.txt", str)
             print("Nodes saved!")
         end
     end)
 
     -- Spawn the entities and set up the spawn points
     hook.Add("InitPostEntity", "SpawnEntities", function()
-        -- Load the nodes from the file
-        if file.Exists("nodes.txt", "DATA") then
-            local str = file.Read("nodes.txt", "DATA")
+        -- Load the nodes from the file, named after the current map
+        if file.Exists(game.GetMap() .. "_nodes.txt", "DATA") then
+            local str = file.Read(game.GetMap() .. "_nodes.txt", "DATA")
             nodeLocations = util.JSONToTable(str)
 
             -- Repeat the entities to match the number of nodes
