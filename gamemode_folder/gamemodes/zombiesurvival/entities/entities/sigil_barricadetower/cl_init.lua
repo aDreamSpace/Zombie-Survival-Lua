@@ -30,14 +30,6 @@ function ENT:DrawTranslucent()
 	end
 end
 
-hook.Add("PreDrawHalos", "AddBlueHalo", function()
-	local ply = LocalPlayer()
-	for _, ent in pairs(ents.FindByClass("sigil_barricadetower")) do
-		if IsValid(ent) and ply:GetPos():Distance(ent:GetPos()) <= 100 then
-			halo.Add({ent}, Color(49, 245, 0), 1, 1, 2, true, true)
-		end
-	end
-end)
 
 ENT.NextUpdate = 0.5
 ENT.NextEmit = 0.5

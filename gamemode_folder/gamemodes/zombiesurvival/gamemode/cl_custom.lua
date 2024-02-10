@@ -1,4 +1,51 @@
 
+-- Sigil Material Viewer 
+
+    -- Load the sprite
+    local sigilSprite = Material("zombiesurvival/sigils/sigil.png") -- Change this to the path of your PNG file
+
+    -- Variable to control whether the nodes should be rendered
+    local renderNodes = false
+
+    -- Console command to toggle the rendering of the nodes
+    concommand.Add("sigil_rendernodes", function()
+        renderNodes = not renderNodes
+    end)
+
+    -- Hook to draw the sprite and the node platform
+    hook.Add("PostDrawOpaqueRenderables", "DrawSigilSprites", function()
+        -- Loop over all entities
+        for _, ent in ipairs(ents.GetAll()) do
+            -- Check if the entity is a sigil
+            if ent:GetClass() == "sigil_barricadetower" or ent:GetClass() == "sigil_medicaltower" or ent:GetClass() == "sigil_ammotower" then
+                -- Draw the sprite at the entity's position
+                render.SetMaterial(sigilSprite)
+                local pos = ent:GetPos() + Vector(0, 0, 50) -- Offset the position above the entity
+
+                -- Calculate the distance to the player
+                local distance = pos:Distance(EyePos())
+
+                -- Calculate the size of the sprite based on the distance
+                local size = math.Clamp(distance / 10, 16, 128) -- Adjust these values as needed
+
+                cam.Start3D(EyePos(), EyeAngles())
+                    cam.IgnoreZ(true)
+                    render.DrawSprite(pos, size, size, Color(255, 255, 255))
+                    cam.IgnoreZ(false)
+                cam.End3D()
+
+                -- Draw the node platform if renderNodes is true
+                if renderNodes then
+                    local nodePos = ent:GetPos()
+                    local nodeSize = Vector(25, 25, 1) -- Adjust this value as needed
+
+                    render.SetColorMaterial()
+                    render.DrawBox(nodePos, Angle(0, 0, 0), -nodeSize / 2, nodeSize / 2, Color(255, 0, 0, 100), true)
+                end
+            end
+        end
+    end)
+	
 --credit system
 
 local creditConVar = CreateClientConVar("zs_displaycredits", 1, true, false, "Displays credits if nonzero")
@@ -502,7 +549,7 @@ hook.Add("HUDPaint", "HealthHUDValidate", function()
 	surface.DrawTexturedRect(baseX - 5, baseY - 15, 300, 45)
 
 	-- draw the bottom-left part of the HUD; aka health and armor
-	draw.ShadowText(strHealth, cwhud24, baseX, baseY, MySelf.HUD_HealthTextColor, COLOR_PURPLE, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+	draw.ShadowText(strHealth, cwhud24, baseX, baseY, MySelf.HUD_HealthTextColor, COLOR_GREEN, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 	--draw.ShadowText("ARMOR: ", cwhud24, baseX, baseY + 60, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 	
 	local hp = MySelf:Health()

@@ -201,15 +201,6 @@ function ENT:RenderInfo(pos, ang, owner)
 	end
 end
 
-hook.Add("PreDrawHalos", "AddBlueHalo", function()
-	local ply = LocalPlayer()
-	for _, ent in pairs(ents.FindByClass("sigil_medicaltower")) do
-		if IsValid(ent) and ply:GetPos():Distance(ent:GetPos()) <= 100 then
-			halo.Add({ent}, Color(8, 0, 249), 1, 1, 2, true, true)
-		end
-	end
-end)
-
 
 function ENT:Draw()
 	self:DrawModel()

@@ -24,6 +24,9 @@ function ENT:Initialize()
 	self:SetSolid(SOLID_VPHYSICS)
 	self:SetMoveType(MOVETYPE_NONE)
 	self:SetUseType(SIMPLE_USE)
+	self.startTime = CurTime() -- The time when the entity was created
+    self.floatHeight = 10 -- The height of the floating animation
+    self.spinSpeed = 0.1 -- The speed of the spinning animation
 	self:SetCustomCollisionCheck(true)
 	self:CollisionRulesChanged()
 	self:SetCollisionGroup(COLLISION_GROUP_WORLD)
@@ -143,7 +146,23 @@ function ENT:Think()
 	fCT = CurTime()
 	bStatus = self:GetDispensing()
 	iStored = self:GetStoredMeds()
+	
+	local newPos = self:GetPos()
+    newPos.z = newPos.z + self.floatHeight * math.sin((CurTime() - self.startTime) * 2 * math.pi)
 
+    -- Calculate the new angle
+    local newAng = self:GetAngles()
+    newAng.y = newAng.y + self.spinSpeed * FrameTime()
+
+    -- Update the entity's position and angle
+    self:SetPos(newPos)
+    self:SetAngles(newAng)
+
+    -- This makes the next think function call after 0 seconds, making it think every frame
+    self:NextThink(CurTime())
+
+
+	
 	if self.WaitingTime < fCT and self.DispensingTime < fCT and !bStatus and iStored > 0 then
 		self:StartDispensing() --start dispensing makes this statement false and will go to the next one eventually
 		return
