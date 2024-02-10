@@ -1268,7 +1268,7 @@ function GM:RestartLua()
 	self.CachedHMs = nil
 	self.TheLastHuman = nil
 	self.LastBossZombieSpawned = nil
-	self.UseSigils = nil
+	self.UseSigils = nil -- we don't use this system, will be gutted
 
 	-- logic_pickups
 	self.MaxWeaponPickups = nil
