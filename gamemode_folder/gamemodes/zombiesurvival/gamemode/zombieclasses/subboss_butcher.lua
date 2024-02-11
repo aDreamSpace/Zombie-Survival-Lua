@@ -119,7 +119,7 @@ local render_SetMaterial = render.SetMaterial
 local render_DrawSprite = render.DrawSprite
 local angle_zero = angle_zero
 local LocalToWorld = LocalToWorld
-local matSkin = Material("models/zombie_fast/fast_zombie_sheet")
+
 local colGlow = Color(255, 0, 0)
 local matGlow = Material("sprites/glow04_noz")
 local vecEyeLeft = Vector(4, -4.6, -1)
@@ -130,11 +130,11 @@ function CLASS:PrePlayerDraw(pl)
 	render.ModelMaterialOverride(matSkin)
 end
 
-local matSmoke = Material("materials/effects/black_smoke.vmt") -- Add this line at the top with your other materials
+
 
 function CLASS:PostPlayerDraw(pl)
 	render.SetColorModulation(0, 0, 0)
-	render.ModelMaterialOverride(matSkin)
+
 
 	if pl == MySelf and not pl:ShouldDrawLocalPlayer() or pl.SpawnProtection then return end
 
@@ -146,15 +146,8 @@ function CLASS:PostPlayerDraw(pl)
 			render_DrawSprite(LocalToWorld(vecEyeLeft, angle_zero, pos, ang), 4, 4, colGlow)
 			render_DrawSprite(LocalToWorld(vecEyeRight, angle_zero, pos, ang), 4, 4, colGlow)
 
-			-- Add these lines to render the black smoke
-			render_SetMaterial(matSmoke)
-			render.StartBeam(2)
-			render.AddBeam(pos, 10, 0, color_white)
-			render.AddBeam(pos + Vector(0, 0, 50), 10, 1, color_white)
-			render.EndBeam()
+
 		end
 	end
 end
-
-local matSmoke = Material("materials/effects/black_smoke.vmt") -- Add this line at the top with your other materials
 

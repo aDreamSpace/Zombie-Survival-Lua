@@ -352,7 +352,7 @@ function MakepWorth()
 	local maxworth = GAMEMODE.StartingWorth
 	WorthRemaining = maxworth
 
-	local wid, hei = math.min(ScrW(), 850), ScrH() * 0.9
+	local wid, hei = math.min(ScrW(), 1050), ScrH() * 0.9
 
 	local frame = vgui.Create("DFrame")
 	pWorth = frame
@@ -604,86 +604,97 @@ vgui.Register("ItemAmountCounter", PANEL, "DLabel")
 PANEL = {}
 
 function PANEL:Init()
-	self:SetText("")
+    self:SetText("")
 
-	self:DockPadding(4, 4, 4, 4)
-	self:SetTall(88)
+    self:DockPadding(6, 6, 6, 6)
+    self:SetTall(132)  -- Increased button height to accommodate larger models and descriptions
 
-	local mdlframe = vgui.Create("DEXRoundedPanel", self)
-	mdlframe:SetWide(self:GetTall() - 8)
-	mdlframe:Dock(LEFT)
-	mdlframe:DockMargin(0, 0, 20, 0)
+    local mdlframe = vgui.Create("DEXRoundedPanel", self)
+    mdlframe:SetWide(self:GetTall() * 1.5)  -- Increased model panel width by 50%
+    mdlframe:SetTall(self:GetTall() * 1.5)  -- Increased model panel height by 50%
+    mdlframe:Dock(LEFT)
+    mdlframe:DockMargin(0, 0, 10, 0)
 
-	self.ModelPanel = vgui.Create("DModelPanel", mdlframe)
-	self.ModelPanel:Dock(FILL)
-	self.ModelPanel:DockPadding(0, 0, 0, 0)
-	self.ModelPanel:DockMargin(0, 0, 0, 0)
+    self.ModelPanel = vgui.Create("DModelPanel", mdlframe)
+    self.ModelPanel:Dock(FILL)
+    self.ModelPanel:DockPadding(0, 0, 0, 0)
+    self.ModelPanel:DockMargin(0, 0, 0, 0)
 
-	self.NameLabel = EasyLabel(self, "", "ZSHUDFontSmall")
-	self.NameLabel:SetContentAlignment(4)
-	self.NameLabel:Dock(FILL)
+    self.NameLabel = EasyLabel(self, "", "ZSHUDFontSmall")
+    self.NameLabel:SetContentAlignment(4)
+    self.NameLabel:Dock(TOP)
+    self.NameLabel:DockMargin(0, 0, 0, 4)
 
-	self.PriceLabel = EasyLabel(self, "", "ZSHUDFontTiny")
-	self.PriceLabel:SetWide(80)
-	self.PriceLabel:SetContentAlignment(6)
-	self.PriceLabel:Dock(RIGHT)
-	self.PriceLabel:DockMargin(8, 0, 4, 0)
+    self.DescriptionLabel = EasyLabel(self, "", "ZSHUDFontTiny")
+    self.DescriptionLabel:SetContentAlignment(7)
+    self.DescriptionLabel:SetSize(self:GetWide() - 20, 20)  -- Adjusted description label width to fit within the button
+    self.DescriptionLabel:SetWrap(true)  -- Enable text wrapping for long descriptions
+    self.DescriptionLabel:Dock(TOP)
+    self.DescriptionLabel:DockMargin(0, 0, 0, 4)
+    self.DescriptionLabel:SetAutoStretchVertical(true)  -- Allow the label to expand vertically for multiline text
+    self.DescriptionLabel:SetVisible(true)  -- Ensure the description label is visible
 
-	self.ItemCounter = vgui.Create("ItemAmountCounter", self)
+    self.PriceLabel = EasyLabel(self, "", "ZSHUDFontTiny")
+    self.PriceLabel:SetWide(80)
+    self.PriceLabel:SetContentAlignment(6)
+    self.PriceLabel:Dock(RIGHT)
+    self.PriceLabel:DockMargin(8, 0, 4, 0)
 
-	self:SetWorthID(nil)
+    self.ItemCounter = vgui.Create("ItemAmountCounter", self)
+
+    self:SetWorthID(nil)
 end
+
 
 function PANEL:SetWorthID(id, id2)
-	self.ID = id
-	
-	local tab = FindStartingItem(id)
+    self.ID = id
+    
+    local tab = FindStartingItem(id)
 
-	if not tab then
-		self.ModelPanel:SetVisible(false)
-		self.ItemCounter:SetVisible(false)
-		self.NameLabel:SetText("")
-		return
-	end
+    if not tab then
+        self.ModelPanel:SetVisible(false)
+        self.ItemCounter:SetVisible(false)
+        self.NameLabel:SetText("")
+        self.DescriptionLabel:SetText("")  -- Clear description
+        return
+    end
 
-	local mdl = tab.Model or (weapons.GetStored(tab.SWEP) or tab).WorldModel
-	if mdl then
-		self.ModelPanel:SetModel(mdl)
-		local mins, maxs = self.ModelPanel.Entity:GetRenderBounds()
-		self.ModelPanel:SetCamPos(mins:Distance(maxs) * Vector(0.75, 0.75, 0.5))
-		self.ModelPanel:SetLookAt((mins + maxs) / 2)
-		self.ModelPanel:SetVisible(true)
-	else
-		self.ModelPanel:SetVisible(false)
-	end
+    local mdl = tab.Model or (weapons.GetStored(tab.SWEP) or tab).WorldModel
+    if mdl then
+        self.ModelPanel:SetModel(mdl)
+        local mins, maxs = self.ModelPanel.Entity:GetRenderBounds()
+        self.ModelPanel:SetCamPos(mins:Distance(maxs) * Vector(0.75, 0.75, 0.5))
+        self.ModelPanel:SetLookAt((mins + maxs) / 2)
+        self.ModelPanel:SetVisible(true)
+    else
+        self.ModelPanel:SetVisible(false)
+    end
 
-	if tab.SWEP or tab.Countables then
-		self.ItemCounter:SetItemID(id2 or id) --id2 is passed as a number, if thats not there use the original id
-		self.ItemCounter:SetVisible(true)
-	else
-		self.ItemCounter:SetVisible(false)
-	end
+    if tab.SWEP or tab.Countables then
+        self.ItemCounter:SetItemID(id2 or id)
+        self.ItemCounter:SetVisible(true)
+    else
+        self.ItemCounter:SetVisible(false)
+    end
 
-	if tab.Worth then
-		self.PriceLabel:SetText(tostring(tab.Worth).." Worth")
-	else
-		self.PriceLabel:SetText("")
-	end
+    if tab.Worth then
+        self.PriceLabel:SetText(tostring(tab.Worth).." Worth")
+    else
+        self.PriceLabel:SetText("")
+    end
 
-	self:SetTooltip(tab.Description)
+    self.NameLabel:SetText(tab.Name or "")
+    self.DescriptionLabel:SetText(tab.Description or "")  -- Set description text
 
-	if tab.NoClassicMode and GAMEMODE:IsClassicMode() or tab.NoZombieEscape and GAMEMODE.ZombieEscape then
-		self:SetAlpha(120)
-	else
-		self:SetAlpha(255)
-	end
-
-	self.NameLabel:SetText(tab.Name or "")
+    if tab.NoClassicMode and GAMEMODE:IsClassicMode() or tab.NoZombieEscape and GAMEMODE.ZombieEscape then
+        self:SetAlpha(120)
+    else
+        self:SetAlpha(255)
+    end
 end
 
-
-
 PANEL.Paint = paint
+
 
 
 function PANEL:DoClick(silent, force)

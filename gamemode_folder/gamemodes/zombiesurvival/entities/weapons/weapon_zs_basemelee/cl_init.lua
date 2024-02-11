@@ -48,6 +48,30 @@ function SWEP:DrawWorldModel()
 	self:Anim_DrawWorldModel()
 end
 
+hook.Add("HUDPaint", "DrawMeleeCooldownBar", function()
+    local ply = LocalPlayer()
+
+    -- Check if the player is using a melee weapon
+    local wep = ply:GetActiveWeapon()
+    if IsValid(wep) and wep:IsWeapon() and wep:GetClass() == "weapon_zs_melee" then
+        local nextAttackTime = wep:GetNextPrimaryFire()
+        local cooldown = nextAttackTime - CurTime()
+
+        if cooldown > 0 then
+            local x, y = ScrW() / 2, ScrH() / 2 + 30
+            local width, height = 200, 20
+            local padding = 10
+
+            -- Draw the background
+            draw.RoundedBox(8, x - width / 2, y + padding, width, height, Color(0, 0, 0, 150))
+
+            -- Draw the cooldown bar
+            local progress = math.Clamp(cooldown / wep.Primary.Delay, 0, 1)
+            draw.RoundedBox(8, x - width / 2, y + padding, width * progress, height, Color(255, 0, 0, 255))
+        end
+    end
+end)
+
 local ghostlerp = 0
 function SWEP:GetViewModelPosition(pos, ang)
 	if self:IsSwinging() then

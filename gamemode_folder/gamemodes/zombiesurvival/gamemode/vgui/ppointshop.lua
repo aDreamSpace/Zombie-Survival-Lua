@@ -79,75 +79,96 @@ end
 local function purchasedDoClick()
 end
 
+local categoriesToShowStats = {
+    ITEMCAT_GUNS,
+    ITEMCAT_PISTOL,
+    ITEMCAT_SMG,
+    ITEMCAT_AR,
+    ITEMCAT_SHOTGUN,
+    ITEMCAT_RIFLE,
+    ITEMCAT_BR,
+    ITEMCAT_MG,
+    ITEMCAT_MELEE,
+    ITEMCAT_VANILLA,
+    ITEMCAT_VMELEE,
+    ITEMCAT_PULSE
+}
+
 local function ItemPanelThink(self)
-	local itemtab = FindItem(self.ID)
-	if itemtab then
-		local newstate = MySelf:GetPoints() >= math.ceil((itemtab.Worth) * (GAMEMODE.m_PointsShop.m_LastNearArsenalCrate and GAMEMODE.ArsenalCrateMultiplier or 1)) and not (itemtab.NoClassicMode and GAMEMODE:IsClassicMode())
-		if newstate ~= self.m_LastAbleToBuy then
-			self.m_LastAbleToBuy = newstate
-			if newstate then
-				self:AlphaTo(255, 0.75, 0)
-				self.m_NameLabel:SetTextColor(COLOR_WHITE)
-				self.m_NameLabel:InvalidateLayout()
-				self.m_BuyButton:SetImage("zombiesurvival/cwui/buy.png")
+    local itemtab = FindItem(self.ID)
+    if itemtab then
+        local newstate = MySelf:GetPoints() >= math.ceil((itemtab.Worth) * (GAMEMODE.m_PointsShop.m_LastNearArsenalCrate and GAMEMODE.ArsenalCrateMultiplier or 1)) and not (itemtab.NoClassicMode and GAMEMODE:IsClassicMode())
+        if newstate ~= self.m_LastAbleToBuy then
+            self.m_LastAbleToBuy = newstate
+            if newstate then
+                self:AlphaTo(255, 0.75, 0)
+                self.m_NameLabel:SetTextColor(COLOR_WHITE)
+                self.m_NameLabel:InvalidateLayout()
+                self.m_BuyButton:SetImage("zombiesurvival/cwui/buy.png")
+            else
+                self:AlphaTo(90, 0.75, 0)
+                self.m_NameLabel:SetTextColor(COLOR_RED)
+                self.m_NameLabel:InvalidateLayout()
+                self.m_BuyButton:SetImage("zombiesurvival/cwui/nobuy.png")
+            end
+        end
 
-			else
-				self:AlphaTo(90, 0.75, 0)
-				self.m_NameLabel:SetTextColor(COLOR_RED)
-				self.m_NameLabel:InvalidateLayout()
-				self.m_BuyButton:SetImage("zombiesurvival/cwui/nobuy.png")
+        -- Calculate space needed for description
+        local descHeight = 0
+        if itemtab.Description then
+            local descLines = {}
+            local maxLineLength = 40 -- Maximum characters per line
+            for _, line in ipairs(string.Explode("\n", itemtab.Description)) do
+                while #line > maxLineLength do
+                    table.insert(descLines, line:sub(1, maxLineLength))
+                    line = line:sub(maxLineLength + 1)
+                end
+                table.insert(descLines, line)
+            end
+            descHeight = #descLines * 16 -- Assuming each line takes 16 pixels of height
+            itemtab.Description = table.concat(descLines, "\n")
+        end
 
-			end
-		end
-		self.m_BuyButton:SizeToContents()
-	else
-		local newstate = MySelf:GetPoints() >= math.ceil((self.cost) * (GAMEMODE.m_PointsShop.m_LastNearArsenalCrate and GAMEMODE.ArsenalCrateMultiplier or 1))
-		local selfstate = MySelf.CWAttachments[self.ID] ~= nil
-		if newstate ~= self.m_LastAbleToBuy or selfstate ~= self.m_NewAttachments then
-			self.m_LastAbleToBuy = newstate
-			self.m_NewAttachments = selfstate
-			
-			if MySelf.CWAttachments[self.ID] then
-				self:AlphaTo(90, 0.75, 0)
-				self.m_NameLabel:SetTextColor(COLOR_GREEN)
-				self.m_NameLabel:SetText(self.m_NameLabel:GetText().." (acquired)")
-				self.m_NameLabel:SizeToContents()
-				self.m_NameLabel:InvalidateLayout()
-				self.m_BuyButton:SetImage("icon16/tick.png")
-				self.m_BuyButton.DoClick = purchasedDoClick
-			elseif newstate then
-				self:AlphaTo(255, 0.75, 0)
-				self.m_NameLabel:SetTextColor(COLOR_WHITE)
-				self.m_NameLabel:InvalidateLayout()
-				self.m_BuyButton:SetImage("zombiesurvival/cwui/buy.png")
+        -- Increase item panel size by 40%
+        local originalHeight = 125
+        local increasedHeight = originalHeight * 1.4
+        self:SetTall(increasedHeight + descHeight)
 
-			elseif !newstate then
-				self:AlphaTo(90, 0.75, 0)
-				self.m_NameLabel:SetTextColor(COLOR_RED)
-				self.m_NameLabel:InvalidateLayout()
-				self.m_BuyButton:SetImage("zombiesurvival/cwui/nobuy.png")
+        -- Create or update description label if not already set
+        if not self.m_DescriptionLabel then
+            self.m_DescriptionLabel = EasyLabel(self, "", "ZSHUDFontTiny", COLOR_WHITE)
+            -- Set default position if not configured
+            self.m_DescriptionLabel:SetPos(500, 150) -- Adjust position as needed
+        end
 
-			end
+        -- Set description text if it hasn't been set yet
+        if itemtab.Description and self.m_DescriptionLabel:GetText() ~= itemtab.Description then
+            self.m_DescriptionLabel:SetText(itemtab.Description)
+            self.m_DescriptionLabel:SizeToContents()
+        end
 
-			self.m_BuyButton:SizeToContents()
-		end
+        -- Allow customization of the description label position
+        if self.DescriptionLabelPosition then
+            self.m_DescriptionLabel:SetPos(self.DescriptionLabelPosition.x, self.DescriptionLabelPosition.y)
+        end
 
-	end
-	local prevPrice
-	if !GAMEMODE.GetWaveActive() then
-		prevPrice = self.m_PriceLabel
-		local prevPosx, prevPosy = prevPrice:GetPos()
-		local newPosx = prevPosx - 20
-		self.m_PriceLabel:SetText(tostring(math.ceil((self.cost) * GAMEMODE.ArsenalCrateMultiplier)).." Points ("..GAMEMODE.ArsenalCrateDiscountPercentage.."% off!)")
-		self.m_PriceLabel:SizeToContents()
-		self.m_PriceLabel:SetPos(self:GetWide() - 20 - self.m_PriceLabel:GetWide(), 4)
-	else
-		if prevPrice then
-			self.m_PriceLabel = prevPrice
-		end
-	end
-	
+        -- Create or update model panel if not already set
+        if not self.m_ModelPanel then
+            self.m_ModelPanel = vgui.Create("DModelPanel", self)
+            self.m_ModelPanel:SetSize(128, 128)
+            self.m_ModelPanel:SetPos(150, 50) -- Adjust position as needed
+        end
+
+        -- Set model if it hasn't been set yet
+        if self.m_ModelPanel:GetModel() ~= itemtab.Model then
+            self.m_ModelPanel:SetModel(itemtab.Model) -- Assuming itemtab.Model contains the model path
+        end
+    end
 end
+
+
+
+
 
 local function PointsShopThink(self)
 	if GAMEMODE:GetWave() ~= self.m_LastWaveWarning and not GAMEMODE:GetWaveActive() and CurTime() >= GAMEMODE:GetWaveStart() - 10 and CurTime() > (self.m_LastWaveWarningTime or 0) + 11 then
@@ -224,7 +245,7 @@ function GM:OpenPointsShop()
 		return
 	end
 
-	local wid, hei = math.min(ScrW(), 780), ScrH() * 0.85
+	local wid, hei = math.min(ScrW(), 1050), ScrH() * 0.85
 
 	local frame = vgui.Create("DFrame")
 	frame:SetSize(wid, hei)
@@ -442,23 +463,6 @@ function GM:OpenPointsShop()
 						button.DoClick = PurchaseDoClick
 						itempan.m_BuyButton = button
 
-						if tab.description then
-							local desc = false
-							local fixtring = ""
-							for k, infotbl in pairs(tab.description) do
-								if infotbl.t then
-									fixstring = infotbl.t.."\n"
-								end
-							
-							if not desc then
-									desc = fixstring
-								else
-									desc = desc..fixstring
-								end	
-							end
-							itempan:SetTooltip(desc)
-						end
-
 						if tab.NoClassicMode and isclassic or tab.NoZombieEscape and GAMEMODE.ZombieEscape then
 							itempan:SetAlpha(120)
 						end
@@ -515,20 +519,19 @@ function GM:OpenPointsShop()
 
 			for i, tab in ipairs(GAMEMODE.Items) do
 				if tab.Category == catid and tab.PointShop and catid ~= ITEMCAT_ATT then
-
 					local itempan = vgui.Create("DPanel")
 					itempan:SetSize(list:GetWide(), 125)
 					itempan.ID = tab.Signature or i
 					itempan.Think = ItemPanelThink
 					itempan.cost = tab.price or tab.Worth
 					list:AddItem(itempan)
-
+			
 					local mdlframe = vgui.Create("DPanel", itempan)
 					mdlframe:SetSize(128, 128)
 					mdlframe:SetPos(350, 4)
-
+			
 					local weptab = weapons.GetStored(tab.SWEP) or tab
-					local mdl = tab.Model  or weptab.WorldModel
+					local mdl = tab.Model or weptab.WorldModel
 					if mdl then
 						local mdlpanel = vgui.Create("DModelPanel", mdlframe)
 						mdlpanel:SetSize(mdlframe:GetSize())
@@ -537,31 +540,29 @@ function GM:OpenPointsShop()
 						mdlpanel:SetCamPos(mins:Distance(maxs) * Vector(0.75, 0.75, 0.5))
 						mdlpanel:SetLookAt((mins + maxs) / 3)
 					end
-
+			
 					if tab.SWEP or tab.Countables then
 						local counter = vgui.Create("ItemAmountCounter", itempan)
 						counter:SetItemID(i)
 					end
-
+			
 					local name = tab.Name or ""
 					local namelab = EasyLabel(itempan, name, "ZSHUDFontSmall", COLOR_WHITE)
 					namelab:SetPos(22, itempan:GetTall() * 0.5 - namelab:GetTall() * 0.5)
 					itempan.m_NameLabel = namelab
-
+			
 					local pricelab = EasyLabel(itempan, tostring(tab.Worth).." Points", "ZSHUDFontSmallest")
-					
-					pricelab:SetPos(itempan:GetWide() - 140 - pricelab:GetWide(), 4) -- Change Buy Location Button
-					itempan.m_PriceLabel = pricelab
-
+					pricelab:SetPos(22, itempan:GetTall() - pricelab:GetTall() - 2)
+			
 					local button = vgui.Create("DImageButton", itempan)
 					button:SetImage("icon16/lorry_add.png")
 					button:SizeToContents()
-					button:SetPos(itempan:GetWide() - 80 - button:GetWide(), itempan:GetTall() - 95) -- Change No Buy Location Button 
+					button:SetPos(itempan:GetWide() - 80 - button:GetWide(), itempan:GetTall() - 95)
 					button:SetTooltip("Purchase "..name)
 					button.ID = itempan.ID
 					button.DoClick = PurchaseDoClick
 					itempan.m_BuyButton = button
-
+			
 					if weptab and weptab.Primary then
 						local ammotype = weptab.Primary.Ammo
 						if ammonames[ammotype] then
@@ -575,16 +576,13 @@ function GM:OpenPointsShop()
 							ammobutton.DoClick = BuyAmmoDoClick
 						end
 					end
-
-					if tab.Description then
-						itempan:SetTooltip(tab.Description)
-					end
-
+			
 					if tab.NoClassicMode and isclassic or tab.NoZombieEscape and GAMEMODE.ZombieEscape then
 						itempan:SetAlpha(120)
 					end
 				end
 			end
+			
 		end
 	end
 	if activetab then

@@ -173,14 +173,37 @@ function SWEP:MeleeHitWorld(trace)
 end
 
 function SWEP:MeleeHit(ent, trace, damage, forcescale)
-	if ent:IsPlayer() then
-		self:MeleeHitPlayer(ent, trace, damage, forcescale)
-	else
-		self:MeleeHitEntity(ent, trace, damage, forcescale)
-	end
-
-	self:ApplyMeleeDamage(ent, trace, damage)
+    if ent:IsPlayer() then
+        if not self:IsTeammate(ent) then
+            self:MeleeHitPlayer(ent, trace, damage, forcescale)
+            self:ApplyMeleeDamage(ent, trace, damage)
+        end
+    else
+        self:MeleeHitEntity(ent, trace, damage, forcescale)
+        self:ApplyMeleeDamage(ent, trace, damage)
+    end
 end
+
+function SWEP:IsTeammate(ent)
+    if not IsValid(self.Owner) or not self.Owner:IsPlayer() then return false end
+    if not IsValid(ent) or not ent:IsPlayer() then return false end
+    if self.Owner:Team() == ent:Team() then
+        return true
+    end
+    return false
+end
+
+
+function SWEP:MeleeHitPlayer(ent, trace, damage, forcescale)
+    if ent:IsPlayer() and ent:Team() == TEAM_UNDEAD then
+        return -- Do not apply damage if the target is a zombie
+    end
+    
+    ent:ThrowFromPositionSetZ(self.Owner:GetPos(), damage * 2.5 * (forcescale or self.MeleeForceScale))
+    local nearest = ent:NearestPoint(trace.StartPos)
+    util.Blood(nearest, math.Rand(damage * 0.5, damage * 0.75), (nearest - trace.StartPos):GetNormalized(), math.Rand(damage * 5, damage * 10), true)
+end
+
 
 function SWEP:MeleeHitEntity(ent, trace, damage, forcescale)
 	local phys = ent:GetPhysicsObject()

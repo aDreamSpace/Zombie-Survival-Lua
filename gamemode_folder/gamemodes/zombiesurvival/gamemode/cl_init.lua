@@ -19,6 +19,7 @@ include("cl_postprocess.lua")
 include("cl_custom.lua")
 include("cl_voice.lua")
 include("cl_voicesets.lua")
+include("cl_core.lua")
 
 include("vgui/dgamestate.lua")
 include("vgui/dteamcounter.lua")

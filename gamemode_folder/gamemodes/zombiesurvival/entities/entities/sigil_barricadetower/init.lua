@@ -3,18 +3,6 @@ AddCSLuaFile("cl_init.lua")
 
 include("shared.lua")
 
---[[
-local function RefreshConstructorOwners(pl)
-	for _, ent in pairs(ents.GetAll()) do
-		if ent.IsConstructor and ent:IsValid() and ent:GetObjectOwner() == pl then
-			ent:SetObjectOwner(NULL)
-		end
-	end
-end
-hook.Add("PlayerDisconnected", "Constructor.PlayerDisconnected", RefreshConstructorOwners)
-hook.Add("OnPlayerChangedTeam", "Constructor.OnPlayerChangedTeam", RefreshConstructorOwners)
-]]
-
 function ENT:Initialize()
 	self:SetModel("models/props_c17/gravestone_cross001a.mdl")
 	self:SetModelScale(0.5)

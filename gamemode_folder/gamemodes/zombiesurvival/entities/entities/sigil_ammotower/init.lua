@@ -37,24 +37,23 @@ local ammoTable = {
 }
 
 function ENT:Think()
-	if (self.Destroyed) then
-		local pos = self:LocalToWorld(self:OBBCenter())
-	
-		local eff = EffectData()
-		eff:SetOrigin(pos)
-		util.Effect("Explosion", eff)
-		self:Remove()
-	else
-		if (!self.ns or CurTime() >= self.ns) then
-			self.ns = CurTime() + 45 -- Reset the timer for ammo regeneration
-			for _, ply in pairs (player.GetAll()) do
-				if (ply:GetPos():Distance(self:GetPos()) <= 200 and ply:Team() == TEAM_HUMAN) then -- Check if player is within 200 units and is human
-					for ammoType, ammoAmount in pairs(ammoTable) do
-						ply:GiveAmmo(ammoAmount, ammoType) -- Give ammo of each type in the ammo table
-					end
-				end
-			end
-		end
-	end
-end
+    if (self.Destroyed) then
+        local pos = self:LocalToWorld(self:OBBCenter())
 
+        local eff = EffectData()
+        eff:SetOrigin(pos)
+        util.Effect("Explosion", eff)
+        self:Remove()
+    else
+        if (!self.ns or RealTime() >= self.ns) then
+            self.ns = RealTime() + 45 -- Reset the timer for ammo regeneration
+            for _, ply in pairs (player.GetAll()) do
+                if (ply:GetPos():Distance(self:GetPos()) <= 200 and ply:Team() == TEAM_HUMAN) then -- Check if player is within 200 units and is human
+                    for ammoType, ammoAmount in pairs(ammoTable) do
+                        ply:GiveAmmo(ammoAmount, ammoType) -- Give ammo of each type in the ammo table
+                    end
+                end
+            end
+        end
+    end
+end

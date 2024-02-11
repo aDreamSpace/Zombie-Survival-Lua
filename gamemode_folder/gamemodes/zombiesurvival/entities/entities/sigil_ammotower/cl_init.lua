@@ -3,35 +3,39 @@ include("shared.lua")
 ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 
 function ENT:DrawTranslucent()
-	local h = MySelf:Team() == TEAM_HUMAN
-	self:DrawModel()
-	
-	if (h) then
-		if not self.ns then self.ns = CurTime() + 45 end -- Initialize ns if it's nil
+    local h = MySelf:Team() == TEAM_HUMAN
+    self:DrawModel()
 
-		local dist = self:GetPos():DistToSqr(MySelf:GetPos())
-		if dist > 500*500 then return end -- Don't render if more than 500 units away
+    if (h) then
+        if not self.ns then self.ns = CurTime() + 45 end -- Initialize ns if it's nil
 
-		local hpfrac = self:GetObjectHealth() / self:GetMaxObjectHealth()
-		local nextRegen = math.max(0, self.ns - CurTime()) -- Time until next ammo regeneration
-	
-		local pos = self:GetPos() + Vector(0, 0, 40) -- Adjust this as needed
-		local ang = (MySelf:GetPos() - pos):Angle()
-		ang:RotateAroundAxis(ang:Right(), -90)
-		ang:RotateAroundAxis(ang:Up(), 90)
-		
-		cam.Start3D2D(pos, ang, 0.05)
-			cam.IgnoreZ(true) -- Ignore the Z-buffer
-			draw.SimpleText("Ammo Sigil", "ZS3D2DFont2", 0, -10, COLOR_ORANGE, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-	
-			draw.RoundedBox(math.min(hpfrac * 542.5, 8), -275, 105, math.Round(542.5 * hpfrac), 40, Color(255 - 255 * hpfrac, 255 * hpfrac, 0))
-			draw.SimpleText("Health: " .. math.Round(hpfrac * 100) .. "%", "ZS3D2DFont2Small", -135, 85, COLOR_PURPLE, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-			draw.SimpleText("Regenerates ammo to nearby users", "ZS3D2DFont2Smaller", 0, 200, COLOR_GREEN, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-			draw.SimpleText("10% discount off ammo in the pointshop", "ZS3D2DFont2Smaller", 0, 240, COLOR_GREEN, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-			draw.SimpleText("Next ammo regen in: " .. math.Round(nextRegen) .. "s", "ZS3D2DFont2Smaller", 0, 280, COLOR_WHITE, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-			cam.IgnoreZ(false) -- Stop ignoring the Z-buffer
-		cam.End3D2D()
-	end
+        local dist = self:GetPos():DistToSqr(MySelf:GetPos())
+        if dist > 500*500 then return end -- Don't render if more than 500 units away
+
+        local hpfrac = self:GetObjectHealth() / self:GetMaxObjectHealth()
+        local nextRegen = math.max(0, self.ns - CurTime()) -- Time until next ammo regeneration
+
+        if nextRegen == 0 then
+            self.ns = CurTime() + 45 -- Reset the timer
+        end
+
+        local pos = self:GetPos() + Vector(0, 0, 40) -- Adjust this as needed
+        local ang = (MySelf:GetPos() - pos):Angle()
+        ang:RotateAroundAxis(ang:Right(), -90)
+        ang:RotateAroundAxis(ang:Up(), 90)
+
+        cam.Start3D2D(pos, ang, 0.05)
+            cam.IgnoreZ(true) -- Ignore the Z-buffer
+            draw.SimpleText("Ammo Sigil", "ZS3D2DFont2", 0, -10, COLOR_ORANGE, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+
+            draw.RoundedBox(math.min(hpfrac * 542.5, 8), -275, 105, math.Round(542.5 * hpfrac), 40, Color(255 - 255 * hpfrac, 255 * hpfrac, 0))
+            draw.SimpleText("Health: " .. math.Round(hpfrac * 100) .. "%", "ZS3D2DFont2Small", -135, 85, COLOR_PURPLE, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.SimpleText("Regenerates ammo to nearby users", "ZS3D2DFont2Smaller", 0, 200, COLOR_GREEN, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.SimpleText("10% discount off ammo in the pointshop", "ZS3D2DFont2Smaller", 0, 240, COLOR_GREEN, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.SimpleText("Next ammo regen in: " .. math.Round(nextRegen) .. "s", "ZS3D2DFont2Smaller", 0, 280, COLOR_CYAN, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            cam.IgnoreZ(false) -- Stop ignoring the Z-buffer
+        cam.End3D2D()
+    end
 end
 
 
