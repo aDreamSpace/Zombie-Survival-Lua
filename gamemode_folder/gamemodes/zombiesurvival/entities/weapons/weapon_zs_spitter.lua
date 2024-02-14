@@ -6,13 +6,13 @@ if CLIENT then
 	SWEP.PrintName = "Puker"
 end
 
-SWEP.Primary.Delay = 1.1
+SWEP.Primary.Delay = 2.5
 SWEP.Secondary.Delay = 8 --For this, I don't know what to do here... I won't touch this.
 
 SWEP.ViewModel = "models/weapons/v_crowbar.mdl"
 SWEP.WorldModel = "models/weapons/w_crowbar.mdl"
 
-SWEP.PukeAmt = 5
+SWEP.PukeAmt = 2
 SWEP.PukeAmtFocus = 10
 SWEP.NextPuke = 0
 SWEP.PukeLeft = 0

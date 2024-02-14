@@ -31,7 +31,7 @@ function ENT:DrawTranslucent()
             draw.RoundedBox(math.min(hpfrac * 542.5, 8), -275, 105, math.Round(542.5 * hpfrac), 40, Color(255 - 255 * hpfrac, 255 * hpfrac, 0))
             draw.SimpleText("Health: " .. math.Round(hpfrac * 100) .. "%", "ZS3D2DFont2Small", -135, 85, COLOR_PURPLE, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
             draw.SimpleText("Regenerates ammo to nearby users", "ZS3D2DFont2Smaller", 0, 200, COLOR_GREEN, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-            draw.SimpleText("10% discount off ammo in the pointshop", "ZS3D2DFont2Smaller", 0, 240, COLOR_GREEN, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.SimpleText("19% discount off pointshop", "ZS3D2DFont2Smaller", 0, 240, COLOR_GREEN, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
             draw.SimpleText("Next ammo regen in: " .. math.Round(nextRegen) .. "s", "ZS3D2DFont2Smaller", 0, 280, COLOR_CYAN, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
             cam.IgnoreZ(false) -- Stop ignoring the Z-buffer
         cam.End3D2D()

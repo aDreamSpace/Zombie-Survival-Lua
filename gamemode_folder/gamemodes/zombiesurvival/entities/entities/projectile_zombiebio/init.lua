@@ -47,8 +47,14 @@ function ENT:PhysicsCollide(data, phys)
         if hitphys:IsValid() and hitphys:IsMoveable() then
             self:SetParent(hitent)
         end
+
+        -- Check if the hit entity is a player and not of a specific team (e.g., TEAM_ZOMBIE or TEAM_HUMAN)
+        if hitent:IsPlayer() and hitent:Team() ~= TEAM_ZOMBIE and hitent:Team() ~= TEAM_HUMAN then
+            return -- Do not apply collision logic to players not on specific teams
+        end
     end
 end
+
 
 
 function ENT:StartTouch(ent)

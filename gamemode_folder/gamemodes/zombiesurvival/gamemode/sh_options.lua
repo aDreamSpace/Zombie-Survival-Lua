@@ -311,7 +311,7 @@ GM:AddStartingItem("2sgcp", "36 shotgun shells", nil, ITEMCAT_AMMO, 15, nil, fun
 GM:AddStartingItem("2smgcp", "150 SMG rounds", nil, ITEMCAT_AMMO, 15, nil, function(pl) pl:GiveAmmo((GAMEMODE.AmmoCache["smg1"] or 50) * 3, "smg1", true) end, "models/Items/BoxMRounds.mdl")
 GM:AddStartingItem("2arcp", "120 assault rifle rounds", nil, ITEMCAT_AMMO, 15, nil, function(pl) pl:GiveAmmo((GAMEMODE.AmmoCache["ar2"] or 40) * 3, "ar2", true) end, "models/props/pickup/ammo_armag.mdl")
 GM:AddStartingItem("2rcp", "24 rifle cartridges", nil, ITEMCAT_AMMO, 15, nil, function(pl) pl:GiveAmmo((GAMEMODE.AmmoCache["357"] or 8) * 3, "357", true) end, "models/props/pickup/ammo_riflebox.mdl")
-GM:AddStartingItem("2pls", "90 pulse charges", nil, ITEMCAT_AMMO, 15, nil, function(pl) pl:GiveAmmo((GAMEMODE.AmmoCache["pulse"] or 30) * 3, "pulse", true) end, "models/Items/combine_rifle_ammo01.mdl")
+GM:AddStartingItem("2pls", "90 pulse charges", nil, ITEMCAT_AMMO, 7, nil, function(pl) pl:GiveAmmo((GAMEMODE.AmmoCache["pulse"] or 30) * 3, "pulse", true) end, "models/Items/combine_rifle_ammo01.mdl")
 GM:AddStartingItem("2br", "45 battle rifle cartridges", nil, ITEMCAT_AMMO, 15, nil, function(pl) pl:GiveAmmo((GAMEMODE.AmmoCache["gravity"] or 15) * 3, "gravity", true) end, "models/props/pickup/ammo_brifle.mdl")
 GM:AddStartingItem("2mg", "225 machine gun rounds", nil, ITEMCAT_AMMO, 15, nil, function(pl) pl:GiveAmmo((GAMEMODE.AmmoCache["alyxgun"] or 75) * 3, "alyxgun", true) end, "models/props/pickup/ammo_lmg.mdl")
 GM:AddStartingItem("3pcp", "120 pistol rounds", nil, ITEMCAT_AMMO, 20, nil, function(pl) pl:GiveAmmo((GAMEMODE.AmmoCache["pistol"] or 24) * 5, "pistol", true) end, "models/Items/BoxSRounds.mdl")
@@ -319,7 +319,7 @@ GM:AddStartingItem("3sgcp", "60 shotgun shells", nil, ITEMCAT_AMMO, 20, nil, fun
 GM:AddStartingItem("3smgcp", "250 SMG rounds", nil, ITEMCAT_AMMO, 20, nil, function(pl) pl:GiveAmmo((GAMEMODE.AmmoCache["smg1"] or 50) * 5, "smg1", true) end, "models/Items/BoxMRounds.mdl")
 GM:AddStartingItem("3arcp", "200 assault rifle rounds", nil, ITEMCAT_AMMO, 20, nil, function(pl) pl:GiveAmmo((GAMEMODE.AmmoCache["ar2"] or 40) * 5, "ar2", true) end, "models/props/pickup/ammo_armag.mdl")
 GM:AddStartingItem("3rcp", "40 rifle cartridges", nil, ITEMCAT_AMMO, 20, nil, function(pl) pl:GiveAmmo((GAMEMODE.AmmoCache["357"] or 8) * 5, "357", true) end, "models/props/pickup/ammo_riflebox.mdl")
-GM:AddStartingItem("3pls", "150 pulse charges", nil, ITEMCAT_AMMO, 20, nil, function(pl) pl:GiveAmmo((GAMEMODE.AmmoCache["pulse"] or 30) * 5, "pulse", true) end, "models/Items/combine_rifle_ammo01.mdl")
+GM:AddStartingItem("3pls", "150 pulse charges", nil, ITEMCAT_AMMO, 14, nil, function(pl) pl:GiveAmmo((GAMEMODE.AmmoCache["pulse"] or 30) * 5, "pulse", true) end, "models/Items/combine_rifle_ammo01.mdl")
 GM:AddStartingItem("3br", "75 battle rifle cartridges", nil, ITEMCAT_AMMO, 20, nil, function(pl) pl:GiveAmmo((GAMEMODE.AmmoCache["gravity"] or 15) * 5, "gravity", true) end, "models/props/pickup/ammo_brifle.mdl")
 GM:AddStartingItem("3mg", "375 machine gun rounds", nil, ITEMCAT_AMMO, 20, nil, function(pl) pl:GiveAmmo((GAMEMODE.AmmoCache["alyxgun"] or 75) * 5, "alyxgun", true) end, "models/props/pickup/ammo_lmg.mdl")
 
@@ -686,7 +686,7 @@ GM:AddPointShopItem("3shotgunammo", "36 shotgun shells", nil, ITEMCAT_AMMO, 18, 
 GM:AddPointShopItem("3smgammo", "150 SMG rounds", nil, ITEMCAT_AMMO, 18, nil, function(pl) pl:GiveAmmo((GAMEMODE.AmmoCache["smg1"] or 50) * 3, "smg1", true) end, "models/Items/BoxMRounds.mdl")
 GM:AddPointShopItem("3assaultrifleammo", "120 assault rifle rounds", nil, ITEMCAT_AMMO, 18, nil, function(pl) pl:GiveAmmo((GAMEMODE.AmmoCache["ar2"] or 40) * 3, "ar2", true) end, "models/props/pickup/ammo_armag.mdl")
 GM:AddPointShopItem("3rifleammo", "24 rifle cartridges", nil, ITEMCAT_AMMO, 18, nil, function(pl) pl:GiveAmmo((GAMEMODE.AmmoCache["357"] or 8) * 3, "357", true) end, "models/props/pickup/ammo_riflebox.mdl")
-GM:AddPointShopItem("3pulseammo", "90 pulse charges", nil, ITEMCAT_AMMO, 30, nil, function(pl) pl:GiveAmmo((GAMEMODE.AmmoCache["pulse"] or 30) * 3, "pulse", true) end, "models/Items/combine_rifle_ammo01.mdl")
+GM:AddPointShopItem("3pulseammo", "90 pulse charges", nil, ITEMCAT_AMMO, 14, nil, function(pl) pl:GiveAmmo((GAMEMODE.AmmoCache["pulse"] or 30) * 3, "pulse", true) end, "models/Items/combine_rifle_ammo01.mdl")
 GM:AddPointShopItem("3mgammo", "225 machine gun rounds", nil, ITEMCAT_AMMO, 18, nil, function(pl) pl:GiveAmmo((GAMEMODE.AmmoCache["alyxgun"] or 75) * 3, "alyxgun", true) end, "models/props/pickup/ammo_lmg.mdl")
 GM:AddPointShopItem("40mm", "1 40MM M203-Ready Grenade", nil, ITEMCAT_AMMO, 30, nil, function(pl) pl:GiveAmmo(1, "40MM", true) end, "models/items/ar2_grenade.mdl")
 GM:AddPointShopItem("rpg", "1 Rocket Propelled Grenade", nil, ITEMCAT_AMMO, 30, nil, function(pl) pl:GiveAmmo(1, "rpg_round", true) end, "models/items/ar2_grenade.mdl") --end,  "models/weapons/w_missle.mdl")
@@ -935,7 +935,7 @@ GM.TimeAddedPerWave = 30
 GM.TimeAddedPerWaveClassic = 10
 
 -- New players are put on the zombie team if the current wave is this or higher. Do not put it lower than 1 or you'll break the game.
-GM.NoNewHumansWave = 3
+GM.NoNewHumansWave = 5
 
 -- Humans can not commit suicide if the current wave is this or lower.
 GM.NoSuicideWave = 0

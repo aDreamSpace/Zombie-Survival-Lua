@@ -15,7 +15,7 @@ function ENT:Initialize()
     self:SetCollisionGroup(COLLISION_GROUP_WORLD)
     self:SetMaxObjectHealth(2000)
     self:SetObjectHealth(self:GetMaxObjectHealth())
-
+    self:SetPos(self:GetPos() - Vector(0,0,-30))
     local phys = self:GetPhysicsObject()
     if IsValid(phys) then
         phys:EnableMotion(false)

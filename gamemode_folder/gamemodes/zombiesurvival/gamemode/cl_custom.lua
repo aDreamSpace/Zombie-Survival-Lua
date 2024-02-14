@@ -1532,6 +1532,7 @@ local strParticle = "⬤"
 local colParticle = COLOR_PURPLE
 function AddSnowToPanel(panel, max)
 end	
+--[[
 --purpose: simply hook to notify players of things, such as LH music availablity
 hook.Add("PlayerBindPress", "Notify", function(ply, bind, pressed)
 	--query for the lhmusic
@@ -1542,6 +1543,7 @@ hook.Add("PlayerBindPress", "Notify", function(ply, bind, pressed)
 
 	hook.Remove("PlayerBindPress", "Notify") --remove our hook once it's been called so it's only done once
 end)
+]]
 
 --purpose: persistant multicore through the f4 menu
 --this is achieved through a pretty hacky method but w/e

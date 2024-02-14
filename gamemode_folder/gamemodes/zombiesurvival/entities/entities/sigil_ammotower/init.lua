@@ -57,3 +57,18 @@ function ENT:Think()
         end
     end
 end
+
+hook.Add("PlayerSpawn", "AmmoSigilDiscount", function(ply)
+    -- Check if the player is a human and alive
+    if ply:Team() == TEAM_HUMAN and ply:Alive() then
+        local discountPercentage = GAMEMODE.ArsenalCrateDiscountPercentage or 0 -- Default to 0 if not set
+        -- Iterate through all entities to find nearby ammo sigils
+        for _, ent in ipairs(ents.FindByClass("sigil_ammotower")) do
+            if ply:GetPos():Distance(ent:GetPos()) <= 200 then -- Adjust the distance as needed
+                -- Suppress the arsenal upgrade message with the adjusted discount percentage
+                GAMEMODE:SuppressArsenalUpgrades(discountPercentage)
+                break
+            end
+        end
+    end
+end)

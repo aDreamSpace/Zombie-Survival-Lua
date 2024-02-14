@@ -8,10 +8,13 @@ ENT.BuildsThisTick = 0
 
 function ENT:Initialize()
 	self:SetModel("models/props_wasteland/antlionhill.mdl")
-	-- Set up collision bounds properly to allow spawning on surfaces
-	self:PhysicsInit(SOLID_VPHYSICS)
 	self:SetMoveType(MOVETYPE_NONE)
 	self:SetSolid(SOLID_VPHYSICS)
+
+	-- Set up proper collision bounds to allow spawning on surfaces
+	local min, max = Vector(-20, -20, 0), Vector(20, 20, 40)
+	self:SetCollisionBounds(min, max)
+	self:SetCollisionGroup(COLLISION_GROUP_WORLD)
 
 	local phys = self:GetPhysicsObject()
 	if phys:IsValid() then

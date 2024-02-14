@@ -392,29 +392,15 @@ local CShouldNotCollide = r.Player.ShouldNotCollide
 local CIsPlayer = r.Entity.IsPlayer
 local CIsFlagSet = r.Entity.IsFlagSet
 
-local collisionCache = {}
 
 function GM:ShouldCollide(enta, entb)
-    -- Check the cache first
-    local cacheKey = enta:EntIndex() .. "_" .. entb:EntIndex()
-    if collisionCache[cacheKey] ~= nil then
-        return collisionCache[cacheKey]
-    end
-
-    local shouldCollide = true
-
-    -- Perform the expensive checks and store the result in the cache
     if CIsFlagSet(enta, FL_CLIENT) and CShouldNotCollide(enta, entb) or CIsFlagSet(entb, FL_CLIENT) and CShouldNotCollide(entb, enta) or 
     enta.ShouldNotCollide and enta:ShouldNotCollide(entb) or entb.ShouldNotCollide and entb:ShouldNotCollide(enta) then
-        shouldCollide = false
+        return false
     end
 
-    collisionCache[cacheKey] = shouldCollide
-
-    return shouldCollide
+    return true
 end
-
-
 
 
 

@@ -5,6 +5,7 @@ ENT.NoNails = true
 
 function ENT:SetupDataTables()
     self:NetworkVar("Int", 0, "AmmoAmount")
+    self:NetworkVar("String", 0, "WeaponType")
 end
 
 function ENT:SetAmmoAmount(amount)
@@ -14,6 +15,11 @@ function ENT:SetAmmoAmount(amount)
 end
 
 function ENT:SetWeaponType(class)
+    if class == nil then
+        print("Warning: Attempting to set weapon type with nil class.")
+        return
+    end
+    
     local weptab = weapons.GetStored(class)
     if weptab then
         if weptab.WorldModel then
@@ -35,9 +41,11 @@ function ENT:SetWeaponType(class)
         if weptab.ModelScale then
             self:SetModelScale(weptab.ModelScale, 0)
         end
+        
+        self:SetWeaponType(class)
+    else
+        print("Warning: Unable to get weapon information for class '" .. tostring(class) .. "'.")
     end
-
-    self:SetDTString(0, class)
 end
 
 function ENT:GetWeaponType()
