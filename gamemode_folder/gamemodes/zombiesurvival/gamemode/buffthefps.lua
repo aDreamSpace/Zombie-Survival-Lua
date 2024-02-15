@@ -95,38 +95,39 @@ local ch
 local strNL = "\n"
 local strT = "\t"
 local strEmpty = ""
-local function draw_DrawText(text, font, x, y, colour, xalign )
-	curX = x
-	curY = y
-	
-	surface_SetFont(font)
-	lineHeight = draw_GetFontHeight(font)
-	
-	for i=1, #text do
-		ch = string_sub(text, i, i)
-		if ch == strNL then
-			if #curString > 0 then
-				draw_SimpleText(curString, font, curX, curY, colour, xalign)
-			end
-			
-			curY = curY + lineHeight / 2
-			curX = x
-			curString = ""
-		elseif ch == strT then
-			if #curString > 0 then
-				draw_SimpleText(curString, font, curX, curY, colour, xalign)
-			end
-			local tmpSizeX,tmpSizeY =  surface_GetTextSize(curString)
-			curX = math_ceil( (curX + tmpSizeX) / 50 ) * 50
-			curString = ""
-		else
-			curString = curString .. ch
-		end
-	end	
-	if #curString > 0 then
-		draw_SimpleText(curString, font, curX, curY, colour, xalign)
-	end
+local function draw_DrawText(text, font, x, y, colour, xalign, yalign)
+    surface_SetFont(font)
+    local lineHeight = draw_GetFontHeight(font)
+    local curX = x
+    local curY = y
+    local curString = ""
+
+    for i = 1, #text do
+        local ch = string_sub(text, i, i)
+        if ch == "\n" then
+            if #curString > 0 then
+                draw_SimpleText(curString, font, curX, curY, colour, xalign, yalign)
+            end
+            curY = curY + lineHeight
+            curX = x
+            curString = ""
+        elseif ch == "\t" then
+            if #curString > 0 then
+                draw_SimpleText(curString, font, curX, curY, colour, xalign, yalign)
+            end
+            local tmpSizeX, tmpSizeY = surface_GetTextSize(curString)
+            curX = math_ceil((curX + tmpSizeX) / 50) * 50
+            curString = ""
+        else
+            curString = curString .. ch
+        end
+    end
+
+    if #curString > 0 then
+        draw_SimpleText(curString, font, curX, curY, colour, xalign, yalign)
+    end
 end
+
 
 local function draw_RoundedBox(bordersize, x, y, w, h, color)
 	surface_SetDrawColor(color)

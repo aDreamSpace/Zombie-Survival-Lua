@@ -79,25 +79,25 @@ DEFAULT_MASS = 80
 DEFAULT_MODELSCALE = 1
 
 -- Humans can not carry OR drag anything heavier than this (in kg.)
-CARRY_MAXIMUM_MASS = 1000--350
+CARRY_MAXIMUM_MASS = 1500--350
 -- Humans can not carry anything with a volume more than this (OBBMins():Length() + OBBMaxs():Length()).
-CARRY_MAXIMUM_VOLUME = 1000--150
+CARRY_MAXIMUM_VOLUME = 1500--150
 -- Objects with more mass than this will be dragged instead of carried.
-CARRY_DRAG_MASS = 1500
+CARRY_DRAG_MASS = 9000
 -- Anything bigger than this is dragged regardless of mass.
-CARRY_DRAG_VOLUME = 500
+CARRY_DRAG_VOLUME = 999999
 -- Humans are slowed by this amount per kg carried...
-CARRY_SPEEDLOSS_PERKG = 0
+CARRY_SPEEDLOSS_PERKG = 4
 -- but can never be slower than this.
-CARRY_SPEEDLOSS_MINSPEED = 88
+CARRY_SPEEDLOSS_MINSPEED = 150
 
-GM.MaxLegDamage = 3
+GM.MaxLegDamage = 2
 
 GM.UtilityKey = IN_SPEED
 GM.MenuKey = IN_WALK -- I would use the spawn menu but it has no IN_ key assignment.
 
 -- Cost multiplier for being near an arsenal crate.
-GM.ArsenalCrateMultiplier = 0.8
+GM.ArsenalCrateMultiplier = 0.9
 GM.ArsenalCrateDiscount = 1 - GM.ArsenalCrateMultiplier
 GM.ArsenalCrateDiscountPercentage = GM.ArsenalCrateDiscount * 100
 

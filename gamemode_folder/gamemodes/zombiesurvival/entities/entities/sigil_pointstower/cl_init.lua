@@ -32,12 +32,10 @@ function ENT:DrawTranslucent()
             draw.SimpleText("Health: " .. math.Round(hpfrac * 100) .. "%", "ZS3D2DFont2Small", -135, 85, COLOR_PURPLE, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
             draw.SimpleText("Generates 5 points every 20 seconds", "ZS3D2DFont2Smaller", 0, 200, COLOR_GREEN, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
             draw.SimpleText("Next points in: " .. math.Round(nextPoints) .. "s", "ZS3D2DFont2Smaller", 0, 240, COLOR_CYAN, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.SimpleText("ON BREAK: All humans alive will lose 75% of their points!", "ZS3D2DFont2Smaller", 0, 280, COLOR_RED, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
             cam.IgnoreZ(false) -- Stop ignoring the Z-buffer
         cam.End3D2D()
 
-        if self.Destroyed then
-            draw.SimpleText("ON BREAK: All humans alive will lose 75% of their points!", "ZS3D2DFont2Smaller", 0, 280, COLOR_RED, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        end
     end
 
     self:DrawParticles()

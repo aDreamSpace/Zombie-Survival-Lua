@@ -1,0 +1,84 @@
+AddCSLuaFile("shared.lua")
+AddCSLuaFile("cl_init.lua")
+
+include("shared.lua")
+
+-- Configurable options
+ENT.HealAmount = 22
+ENT.HealRadius = 300
+ENT.HealDelay = 1 -- Heal/Damage every second
+ENT.DamageAmount = 1 -- Damage to humans
+
+-- Initialize function
+function ENT:Initialize()
+    self:SetModel("models/props_c17/gravestone_cross001a.mdl")
+    self:SetModelScale(0.5)
+    self:PhysicsInit(SOLID_VPHYSICS)
+    self:SetSolid(SOLID_VPHYSICS)
+    self:SetMoveType(MOVETYPE_NONE)
+    self:SetUseType(SIMPLE_USE)
+    self:SetCustomCollisionCheck(true)
+    self:CollisionRulesChanged()
+    self:SetCollisionGroup(COLLISION_GROUP_WORLD)
+    self:SetMaxObjectHealth(2000)
+    self:SetObjectHealth(self:GetMaxObjectHealth())
+
+    -- Initialize variables
+    self.NextHeal = CurTime()
+end
+
+-- Think function to handle healing and damaging logic
+function ENT:Think()
+    if CurTime() >= self.NextHeal then
+        local healed = false
+        local damaged = false
+
+        -- Find all nearby entities and heal zombies, damage humans
+        for _, ply in ipairs(ents.FindInSphere(self:GetPos(), self.HealRadius)) do
+            if ply:IsPlayer() then
+                if ply:Team() == TEAM_UNDEAD and ply:Health() < ply:GetMaxHealth() then
+                    ply:SetHealth(math.min(ply:Health() + self.HealAmount, ply:GetMaxHealth()))
+                    healed = true
+                elseif ply:Team() == TEAM_HUMAN then
+                    ply:SetHealth(math.max(ply:Health() - self.DamageAmount, 0))
+                    damaged = true
+                end
+            end
+        end
+
+        -- Emit healing sound if healing occurred
+        if healed then
+            self:EmitSound("npc/scanner/combat_scan1.wav", 60, 250)
+        end
+
+        self.NextHeal = CurTime() + self.HealDelay
+    end
+
+    self:NextThink(CurTime())
+    return true
+end
+
+-- Damage function to handle damage received by the entity
+function ENT:OnTakeDamage(damageInfo)
+    -- Check if the damage source is valid
+    local attacker = damageInfo:GetAttacker()
+    if not IsValid(attacker) then return end
+
+    -- Apply damage to the entity
+    local damage = damageInfo:GetDamage()
+    local currentHealth = self:GetObjectHealth()
+    self:SetObjectHealth(math.max(currentHealth - damage, 0))
+
+    -- Check if the entity's health is below the damage threshold
+    if self:GetObjectHealth() <= 0 then
+        self:Destroy() -- Call destroy function when health reaches 0
+    end
+end
+
+-- Destroy function to handle entity destruction
+function ENT:Destroy()
+    -- Add destruction effects or other actions here
+
+    -- Remove the entity
+    self:Remove()
+end
