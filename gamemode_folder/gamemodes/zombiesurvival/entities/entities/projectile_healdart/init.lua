@@ -23,6 +23,27 @@ function ENT:Initialize()
 end
 
 function ENT:Think()
+	-- Find the nearest player who is not at max health and not a zombie
+	local closestPlayer = nil
+	local closestDist = math.huge
+	for _, player in ipairs(player.GetAll()) do
+		if player:Health() < player:GetMaxHealth() and player:Team() ~= TEAM_UNDEAD then
+			local dist = player:GetPos():DistToSqr(self:GetPos())
+			if dist < closestDist then
+				closestPlayer = player
+				closestDist = dist
+			end
+		end
+	end
+
+	-- If such a player was found, apply a force to move towards them
+	local phys = self:GetPhysicsObject()
+	if closestPlayer and phys:IsValid() then
+		local direction = (closestPlayer:GetPos() - self:GetPos()):GetNormalized()
+		phys:ApplyForceCenter(direction * 500)  -- Adjust the force as needed
+	end
+
+	-- Existing code...
 	if self.PhysicsData then
 		self:Hit(self.PhysicsData.HitPos, self.PhysicsData.HitNormal, self.PhysicsData.HitEntity, self.PhysicsData.OurOldVelocity)
 	end

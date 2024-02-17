@@ -179,6 +179,13 @@ LANGUAGE.message_beacon_24							= "Zombies are coming. Build a barricade!"
 LANGUAGE.message_beacon_25							= "Plan B here"
 
 
+
+-- Extra Class names
+LANGUAGE.class_warlock							  = "Warlock Zombie"
+LANGUAGE.class_slapper							  = "Slapper"
+LANGUAGE.class_gregori							  = "Father Gregori"
+LANGUAGE.class_dreadnaut							  = "Dreadnaught"
+
 -- Class names
 LANGUAGE.class_zombie								  = "Zombie"
 LANGUAGE.class_poison_zombie					= "Poison Zombie"
@@ -280,6 +287,10 @@ LANGUAGE.description_bioblaster          = "A bionic Skeleton with a bio weapon.
 LANGUAGE.description_phantom             = "A creature that lurks within the shadows..."
 LANGUAGE.description_puker               = "A mutated poison spitting zombie, but very slow"
 LANGUAGE.description_antlion             = "A mutated antlion that has increased in size with more lethal damage."
+LANGUAGE.description_warlock							  = "Warlock Zombie can damage nearby nails on all props every 2 seconds for 40 damage."
+LANGUAGE.description_slapper							  = "Slapper is a giant zombie torso with powerful damage."
+LANGUAGE.description_gregori							  = "Father Gregori is a strong zombie with powers to heal nearby zombies"
+LANGUAGE.description_dreadnaut							  = "Anything it attacks gets smited with fire!"
 
 -- Class control schemes
 LANGUAGE.controls_zombie							= "> PRIMARY: Claws\n> SECONDARY: Scream\n> RELOAD: Moan\n> SPRINT: Feign death\n> ON FATAL HIT IN LEGS: Revive / Transform"
@@ -320,6 +331,10 @@ LANGUAGE.controls_bioblaster             = "> LEFT CLICK: Shoot Acid Orb"
 LANGUAGE.controls_phantom                = "> LEFT CLICK: Attack : SHIFT: To preay"
 LANGUAGE.controls_puker                  = "> LEFT CLICK: Puke"
 LANGUAGE.controls_antlion                = "> LEFT CLICK: Bite / Swipe"
+LANGUAGE.controls_warlock							  = "> LEFT CLICK: Bite / Swipe"
+LANGUAGE.controls_slapper							  = "> LEFT CLICK: Bite / Swipe"
+LANGUAGE.controls_gregori							  = "> LEFT CLICK: Bite / Swipe"
+LANGUAGE.controls_dreadnaut							  = "> LEFT CLICK: Bite / Swipe"
 
 -- The help file... Quite big! I wouldn't blame you if you didn't translate this part.
 LANGUAGE.help_cat_introduction						= "Introduction"

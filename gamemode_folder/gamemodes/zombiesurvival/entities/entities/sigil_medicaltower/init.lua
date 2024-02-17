@@ -29,8 +29,15 @@ if SERVER then
 
         self.NextHeal = CurTime()
     end
+end 
 
     function ENT:Think()
+        -- If the entity is destroyed, explode and stop thinking
+        if self.Destroyed then
+            self:Explode()
+            return
+        end
+
         if CurTime() >= self.NextHeal then
             local healed = false
 
@@ -51,4 +58,28 @@ if SERVER then
         self:NextThink(CurTime())
         return true
     end
+
+function ENT:OnTakeDamage(dmg)
+    local attacker = dmg:GetAttacker()
+    -- Only apply damage if the attacker is a player and on the TEAM_UNDEAD team
+    if attacker:IsPlayer() and attacker:Team() == TEAM_UNDEAD then
+        self:SetObjectHealth(self:GetObjectHealth() - dmg:GetDamage())
+        if self:GetObjectHealth() <= 0 then
+            self:Explode()
+        end
+    end
+end
+
+
+function ENT:Explode()
+    -- Apply blast damage
+    util.BlastDamage(self, self, self:GetPos(), 100, 100)  -- Adjust the radius and damage as needed
+
+    -- Create a visual explosion effect
+    local effectdata = EffectData()
+    effectdata:SetOrigin(self:GetPos())
+    util.Effect("Explosion", effectdata)
+
+    -- Remove the entity
+    self:Remove()
 end

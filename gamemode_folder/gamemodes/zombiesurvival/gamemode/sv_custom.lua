@@ -882,16 +882,18 @@ end)
 --lua knockback fix, doesnt work the entire time, zombies still somehow get frozen in some cases
 
 hook.Add("ScalePlayerDamage", "AntiKnockbackPre", function(ply, hitgroup, dmginfo)
-	if ply:IsValid() and ply:IsPlayer() and ply:Team() == TEAM_UNDEAD then
-		if GAMEMODE.ZombieClasses[ply:GetZombieClass()].Name == "Shade" then return end
-		if dmginfo:GetDamage() <= 0 then return end
-		local att = dmginfo:GetAttacker()
-		local wep = att:GetActiveWeapon()
-		if wep and wep:IsValid() and wep.CW20Weapon then
-			ply.PrevVel = ply:GetVelocity()
-			ply:SetMoveType(MOVETYPE_NONE) --HACK HACK, I really dont want to do this but there is no other way to reliably get rid of knockback
-		end
-	end
+    if ply:IsValid() and ply:IsPlayer() and ply:Team() == TEAM_UNDEAD then
+        if GAMEMODE.ZombieClasses[ply:GetZombieClass()].Name == "Shade" then return end
+        if dmginfo:GetDamage() <= 0 then return end
+        local att = dmginfo:GetAttacker()
+        if IsValid(att) and att:IsPlayer() then
+            local wep = att:GetActiveWeapon()
+            if IsValid(wep) and wep.CW20Weapon then
+                ply.PrevVel = ply:GetVelocity()
+                ply:SetMoveType(MOVETYPE_NONE) --HACK HACK, I really dont want to do this but there is no other way to reliably get rid of knockback
+            end
+        end
+    end
 end)
 
 hook.Add("PlayerHurt", "AntiKnockbackPost", function(ply, attacker, remainingHealth, takenHealth)
@@ -1137,8 +1139,7 @@ hook.Add("InitPostEntity", "Cleanup", function()
 	local iToDelete = 0
 	for _, v in pairs(ents.GetAll()) do
 		strClass = v:GetClass()
-		if strClass == "info_node" or string.StartWith(strClass, "aiscripted_")
-		or string.StartWith(strClass, "npc_") or string.StartWith(strClass, "point_sigil") then
+		if strClass ==  "point_sigil" then
 			iToDelete = iToDelete + 1
 			v:Remove()
 		end

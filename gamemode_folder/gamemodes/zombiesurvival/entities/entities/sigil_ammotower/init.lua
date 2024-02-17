@@ -58,3 +58,13 @@ function ENT:Think()
     end
 end
 
+function ENT:OnTakeDamage(dmg)
+    local attacker = dmg:GetAttacker()
+    -- Only apply damage if the attacker is a player and on the TEAM_UNDEAD team
+    if attacker:IsPlayer() and attacker:Team() == TEAM_UNDEAD then
+        self:SetObjectHealth(self:GetObjectHealth() - dmg:GetDamage())
+        if self:GetObjectHealth() <= 0 then
+            self.Destroyed = true
+        end
+    end
+end

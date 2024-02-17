@@ -12,7 +12,7 @@ D3bot.NodeBlocking = {
 D3bot.ValveNav = true 							-- Enable the auto-genernated nav-mesh. (Created with "nav_generate")
 D3bot.ValveNavOverride = false			-- Enable overriding the manually created nav-mesh with the auto-generated.
 
-D3bot.NodeDamageEnts = {"prop_*turret", "prop_arsenalcrate", "prop_resupply", "prop_constructor", "prop_medstation", "sigil_barricadetower", "sigil_medicaltower"}
+D3bot.NodeDamageEnts = {"prop_*turret", "prop_arsenalcrate", "prop_resupply", "prop_constructor", "prop_medstation", "sigil_*"}
 
 D3bot.LinkDeathCostRaise = 300
 D3bot.BotConsideringDeathCostAntichance = 3

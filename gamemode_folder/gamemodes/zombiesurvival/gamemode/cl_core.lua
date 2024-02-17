@@ -1,5 +1,7 @@
-// SIGIL CLIENT FRAME
+-- Client 
 local sigilSprite = Material("zombiesurvival/sigils/sigil.png") -- Change this to the path of your PNG file
+local evilSigilSprite = Material("zombiesurvival/sigils/sigilenemy.png") -- Sprite for evil sigils
+local npcSprite = Material("zombiesurvival/seethroughs/npcs.png") -- Sprite for NPCs
 
 -- Variable to control whether the nodes should be rendered
 local renderNodes = false
@@ -9,6 +11,10 @@ local sigilClasses = {
     "sigil_medicaltower",
     "sigil_ammotower",
     "sigil_pointstower"
+}
+
+local evilSigils = {
+    "zsigil_undead_haunted",
 }
 
 -- Console command to toggle the rendering of the nodes
@@ -22,11 +28,25 @@ local sigilLetters = {}
 hook.Add("PostDrawOpaqueRenderables", "DrawSigilSpritesAndHints", function()
     -- Loop over all entities
     for _, ent in ipairs(ents.GetAll()) do
-        -- Check if the entity is a sigil
-        if table.HasValue(sigilClasses, ent:GetClass()) then
+        local isSigil = table.HasValue(sigilClasses, ent:GetClass())
+        local isEvilSigil = table.HasValue(evilSigils, ent:GetClass())
+        local isNPC = ent:IsNPC()
+
+        -- Check if the entity is a sigil, an evil sigil, or an NPC
+        if isSigil or isEvilSigil or isNPC then
+            -- Choose the sprite based on the type of the entity
+            local sprite
+            if isEvilSigil then
+                sprite = evilSigilSprite
+            elseif isSigil then
+                sprite = sigilSprite
+            elseif isNPC then
+                sprite = npcSprite
+            end
+
             -- Draw the sprite at the entity's position
-            render.SetMaterial(sigilSprite)
-            local pos = ent:GetPos() + Vector(0, 0, 50) -- Offset the position above the entity
+            render.SetMaterial(sprite)
+            local pos = ent:GetPos() + Vector(0, 0, isNPC and 100 or 50) -- Offset the position above the entity
 
             -- Calculate the distance to the player
             local distance = pos:Distance(EyePos())
@@ -60,4 +80,3 @@ hook.Add("PostDrawOpaqueRenderables", "DrawSigilSpritesAndHints", function()
         end
     end
 end)
-

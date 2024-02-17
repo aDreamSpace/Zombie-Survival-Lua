@@ -251,7 +251,7 @@ function GM:OpenPointsShop()
 	frame:SetSize(wid, hei)
 	frame:Center()
 	frame:SetDeleteOnClose(true)
-	frame:SetTitle(" ")
+	frame:SetTitle("")
 	frame:SetDraggable(false)
 	if frame.btnClose and frame.btnClose:Valid() then frame.btnClose:SetVisible(false) end
 	if frame.btnMinim and frame.btnMinim:Valid() then frame.btnMinim:SetVisible(false) end
@@ -390,15 +390,13 @@ function GM:OpenPointsShop()
 					namelab:SetPos(10, itempan:GetTall() * 0.5 - namelab:GetTall() * 0.5)
 					itempan.m_NameLabel = namelab
 				end
-
 				for _, attname in pairs(tables.atts) do
 					local tab = attTab[attname]
 					if tab then
 						local placeholderPrice = 10
-						local placeholderModel = "models/items/battery.mdl" --placeholders in case attachments arent setup
+						local placeholderModel = "models/items/battery.mdl" --placeholders in case attachments aren't setup
 						local placeholderName = tab.name
 						local itempan = vgui.Create("DPanel")
-						itempan:SetSize(list:GetWide(), 125)
 						itempan.ID = tab.name
 						itempan.Think = ItemPanelThink
 						itempan.cost = tab.price or tab.Worth or placeholderPrice
@@ -406,8 +404,8 @@ function GM:OpenPointsShop()
 				
 						local mdlframe = vgui.Create("DPanel", itempan)
 						mdlframe:SetSize(128, 128)
-						mdlframe:SetPos(350, 4)
-
+						mdlframe:SetPos(550, 100)
+				
 						local mdl = tab.model or placeholderModel
 						if mdl then
 							local mdlpanel = vgui.Create("DModelPanel", mdlframe)
@@ -417,14 +415,21 @@ function GM:OpenPointsShop()
 							mdlpanel:SetCamPos(mins:Distance(maxs) * Vector(0.75, 0.75, 0.5))
 							mdlpanel:SetLookAt((mins + maxs) /2)
 						end
-			
+				
 						if tab.SWEP or tab.Countables then
 							local counter = vgui.Create("ItemAmountCounter", itempan)
 							counter:SetItemID(i)
 						end
 				
 						local name = tab.displayNameShort or placeholderName
-
+						if type(name) ~= "string" then
+							name = "Invalid name: " .. tostring(tab.displayNameShort)
+						end
+				
+						local namelab = EasyLabel(itempan, name, "ZSHUDFontSmall", COLOR_WHITE)
+						namelab:SetPos(42, itempan:GetTall() * 0.5 - namelab:GetTall() * 0.5)
+						itempan.m_NameLabel = namelab
+				
 						--dependency hell
 						local depStart = " (Dependencies: "
 						local depEnd = ")"
@@ -452,25 +457,42 @@ function GM:OpenPointsShop()
 								name = name..depEnd
 							end
 						end
-
+				
+						-- Create a label for the description
+						local description = tab.description or "No description available"
+						if type(description) == "table" then
+							local descText = {}
+							for _, desc in ipairs(description) do
+								if desc.t then
+									table.insert(descText, desc.t)
+								end
+							end
+							description = table.concat(descText, "\n")
+						elseif type(description) ~= "string" then
+							description = "Invalid description: " .. tostring(tab.description)
+						end
+						local desclab = EasyLabel(itempan, description, "ZSHUDFontSmallest", COLOR_WHITE)
+						desclab:SetPos(42, itempan:GetTall() * 0.5 - desclab:GetTall() * -0.5 + namelab:GetTall())
+						itempan.m_DescLabel = desclab
+				
+						-- Adjust the size of the panel to fit the text
+						local textHeight = desclab:GetTall()
+						itempan:SetSize(list:GetWide(), textHeight + 250)  -- Add 50 for padding
+				
 						local button = vgui.Create("DImageButton", itempan)
 						button:SetImage("icon16/lorry_add.png")
 						button:SizeToContents()
-						button:SetPos(itempan:GetWide() - 90 - button:GetWide(), itempan:GetTall() - 80)
+						button:SetPos(itempan:GetWide() - 90 - button:GetWide(), itempan:GetTall() - 150)
 						button:SetTooltip("Purchase "..name)
 						button.ID = itempan.ID
 						button.att = placeholderName
 						button.DoClick = PurchaseDoClick
 						itempan.m_BuyButton = button
-
+				
 						if tab.NoClassicMode and isclassic or tab.NoZombieEscape and GAMEMODE.ZombieEscape then
 							itempan:SetAlpha(120)
 						end
-
-						local namelab = EasyLabel(itempan, name, "ZSHUDFontSmall", COLOR_WHITE)
-						namelab:SetPos(42, itempan:GetTall() * 0.5 - namelab:GetTall() * 0.5)
-						itempan.m_NameLabel = namelab
-
+				
 						local pricelab = EasyLabel(itempan, tostring(tab.price or tab.cost or placeholderPrice).." Points", "ZSHUDFontSmallest", COLOR_GREEN)
 						pricelab:SetPos(itempan:GetWide() - 170 - pricelab:GetWide(), 5)
 						itempan.m_PriceLabel = pricelab
@@ -478,7 +500,7 @@ function GM:OpenPointsShop()
 				end
 			end
 		end
-		
+	
 		if hasitems then
 			local list = vgui.Create("DPanelList", propertysheet)
 			list:SetPaintBackground(false)
