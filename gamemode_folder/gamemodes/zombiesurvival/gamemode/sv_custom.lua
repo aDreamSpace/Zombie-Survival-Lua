@@ -1139,7 +1139,7 @@ hook.Add("InitPostEntity", "Cleanup", function()
 	local iToDelete = 0
 	for _, v in pairs(ents.GetAll()) do
 		strClass = v:GetClass()
-		if strClass ==  "point_sigil" then
+		if strClass ==  "point_sigil" or strClass == "npc_*" then
 			iToDelete = iToDelete + 1
 			v:Remove()
 		end

@@ -10,7 +10,8 @@ local sigilClasses = {
     "sigil_barricadetower",
     "sigil_medicaltower",
     "sigil_ammotower",
-    "sigil_pointstower"
+    "sigil_pointstower",
+    "sigil_pctower"
 }
 
 local evilSigils = {
@@ -34,49 +35,59 @@ hook.Add("PostDrawOpaqueRenderables", "DrawSigilSpritesAndHints", function()
 
         -- Check if the entity is a sigil, an evil sigil, or an NPC
         if isSigil or isEvilSigil or isNPC then
-            -- Choose the sprite based on the type of the entity
-            local sprite
-            if isEvilSigil then
-                sprite = evilSigilSprite
-            elseif isSigil then
-                sprite = sigilSprite
-            elseif isNPC then
-                sprite = npcSprite
-            end
+            -- Perform a trace from the player's eye position to the entity's position
+            local trace = util.TraceLine({
+                start = EyePos(),
+                endpos = ent:GetPos(),
+                filter = LocalPlayer() -- Ignore the local player
+            })
 
-            -- Draw the sprite at the entity's position
-            render.SetMaterial(sprite)
-            local pos = ent:GetPos() + Vector(0, 0, isNPC and 100 or 50) -- Offset the position above the entity
-
-            -- Calculate the distance to the player
-            local distance = pos:Distance(EyePos())
-
-            -- Calculate the size of the sprite based on the distance
-            local size = math.Clamp(distance / 10, 16, 128) -- Adjust these values as needed
-
-            cam.Start3D(EyePos(), EyeAngles())
-                cam.IgnoreZ(true)
-                render.DrawSprite(pos, size, size, Color(255, 255, 255))
-
-                -- Draw the world hint
-                local hintPos = ent:GetPos() + Vector(0, 0, 70) -- Offset the position above the entity
-                local hintText = sigilLetters[ent:GetClass()] or "Unknown"
-                surface.SetFont("ZSHUDFontSmall")
-                local textWidth, textHeight = surface.GetTextSize(hintText)
-                local textX = hintPos:ToScreen().x - textWidth / 2
-                local textY = hintPos:ToScreen().y - textHeight / 2
-                draw.DrawText(hintText, "ZSHUDFontSmall", textX, textY, Color(255, 255, 255), TEXT_ALIGN_LEFT)
-
-                -- Draw the node platform if renderNodes is true
-                if renderNodes then
-                    local nodePos = ent:GetPos()
-                    local nodeSize = Vector(25, 25, 1) -- Adjust this value as needed
-
-                    render.SetColorMaterial()
-                    render.DrawBox(nodePos, Angle(0, 0, 0), -nodeSize / 2, nodeSize / 2, Color(255, 0, 0, 100), true)
+            -- Check if the trace hit the entity
+            if trace.Entity == ent then
+                -- Choose the sprite based on the type of the entity
+                local sprite
+                if isEvilSigil then
+                    sprite = evilSigilSprite
+                elseif isSigil then
+                    sprite = sigilSprite
+                elseif isNPC then
+                    sprite = npcSprite
                 end
-                cam.IgnoreZ(false)
-            cam.End3D()
+
+                -- Draw the sprite at the entity's position
+                render.SetMaterial(sprite)
+                local pos = ent:GetPos() + Vector(0, 0, isNPC and 100 or 50) -- Offset the position above the entity
+
+                -- Calculate the distance to the player
+                local distance = pos:Distance(EyePos())
+
+                -- Calculate the size of the sprite based on the distance
+                local size = math.Clamp(distance / 10, 16, 128) -- Adjust these values as needed
+
+                cam.Start3D(EyePos(), EyeAngles())
+                    cam.IgnoreZ(true)
+                    render.DrawSprite(pos, size, size, Color(255, 255, 255))
+
+                    -- Draw the world hint
+                    local hintPos = ent:GetPos() + Vector(0, 0, 70) -- Offset the position above the entity
+                    local hintText = sigilLetters[ent:GetClass()] or "Unknown"
+                    surface.SetFont("ZSHUDFontSmall")
+                    local textWidth, textHeight = surface.GetTextSize(hintText)
+                    local textX = hintPos:ToScreen().x - textWidth / 2
+                    local textY = hintPos:ToScreen().y - textHeight / 2
+                    draw.DrawText(hintText, "ZSHUDFontSmall", textX, textY, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+
+                    -- Draw the node platform if renderNodes is true
+                    if renderNodes then
+                        local nodePos = ent:GetPos()
+                        local nodeSize = Vector(25, 25, 1) -- Adjust this value as needed
+
+                        render.SetColorMaterial()
+                        render.DrawBox(nodePos, Angle(0, 0, 0), -nodeSize / 2, nodeSize / 2, Color(255, 0, 0, 100), true)
+                    end
+                    cam.IgnoreZ(false)
+                cam.End3D()
+            end
         end
     end
 end)

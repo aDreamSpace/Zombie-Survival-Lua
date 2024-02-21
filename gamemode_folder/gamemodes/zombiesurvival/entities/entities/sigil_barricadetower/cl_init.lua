@@ -41,7 +41,7 @@ function ENT:Think()
 	local matGlow = Material("sprites/light_glow02_add")
 	local cDraw = Color(255, 255, 255)
 	local cDrawWhite = Color(255, 255, 255)
-	self:EmitSound("ambient/atmosphere/tunnel1.wav", 80, 80)
+	self:EmitSound("ambient/atmosphere/tunnel1.wav", 40, math.random(180, 200))
 		self:RemoveAllDecals()
 		
 		local curtime = CurTime()

@@ -1,12 +1,12 @@
 CLASS.Name = "Warlock Zombie"
-CLASS.TranslationName = "class_warlockzombie"
-CLASS.Description = "description_warlockzombie"
-CLASS.Help = "controls_warlockzombie"
+CLASS.TranslationName = "class_warlock"
+CLASS.Description = "description_warlock"
+CLASS.Help = "controls_warlock"
 
 CLASS.Wave = 3 / 5
 
 CLASS.Health = 750
-CLASS.Speed = 102
+CLASS.Speed = 121
 --CLASS.JumpPower = 225
 --CLASS.Mass = DEFAULT_MASS * 2
 
@@ -204,9 +204,7 @@ end
 
 if CLIENT then
 CLASS.Icon = "materials/zombiesurvival/killicons2/bloatedzombie.png"
-end
 CLASS.IconColor = COLOR_ORANGE
-
 local render_SetMaterial = render.SetMaterial
 local render_DrawSprite = render.DrawSprite
 local angle_zero = angle_zero
@@ -235,30 +233,7 @@ function CLASS:PostPlayerDraw(pl)
 			render_DrawSprite(LocalToWorld(vecEyeLeft, angle_zero, pos, ang), 4, 4, colGlow)
 			render_DrawSprite(LocalToWorld(vecEyeRight, angle_zero, pos, ang), 4, 4, colGlow)
 			
+			end
 		end
 	end
-end
-
-
-if SERVER then
-    -- Define a timer that periodically damages nearby humans
-    timer.Create("DamageHumans", 1, 0, function()
-        -- Loop over all players
-        for _, warlock in pairs(player.GetAll()) do
-            -- Check if the player is a "Warlock Zombie" and is alive
-            if warlock:IsZombie() and warlock:Alive() and warlock:GetZombieClassTable().Name == "Warlock Zombie" then
-                -- Loop over all players again
-                for _, pl in pairs(player.GetAll()) do
-                    -- Check if the player is a human and is alive
-                    if pl:Alive() and pl:Team() == TEAM_HUMAN then
-                        -- Check if the player is near the "Warlock Zombie"
-                        if warlock:GetPos():Distance(pl:GetPos()) <= 8000 then
-                            -- Damage the player
-                            pl:TakeDamage(2, warlock, warlock)
-                        end
-                    end
-                end
-            end
-        end
-    end)
-end
+end 

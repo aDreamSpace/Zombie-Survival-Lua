@@ -25,24 +25,29 @@ function ENT:Initialize()
 end
 
 function ENT:PhysicsCollide(data, phys)
-	if self.Done then return end
-	self.Done = true
+    if self.Done then return end
+    self.Done = true
 
-	self:Fire("kill", "", 0.4)
+    -- Check if the entity is about to change collision rules
+    if self.ShouldChangeCollisionRules then
+        -- Prevent the entity from changing collision rules
+        return
+    end
 
-	phys:EnableMotion(false)
---	self:EmitSound("physics/metal/sawblade_stick"..math.random(3)..".wav")
+    self:Fire("kill", "", 0.4)
 
-	self:SetPos(data.HitPos)
-	self:SetAngles(data.HitNormal:Angle())
+    phys:EnableMotion(false)
 
-	local hitent = data.HitEntity
-	if hitent and hitent:IsValid() then
-		local hitphys = hitent:GetPhysicsObject()
-		if hitphys:IsValid() and hitphys:IsMoveable() then
-			self:SetParent(hitent)
-		end
-	end
+    self:SetPos(data.HitPos)
+    self:SetAngles(data.HitNormal:Angle())
+
+    local hitent = data.HitEntity
+    if hitent and hitent:IsValid() then
+        local hitphys = hitent:GetPhysicsObject()
+        if hitphys:IsValid() and hitphys:IsMoveable() then
+            self:SetParent(hitent)
+        end
+    end
 end
 
 function ENT:StartTouch(ent)

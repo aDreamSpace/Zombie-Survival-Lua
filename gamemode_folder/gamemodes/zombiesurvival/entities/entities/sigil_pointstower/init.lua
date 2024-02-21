@@ -37,7 +37,7 @@ function ENT:Think()
             self.NextPoints = CurTime() + 20 -- Reset the timer for points generation
             for _, ply in pairs(player.GetAll()) do
                 if ply:Team() == TEAM_HUMAN and ply:Alive() and ply:GetPos():Distance(self:GetPos()) <= 200 then
-                    ply:AddPoints(5) -- Give 5 points to nearby living humans
+                    ply:AddPoints(10) -- Give 5 points to nearby living humans
                 end
             end
         end

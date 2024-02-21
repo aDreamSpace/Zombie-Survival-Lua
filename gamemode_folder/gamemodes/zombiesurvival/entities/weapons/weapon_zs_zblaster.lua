@@ -1,87 +1,118 @@
 AddCSLuaFile()
 
-SWEP.Base = "weapon_zs_zombie"
 
 if CLIENT then
-	SWEP.PrintName = "Puke Pus"
+	SWEP.PrintName = "Bio Blaster"
+
 end
 
-SWEP.Primary.Delay = 3.5
-SWEP.Secondary.Delay = 8 --For this, I don't know what to do here... I won't touch this.
+SWEP.Base = "weapon_zs_base"
 
+SWEP.HoldType = "shotgun"
+SWEP.Primary.Automatic = true 
 SWEP.ViewModel = "models/weapons/v_crowbar.mdl"
 SWEP.WorldModel = "models/weapons/w_crowbar.mdl"
+SWEP.UseHands = true
+SWEP.ShowViewModel = false 
+SWEP.ShowWorldModel = false 
+SWEP.CSMuzzleFlashes = false
 
-SWEP.PukeAmt = 25
-SWEP.PukeAmtFocus = 20
-SWEP.NextPuke = 0
-SWEP.PukeLeft = 0
+SWEP.ReloadSound = Sound("") 
+SWEP.Primary.Damage = 6
+SWEP.Primary.Delay = 0.21
+
+SWEP.Primary.ClipSize = 999999
+SWEP.Primary.DefaultClip = 999999
+SWEP.Primary.Ammo = ""
+SWEP.RequiredClip = 0
+
+SWEP.WalkSpeed = SPEED_NORMAL
+
+SWEP.NoMagazine = true
+
+SWEP.ConeMax = 0
+SWEP.ConeMin = 0
+
+SWEP.IronSightsPos = Vector(1.95, 3, 2.75)
+SWEP.IronSightsAng = Vector(-0.15, -1, 2)
+
+SWEP.Primary.Cooldown = 3 -- Cooldown duration in seconds
+SWEP.Primary.BulletsBeforeCooldown = 10 -- Number of bullets before cooldown
 
 function SWEP:Initialize()
-	self:HideViewAndWorldModel()
-
-	self.BaseClass.Initialize(self)
+    self.BaseClass.Initialize(self)
+    self.BulletsFired = 0 -- Initialize bullets fired counter
 end
 
 function SWEP:PrimaryAttack()
-	if CurTime() < self:GetNextPrimaryFire() then return end
-	self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
-	self:SetNextSecondaryFire(CurTime() + self.Primary.Delay)
+    if not self:CanPrimaryAttack() then return end
 
-	self.PukeLeft = self.PukeAmt
-	self.Focused = false
+    self:EmitFireSound()
+    self:ShootBullets(self.Primary.Damage, self.Primary.NumShots, self:GetCone())
+    self.IdleAnimation = CurTime() + self:SequenceDuration()
 
+    self.BulletsFired = self.BulletsFired or 0 -- Ensure BulletsFired is initialized
+    self.BulletsFired = self.BulletsFired + 1 -- Increment bullets fired counter
 
+    if self.BulletsFired >= self.Primary.BulletsBeforeCooldown then
+        self:SetNextPrimaryFire(CurTime() + self.Primary.Cooldown)
+        self.BulletsFired = 0 -- Reset bullets fired counter
+    else
+        self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
+    end
 end
 
-function SWEP:SecondaryAttack()
-	if CurTime() < self:GetNextSecondaryFire() then return end
-	self:SetNextSecondaryFire(CurTime() + self.Secondary.Delay)
-	if CurTime() < self:GetNextPrimaryFire() then return end
-	self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
+function SWEP:ShootBullets(dmg, numbul, cone)
+    local bullet = {}
+    bullet.Num = numbul
+    bullet.Src = self.Owner:GetShootPos()
+    bullet.Dir = self.Owner:GetAimVector()
+    bullet.Spread = Vector(cone, cone, 0)
+    bullet.Tracer = 0
+    bullet.TracerName = ""
+    bullet.Force = 10
+    bullet.Damage = dmg
+    bullet.ForceMaterial = "" -- Add this line
+    bullet.Callback = function(attacker, tr, dmginfo)
+        self.BulletCallback(attacker, tr, dmginfo)
+    end
 
-	self.PukeLeft = self.PukeAmtFocus
-	self.Focused = true
+    self.Owner:FireBullets(bullet)
 
+    self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
+    self.Owner:MuzzleFlash()
+    self.Owner:SetAnimation(PLAYER_ATTACK1)
 
+    if not self.Primary.Automatic then
+        self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
+    end
 end
 
-function SWEP:Reload()
-end
-
-if not SERVER then return end
-
-function SWEP:Think()
-	local pl = self.Owner
-
-	if self.PukeLeft > 0 and CurTime() >= self.NextPuke then
-		self.PukeLeft = self.PukeLeft - 1
-		local ent = ents.Create("projectile_zbioblaster")
-		if ent:IsValid() then
-			ent:SetPos(pl:EyePos())
-			ent:SetOwner(pl)
-			ent:SetPhysicsAttacker(pl)
-			ent:Spawn()
-
-			local phys = ent:GetPhysicsObject()
-			if phys:IsValid() then
-				local ang = pl:EyeAngles()
-				if not self.Focused then
-					ang:RotateAroundAxis(ang:Forward(), math.Rand(-30, 30))
-					ang:RotateAroundAxis(ang:Up(), math.Rand(-30, 30))
-				elseif self.Focused then
-					if self.PukeLeft == 1 then
-						self.Focused = false
-					end
-					ang:RotateAroundAxis(ang:Forward(), math.Rand(-4, 4))
-					ang:RotateAroundAxis(ang:Up(), math.Rand(-4, 4))
-				end
-
-				phys:SetVelocityInstantaneous(ang:Forward() * math.Rand(600, 1000))
-			end
-		end
+function SWEP.BulletCallback(attacker, tr, dmginfo)
+	local ent = tr.Entity
+	if ent:IsValid() and ent:IsPlayer() and ent:Team() == TEAM_UNDEAD then
+		ent:AddLegDamage(8)
 	end
+	
+	local e = EffectData()
+		e:SetOrigin(tr.HitPos)
+		e:SetNormal(tr.HitNormal)
+		e:SetRadius(8)
+		e:SetMagnitude(1)
+		e:SetScale(1)
+	util.Effect("bioblaster", e)
 
-	self:NextThink(CurTime())
-	return true
+	GenericBulletCallback(attacker, tr, dmginfo)
+end
+
+function SWEP:EmitFireSound()
+	self:EmitSound("npc/barnacle/barnacle_die2.wav")
+	self:EmitSound("npc/barnacle/barnacle_digesting1.wav")
+	self:EmitSound("npc/barnacle/barnacle_digesting2.wav")
+end
+
+function SWEP:DoImpactEffect( tr, nDamageType )
+
+	return true 
+
 end

@@ -115,22 +115,7 @@ end
 --Gotta store the file loadout separately so default loadouts dont get saved with people's files!
 GM.FileLoadout = {}
 
-GM.SavedCarts = {
-	[1] = {
-		[1] = "Barricading Class",
-		[2] = {"crphmr", "6nails", "bfmusc", "bfhandy", "nanite", "cryogas", "bfresist", "arscrate"}
-	},
-
-	[2] = {
-		[1] = "Medic Class",
-		[2] = {"cz75", "3pcp", "2pcp", "medkit", "150mkit", "10spd", "50spd", "bfsurgeon"}
-	},
-
-	[3] = {
-		[1] = "Assault Class",
-		[2] = {"blstr", "3sgcp", "2sgcp", "weapon_zs_axe", "100hp"}
-	},
-}
+GM.SavedCarts = {}
 
 hook.Add("Initialize", "LoadCarts", function()
 	if file.Exists(GAMEMODE.CartFile, "DATA") then
@@ -659,12 +644,9 @@ function PANEL:SetWorthID(id, id2)
         return
     end
 
-    local mdl = tab.Model or (weapons.GetStored(tab.SWEP) or tab).WorldModel
-    if mdl then
-        self.ModelPanel:SetModel(mdl)
-        local mins, maxs = self.ModelPanel.Entity:GetRenderBounds()
-        self.ModelPanel:SetCamPos(mins:Distance(maxs) * Vector(0.75, 0.75, 0.5))
-        self.ModelPanel:SetLookAt((mins + maxs) / 2)
+    local iconTable = killicon.Get(tab.SWEP or tab.Name)
+    if iconTable and iconTable[1] then
+        self.ModelPanel:SetIcon(iconTable[1])  -- Use the first element of the table
         self.ModelPanel:SetVisible(true)
     else
         self.ModelPanel:SetVisible(false)

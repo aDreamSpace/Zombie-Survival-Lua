@@ -87,7 +87,7 @@ CARRY_DRAG_MASS = 9000
 -- Anything bigger than this is dragged regardless of mass.
 CARRY_DRAG_VOLUME = 999999
 -- Humans are slowed by this amount per kg carried...
-CARRY_SPEEDLOSS_PERKG = 4
+CARRY_SPEEDLOSS_PERKG = 1
 -- but can never be slower than this.
 CARRY_SPEEDLOSS_MINSPEED = 150
 

@@ -14,7 +14,7 @@ CLASS.Hidden = false
 CLASS.Health = 485
 CLASS.Speed = 121
 CLASS.JumpPower = 320
-CLASS.ModelScale = 1.4
+CLASS.ModelScale = 1
 CLASS.Points = 7
 
 CLASS.Hull = {Vector(-16, -16, 0), Vector(16, 16, 20)}

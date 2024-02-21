@@ -43,9 +43,6 @@ function SWEP:ApplyMeleeDamage(ent, trace, damage)
                 bleed.Damager = self:GetOwner()
             end
         end
-
-        -- Ignite the entity for 5 seconds
-        ent:Ignite(5)
     end
 
     self.BaseClass.ApplyMeleeDamage(self, ent, trace, damage)

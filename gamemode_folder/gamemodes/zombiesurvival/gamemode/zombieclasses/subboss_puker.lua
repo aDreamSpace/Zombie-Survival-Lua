@@ -36,24 +36,6 @@ CLASS.JumpPower = 225
 
 local math_ceil = math.ceil
 
-if SERVER then
-    function CLASS:OnSpawned(pl)
-        if pl:IsBot() then
-            if pl:GetZombieClassTable().Name == "Poison Zombie" then
-                pl:SetBodygroup( 1, 1 )
-            end
-        end
-    end
-
-    function CLASS:OnKilled(pl, attacker, inflictor, suicide, headshot, dmginfo, assister)
-        if pl:IsBot() then
-            if pl:GetZombieClassTable().Name == "Poison Zombie" then
-                pl:SetBodygroup( 1, 0 )
-            end
-        end
-    end
-end
-
 function CLASS:KnockedDown(pl, status, exists)
 	pl:AnimResetGestureSlot(GESTURE_SLOT_ATTACK_AND_RELOAD)
 end
@@ -189,22 +171,6 @@ function CLASS:UpdateAnimation(pl, velocity, maxseqgroundspeed)
 
 	return true
 end
---[[
-function CLASS:DoAnimationEvent(pl, event, data)
-	if event == PLAYERANIMEVENT_ATTACK_PRIMARY then
-		pl:AnimRestartGesture(GESTURE_SLOT_ATTACK_AND_RELOAD, ACT_GMOD_GESTURE_RANGE_ZOMBIE, true)
-		return ACT_INVALID
-	end
-end
---]]
-
-function CLASS:DoAnimationEvent(pl, event, data)
-    if event == PLAYERANIMEVENT_ATTACK_PRIMARY then
-        --pl:AnimRestartGesture(GESTURE_SLOT_ATTACK_AND_RELOAD, ACT_GMOD_GESTURE_RANGE_ZOMBIE, true)
-        pl:DoZombieAttackAnim(data)
-        return ACT_INVALID
-    end
-end
 
 function CLASS:DoesntGiveFear(pl)
 	return pl.FeignDeath and pl.FeignDeath:IsValid()
@@ -274,8 +240,6 @@ end
 if CLIENT then
 	CLASS.Icon = "materials/zombiesurvival/killicons2/poisonzombie.png"
 	CLASS.IconColor = COLOR_PINK
-end
-
 local render_SetMaterial = render.SetMaterial
 local render_DrawSprite = render.DrawSprite
 local angle_zero = angle_zero
@@ -304,6 +268,7 @@ function CLASS:PostPlayerDraw(pl)
 			render_DrawSprite(LocalToWorld(vecEyeLeft, angle_zero, pos, ang), 4, 4, colGlow)
 			render_DrawSprite(LocalToWorld(vecEyeRight, angle_zero, pos, ang), 4, 4, colGlow)
 			
+			end
 		end
 	end
-end
+end 

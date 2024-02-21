@@ -124,28 +124,32 @@ end)
 -- Sigil Node system for randomizing spawn locations based on nodes we place on the ground
 if SERVER then
     -- List of entity names
-    local entities = {"sigil_barricadetower", "sigil_medicaltower", "sigil_ammotower", "sigil_pointstower"}
+    local entities = {
+        "sigil_barricadetower", 
+        "sigil_medicaltower", 
+        "sigil_ammotower", 
+        "sigil_pointstower",
+        "sigil_pctower"
+    }
     local evilentities = {"zsigil_undead_haunted"}
     -- Table to store the node locations
     local nodeLocations = {}
 
--- Load the nodes from the file, named after the current map
-local function LoadNodes()
-    local filePath = "sigil_nodes/" .. game.GetMap() .. "_nodes.txt"
-    if file.Exists(filePath, "DATA") then
-        local str = file.Read(filePath, "DATA")
-        nodeLocations = util.JSONToTable(str)
+    -- Load the nodes from the file, named after the current map
+    local function LoadNodes()
+        if file.Exists(game.GetMap() .. "_nodes.txt", "DATA") then
+            local str = file.Read(game.GetMap() .. "_nodes.txt", "DATA")
+            nodeLocations = util.JSONToTable(str)
+        end
     end
-end
 
--- Save the nodes to a file
-local function SaveNodes()
-    -- Convert the table to a string
-    local str = util.TableToJSON(nodeLocations)
-    -- Save the string to a file, named after the current map
-    local filePath = "sigil_nodes/" .. game.GetMap() .. "_nodes.txt"
-    file.Write(filePath, str)
-end
+    -- Save the nodes to a file
+    local function SaveNodes()
+        -- Convert the table to a string
+        local str = util.TableToJSON(nodeLocations)
+        -- Save the string to a file, named after the current map
+        file.Write(game.GetMap() .. "_nodes.txt", str)
+    end
 
     -- Console command to create a node
     concommand.Add("sigil_createnode", function(ply, cmd, args)
@@ -189,56 +193,45 @@ end
         end
     end)
 
-    -- Spawn the entities and set up the spawn points
--- Spawn the entities and set up the spawn points
-local function SpawnEntities()
-    LoadNodes()
-    -- Repeat the entities to match the number of nodes
-    local repeatedEntities = {}
-    for i = 1, #nodeLocations do
-        local entityName
-        if math.random() < 0.7 then -- 70% chance to spawn an evil entity
-            entityName = evilentities[math.random(#evilentities)]
-        else
-            entityName = entities[(i - 1) % #entities + 1]
-        end
-        table.insert(repeatedEntities, entityName)
-    end
+    concommand.Add("sigil_reloadnodes", function(ply, cmd, args)
+        if ply:IsAdmin() then
+            -- Clear the current node locations
+            nodeLocations = {}
 
-    -- Spawn an entity at each node and set it as a spawn point
-    for i, entityName in ipairs(repeatedEntities) do
-        local location = nodeLocations[i]
-        if location then
-            local ent = ents.Create(entityName)
-            if IsValid(ent) then
-                ent:SetPos(location)
-                ent:Spawn()
+            -- Load nodes from the file
+            LoadNodes()
+
+            -- Spawn entities on the nodes
+            SpawnEntities()
+
+            print("Nodes reloaded and entities spawned!")
+        end
+    end)
+
+    -- Spawn the entities and set up the spawn points
+    local function SpawnEntities()
+        LoadNodes()
+        -- Repeat the entities to match the number of nodes
+        local repeatedEntities = {}
+        for i = 1, #nodeLocations do
+            local entityName = entities[(i - 1) % #entities + 1]
+            table.insert(repeatedEntities, entityName)
+        end
+
+        -- Spawn an entity at each node
+        for i, entityName in ipairs(repeatedEntities) do
+            local location = nodeLocations[i]
+            if location then
+                local ent = ents.Create(entityName)
+                if IsValid(ent) then
+                    ent:SetPos(location)
+                    ent:Spawn()
+                end
             end
         end
     end
-end
-hook.Add("InitPostEntity", "SpawnEntities", SpawnEntities)
+    hook.Add("InitPostEntity", "SpawnEntities", SpawnEntities)
 
-
-
--- Set the player's spawn point to one of the sigil nodes or a regular spawn point
-hook.Add("PlayerSpawn", "SetSpawnPoint", function(ply)
-    if ply:Team() == TEAM_HUMANS then
-        -- Human spawn logic...
-    elseif ply:Team() == TEAM_ZOMBIES then
-        -- Get all zombie spawn points
-        local zombieSpawns = ents.FindByClass("info_player_zombie")
-        if #zombieSpawns > 0 then
-            -- If there are zombie spawn points, spawn the player at a random point
-            local spawnPoint = zombieSpawns[math.random(#zombieSpawns)]
-            ply:SetPos(spawnPoint:GetPos())
-        else
-            -- If there are no zombie spawn points, spawn the player at a regular spawn point
-            ply:SetPos(ply:SelectSpawn():GetPos())
-        end
-    end
-end)
-    
     -- Handle entity destruction
     hook.Add("EntityRemoved", "HandleEntityDestruction", function(ent)
         if table.HasValue(entities, ent:GetClass()) or table.HasValue(evilentities, ent:GetClass()) then
@@ -256,7 +249,6 @@ end)
         end
     end)
 
-
     -- Load nodes on map initialization
     LoadNodes()
 
@@ -271,103 +263,34 @@ end)
     end)
 end
 
--- Server-side code
-if SERVER then
-    -- Define a table of NPCs to spawn
-    local npcsToSpawn = {
-        "npc_zombie",
-        "npc_fastzombie",
-        "npc_poisonzombie"
-        -- Add more NPCs here...
-    }
+-- NPC Reward System
+local zombieNPCs = {
+    "npc_zombie",
+    "npc_fastzombie",
+    "npc_poisonzombie",
+    "npc_zombine"
+}
 
-    -- Define a table of point rewards for each NPC
-    local npcPointRewards = {
-        npc_zombie = 3,
-        npc_fastzombie = 3,
-        npc_poisonzombie = 4
-        -- Add more NPCs and their point rewards here...
-    }
-
-    -- Maximum number of NPCs that can be alive at once
-    local maxNPCs = 25
-
-    -- Spawn delay in seconds
-    local spawnDelay = 5
-
-    timer.Create("NPCSpawner", spawnDelay, 0, function()
-        -- Check if the current wave is 0
-        if GAMEMODE:GetWave() == 1 then
-            -- Count the number of NPCs that are currently alive
-            local npcCount = 0
-            for _, npc in pairs(ents.GetAll()) do
-                if npc:IsNPC() and table.HasValue(npcsToSpawn, npc:GetClass()) then
-                    npcCount = npcCount + 1
-                end
-            end
-
-            -- Only spawn new NPCs if the maximum has not been reached
-            if npcCount < maxNPCs then
-                -- Find all info_player_zombie entities
-                for _, ent in pairs(ents.FindByClass("info_player_zombie")) do
-                    -- Check if the area is clear before spawning a new NPC
-                    local tr = util.TraceHull({
-                        start = ent:GetPos(),
-                        endpos = ent:GetPos(),
-                        mins = Vector(-16, -16, 0),
-                        maxs = Vector(16, 16, 72)
-                    })
-
-                    if not tr.Hit then
-                        -- Choose a random NPC to spawn
-                        local npcClass = table.Random(npcsToSpawn)
-
-                        -- Create the NPC
-                        local npc = ents.Create(npcClass)
-                        if IsValid(npc) then
-                            -- Set the NPC's position to the info_player_zombie entity's position
-                            npc:SetPos(ent:GetPos())
-
-                            -- Spawn the NPC
-                            npc:Spawn()
-
-                            -- Make the NPC hostile towards all players
-                            for _, ply in pairs(player.GetAll()) do
-                                npc:AddEntityRelationship(ply, D_HT, 99)
-                            end
-
-                            -- Set the NPC's collision group to COLLISION_GROUP_DEBRIS
-                            npc:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
-                        end
-                    end
-                end
-            end
-        end
-    end)
-
-    -- Hook to detect when an NPC is killed
-    hook.Add("EntityTakeDamage", "NPCDamage", function(target, dmginfo)
-        -- Check if the target is an NPC and the attacker is a player
-        if target:IsNPC() and dmginfo:GetAttacker():IsPlayer() then
-            -- Check if the damage will kill the NPC
-            if target:Health() <= dmginfo:GetDamage() then
-                -- Award points to the player who killed the NPC
-                local attacker = dmginfo:GetAttacker()
-                local points = npcPointRewards[target:GetClass()] or 1 -- Default to 1 point if the NPC's class is not in the table
-                attacker:AddPoints(points)
-            end
-        end
-    end)
+-- Function to add points to a player
+local function AddPoints(ply, points)
+    -- Assuming you have a function or method to add points to a player
+    ply:AddPoints(points)
 end
 
+-- Hook into the NPC death event
+hook.Add("OnNPCKilled", "AddPointsOnZombieDeath", function(npc, attacker, inflictor)
+    -- Check if the NPC is a zombie and the attacker is a player
+    if table.HasValue(zombieNPCs, npc:GetClass()) and attacker:IsPlayer() then
+        -- Add points to the player
+        AddPoints(attacker, 3)  -- Replace 10 with the number of points you want to give
+    end
+end)
 
--- Error Models bypass
-if SERVER then
-    timer.Create("RemoveErrorModels", 1, 0, function()
-        for _, ent in pairs(ents.GetAll()) do
-            if ent:GetModel() == "models/error.mdl" then
-                ent:Remove()
-            end
-        end
-    end)
+
+-- Perk Limitters 
+
+if ply:IsPlayer() and ply:Team() == TEAM_HUMANS then
+    if ply:GetWalkSpeed() > 260 then
+        ply:SetWalkSpeed(260)
+    end
 end

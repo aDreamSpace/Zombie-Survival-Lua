@@ -3605,9 +3605,6 @@ VoiceSetTranslate["models/player/dewobedil/touhou/junko/default_p.mdl"] = VOICES
 
 
 
-
-
-
 function GM:PlayerSpawn(pl)
 	pl:StripWeapons()
 	pl:RemoveStatus("confusion", false, true)

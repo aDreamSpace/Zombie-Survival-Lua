@@ -75,41 +75,6 @@ function CLASS:UpdateAnimation(pl, velocity, maxseqgroundspeed)
 end
 
 
--- Server-side code
-if SERVER then
-	-- Store the original walk speeds to restore them later
-	local originalWalkSpeeds = {}
-
-	hook.Add("PlayerTick", "AncientNightmareSlow", function(pl, mv)
-		-- Only affect humans
-		if pl:Team() == TEAM_HUMAN then
-			-- Find all Ancient Nightmares
-			for _, zombie in pairs(team.GetPlayers(TEAM_UNDEAD)) do
-				if zombie:GetZombieClassTable().Name == "Ancient Nightmare" then
-					-- Calculate the distance to the Ancient Nightmare
-					local distance = pl:GetPos():Distance(zombie:GetPos())
-
-					-- If the player is within a certain distance of the Ancient Nightmare
-					if distance < 500 then
-						-- Store the original walk speed if it hasn't been stored yet
-						if not originalWalkSpeeds[pl] then
-							originalWalkSpeeds[pl] = pl:GetWalkSpeed()
-						end
-
-						-- Reduce the player's walk speed based on their proximity to the Ancient Nightmare
-						pl:SetWalkSpeed(math.max(50, originalWalkSpeeds[pl] * (distance / 500)))
-					else
-						-- If the player is far enough away from the Ancient Nightmare, restore their original walk speed
-						if originalWalkSpeeds[pl] then
-							pl:SetWalkSpeed(originalWalkSpeeds[pl])
-							originalWalkSpeeds[pl] = nil
-						end
-					end
-				end
-			end
-		end
-	end)
-end
 
 function CLASS:DoAnimationEvent(pl, event, data)
 	if event == PLAYERANIMEVENT_ATTACK_PRIMARY then

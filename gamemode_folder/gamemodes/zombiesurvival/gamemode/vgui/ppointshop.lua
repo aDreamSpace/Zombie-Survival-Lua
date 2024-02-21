@@ -509,34 +509,7 @@ function GM:OpenPointsShop()
 			list:SetWide(propertysheet:GetWide() - 32)
 			list:SetSpacing(2)
 			list:SetPadding(2)
-			--[[
-			local strAmmoCat = GAMEMODE.AmmoCategories[catid]
-			if strAmmoCat then
-				local tAmmo = FindStartingItem("ps_"..strAmmoCat)
-				local tAmmoMore = FindStartingItem("ps_".."3"..strAmmoCat)
-
-				if tAmmo and tAmmoMore then
-					local AmmoBtn = vgui.Create("DButton")
-					local MoreAmmoBtn = vgui.Create("DButton")
-
-					AmmoBtn.Name = tAmmo.Name
-					AmmoBtn.Cost = tAmmo.Worth
-					AmmoBtn.Think = AmmoBtnthink
-					AmmoBtn.Paint = AmmoBtnpaint
-					AmmoBtn.DoClick = AmmoBtnDoClick
-
-					MoreAmmoBtn.Name = tAmmo.Name
-					MoreAmmoBtn.Cost = tAmmo.Worth
-					MoreAmmoBtn.Think = AmmoBtnthink
-					MoreAmmoBtn.Paint = AmmoBtnpaint
-					MoreAmmoBtn.DoClick = AmmoBtnDoClick
-
-					
-				end
-			end
-			--]]
-
-
+		
 			local kek
 
 			for i, tab in ipairs(GAMEMODE.Items) do
@@ -552,15 +525,11 @@ function GM:OpenPointsShop()
 					mdlframe:SetSize(128, 128)
 					mdlframe:SetPos(350, 4)
 			
-					local weptab = weapons.GetStored(tab.SWEP) or tab
-					local mdl = tab.Model or weptab.WorldModel
-					if mdl then
-						local mdlpanel = vgui.Create("DModelPanel", mdlframe)
-						mdlpanel:SetSize(mdlframe:GetSize())
-						mdlpanel:SetModel(mdl)
-						local mins, maxs = mdlpanel.Entity:GetRenderBounds()
-						mdlpanel:SetCamPos(mins:Distance(maxs) * Vector(0.75, 0.75, 0.5))
-						mdlpanel:SetLookAt((mins + maxs) / 3)
+					local iconTable = killicon.Get(tab.SWEP or tab.Name)
+					if iconTable and iconTable[1] then
+						local iconPanel = vgui.Create("DImage", mdlframe)
+						iconPanel:SetSize(mdlframe:GetSize())
+						iconPanel:SetImage(iconTable[1])  -- Use the first element of the table
 					end
 			
 					if tab.SWEP or tab.Countables then

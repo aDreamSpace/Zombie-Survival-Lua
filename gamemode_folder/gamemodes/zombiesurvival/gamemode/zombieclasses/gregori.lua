@@ -207,7 +207,6 @@ end
 
 if CLIENT then
 CLASS.Icon = "materials/zombiesurvival/killicons2/bloatedzombie.png"
-end
 
 CLASS.IconColor = Color(0, 235, 176)
 
@@ -239,27 +238,7 @@ function CLASS:PostPlayerDraw(pl)
 			render_DrawSprite(LocalToWorld(vecEyeLeft, angle_zero, pos, ang), 4, 4, colGlow)
 			render_DrawSprite(LocalToWorld(vecEyeRight, angle_zero, pos, ang), 4, 4, colGlow)
 			
+			end
 		end
 	end
-end
-
-
-if SERVER then
-    -- Define a timer that periodically heals nearby zombies
-    timer.Create("GregoriHeal", 2, 0, function()
-        -- Loop over all players
-        for _, pl in pairs(player.GetAll()) do
-            -- Check if the player is a zombie and is alive
-            if pl:IsZombie() and pl:Alive() then
-                -- Check if the player is near a "Father Gregori"
-                for _, gregori in pairs(player.GetAll()) do
-                    if gregori:IsZombie() and gregori:Alive() and gregori:GetZombieClassTable().Name == "Father Gregori" and gregori:GetPos():Distance(pl:GetPos()) <= 500 then
-                        -- Heal the player
-                        pl:SetHealth(math.min(pl:GetMaxHealth(), pl:Health() + 60))
-                        break
-                    end
-                end
-            end
-        end
-    end)
-end
+end 

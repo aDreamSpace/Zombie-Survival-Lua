@@ -123,12 +123,7 @@ function CLASS:UpdateAnimation(pl, velocity, maxseqgroundspeed)
 	return true
 end
 
-function CLASS:DoAnimationEvent(pl, event, data)
-	if event == PLAYERANIMEVENT_ATTACK_PRIMARY then
-		pl:AnimRestartGesture(GESTURE_SLOT_ATTACK_AND_RELOAD, ACT_GMOD_GESTURE_RANGE_ZOMBIE, true)
-		return ACT_INVALID
-	end
-end
+
 
 function CLASS:DoesntGiveFear(pl)
 	return pl.FeignDeath and pl.FeignDeath:IsValid()

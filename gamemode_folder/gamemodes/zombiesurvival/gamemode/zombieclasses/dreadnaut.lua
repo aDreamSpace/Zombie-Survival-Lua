@@ -204,10 +204,7 @@ end
 
 if CLIENT then
 CLASS.Icon = "materials/zombiesurvival/killicons2/bloatedzombie.png"
-end
-
 CLASS.IconColor = COLOR_RED
-
 local render_SetMaterial = render.SetMaterial
 local render_DrawSprite = render.DrawSprite
 local angle_zero = angle_zero
@@ -236,6 +233,7 @@ function CLASS:PostPlayerDraw(pl)
 			render_DrawSprite(LocalToWorld(vecEyeLeft, angle_zero, pos, ang), 4, 4, colGlow)
 			render_DrawSprite(LocalToWorld(vecEyeRight, angle_zero, pos, ang), 4, 4, colGlow)
 			
+			end
 		end
 	end
-end
+end 

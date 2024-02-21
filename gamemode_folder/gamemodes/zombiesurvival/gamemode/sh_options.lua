@@ -350,7 +350,7 @@ GM:AddStartingItem("hook", "Meat Hook", nil, ITEMCAT_VMELEE, 20, "weapon_zs_hook
 
 GM:AddStartingItem("barricadekit", "'Aegis' Barricade Kit", nil, ITEMCAT_TOOLS, 25, "weapon_zs_barricadekit")
 GM:AddStartingItem("medkit", "Medical Kit", nil, ITEMCAT_TOOLS, 15, "weapon_zs_medicalkit")
-GM:AddStartingItem("medgun", "Refined Medic Gun", "An improved version of the medic gun, featuring an all new spring-loaded dart system.", ITEMCAT_TOOLS, 30, "weapon_zs_medicgun")
+GM:AddStartingItem("medgun", "Refined Medic Gun", "An improved version of the medic gun, featuring an all new spring-loaded dart system.", ITEMCAT_TOOLS, 15, "weapon_zs_medicgun")
 GM:AddStartingItem("medstat", "Medical Station", nil, ITEMCAT_TOOLS, 20, nil, function(pl)
 	pl:GiveEmptyWeapon("weapon_zs_medstation")
 	pl:GiveAmmo(1, "smg1_grenade")
@@ -773,6 +773,7 @@ GM:AddPointShopItem("detpck", "Detonation Pack", nil, ITEMCAT_OTHER, 50, "weapon
 GM:AddPointShopItem("nanite", "Nanite Cloud Bomb", "On throw, it releases a repair cloud that repairs all nearby props for a short time.", ITEMCAT_OTHER, 50, "weapon_zs_nanitecloudbomb")
 GM:AddPointShopItem("corogas", "Coro Gas", "Becareful when using this, will dissolve YOU and any zombies near by.", ITEMCAT_OTHER, 50, "weapon_zs_corogas")
 GM:AddPointShopItem("cryogas", "Cryo Gas", "Becareful when using this, will freeze and damage you and nearby zombies, and will reduce attack speeds.", ITEMCAT_OTHER, 60, "weapon_zs_crygasgrenade")
+GM:AddPointShopItem("rpg", "RPG7", "Ready to blow up even the bigger things.", ITEMCAT_OTHER, 200, "m9k_rpg7")
 
 -- TRAITS 
 

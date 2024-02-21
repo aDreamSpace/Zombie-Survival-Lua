@@ -24,25 +24,6 @@ function ENT:Initialize()
     -- Store a reference to the entity
 end
 
-function ENT:Think()
-    local healAmount = 20
-    local regenAmount = 5
-
-    -- Heal undead players
-    for _, ply in pairs(player.GetAll()) do
-        if ply:IsPlayer() and ply:Team() == TEAM_UNDEAD and ply:Health() < ply:GetMaxHealth() then
-            ply:SetHealth(math.min(ply:Health() + healAmount, ply:GetMaxHealth()))
-        end
-    end
-
-    -- Regenerate entity's health
-    if self:GetObjectHealth() < self:GetMaxObjectHealth() then
-        self:SetObjectHealth(math.min(self:GetObjectHealth() + regenAmount, self:GetMaxObjectHealth()))
-    end
-
-    self:NextThink(CurTime() + 1)
-    return true
-end
 
 function ENT:OnTakeDamage(dmg)
     -- If the attacker is a zombie, don't apply any damage

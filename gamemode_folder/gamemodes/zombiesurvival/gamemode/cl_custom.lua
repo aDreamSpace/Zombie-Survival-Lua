@@ -498,29 +498,27 @@ hook.Add("HUDPaint", "HealthHUDValidate", function()
 	
 	surface.SetDrawColor(24,0,69)
 	surface.SetTexture(gradient)
-	surface.DrawTexturedRect(baseX - 5, baseY - 15, 300, 45)
+	surface.DrawTexturedRect(baseX - 5, baseY - 15, 500, 105)
 
 	-- draw the bottom-left part of the HUD; aka health and armor
 	draw.ShadowText(strHealth, cwhud24, baseX, baseY, MySelf.HUD_HealthTextColor, COLOR_GREEN, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-	--draw.ShadowText("ARMOR: ", cwhud24, baseX, baseY + 60, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+	draw.ShadowText("POWER CELL: ", cwhud24, baseX, baseY + 60, MySelf.HUD_HealthTextColor, COLOR_CYAN, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 	
-	local hp = MySelf:Health()
-	local hp2 = MySelf:Armor()
-	local maxhp = MySelf:GetMaxHealthEx()
+	local hp = MySelf:Health() or 0
+	local maxhp = MySelf:GetMaxHealthEx() or 0
 	local pipWorth = maxhp / 20
-	--local arm = self.Owner:Armor()
+	local arm = MySelf:Armor() or 0
 	
 	-- approach the health and armor values rather than snapping, so that the pips fill up gradually
 	MySelf.HUD_LastHealth = math.Approach(MySelf.HUD_LastHealth or hp, hp, FT * 100)
-	--self.HUD_LastArmor = math.Approach(self.HUD_LastArmor, arm, FT * 100)
+	MySelf.HUD_LastArmor = math.Approach(MySelf.HUD_LastArmor or 0, arm, FT * 100)
 	
 	-- draw the health and armor text
-	draw.ShadowText(hp2, cwhud24, baseX + 100, baseY * 0.97, MySelf.HUD_HealthTextColor, COLOR_BLUE, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 	draw.ShadowText(hp, cwhud24, baseX + 100, baseY, MySelf.HUD_HealthTextColor, COLOR_GREEN, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-	--draw.ShadowText(arm .. "%", cwhud24, baseX + 100, baseY + 60, MySelf.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+	draw.ShadowText(arm .. "%", cwhud24, baseX + 140, baseY + 60, MySelf.HUDColors.white, COLOR_CYAN, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
 	local healthPips = math.Clamp(math.floor(MySelf.HUD_LastHealth / pipWorth), 1, 20)
-	--local armorPips = math.Clamp(math.floor(self.HUD_LastArmor / 5), 0, 20)
+	local armorPips = math.Clamp(math.floor(MySelf.HUD_LastArmor / 5), 0, 20)
 	
 	-- black health and armor pips (to avoid unnecessary SetDrawColor calls)
 	surface.SetDrawColor(45, 0, 72)
@@ -528,23 +526,23 @@ hook.Add("HUDPaint", "HealthHUDValidate", function()
 	for i = 1, healthPips do
 		surface.DrawRect(baseX + (i - 1) * 12 + 2, baseY + 16, 5, 10)
 	end
---[[	
+	
 	for i = 1, armorPips do
 		surface.DrawRect(baseX + (i - 1) * 12 + 2, baseY + 36, 5, 10)
 	end
-	--]]
+
 	-- colored health pips
 	for i = 1, healthPips do
 		surface.SetDrawColor(240 - i * 10, i * 12.75, i * 4, 255)
 		surface.DrawRect(baseX + (i - 1) * 12 + 1, baseY + 15, 5, 10)
 	end
-	--[[
+
 	-- colored armor pips
 	for i = 1, armorPips do
 		surface.SetDrawColor(0, 125 + i * 6.5, 200 + i * 2.75, 255)
 		surface.DrawRect(baseX + (i - 1) * 12 + 1, baseY + 35, 5, 10)
 	end
-	--]]
+
 	--now we should account for all the things zs does in terms of statuses
 	local t2 = SysTime()
 	local status = {}
@@ -565,10 +563,9 @@ hook.Add("HUDPaint", "HealthHUDValidate", function()
 		draw.SimpleText(info[2]..strLB..math.Round(val)..strRB, strFontHealth, baseX + 300, baseY - YOffset + 7, info[1], TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 		YOffset = YOffset + step
 	end
-	--]]
+
 	end
 end)
-
 --CW muzzleflash effect options 
 CreateClientConVar("cw_muzzlelighting", 2, true, false, "Sets how muzzleflash light will be handled.\n0 = Disabled, best performance\n1 = Enabled, no model lighting, better performance\n2 = Enabled, full lighting")
 CreateClientConVar("cw_muzzleflash", 1, true, false, "Sets whether or not to draw muzzleflashes.\n0 = Disabled\n1 = Enabled")

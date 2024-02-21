@@ -8,13 +8,15 @@ ENT.BuildsThisTick = 0
 
 function ENT:Initialize()
 	self:SetModel("models/props_wasteland/antlionhill.mdl")
-	self:SetMoveType(MOVETYPE_NONE)
-	self:SetSolid(SOLID_VPHYSICS)
+	self:PhysicsInitBox(Vector(-20, -20, 0), Vector(20, 20, 40))
+	self:SetCollisionBounds(Vector(-20, -20, 0), Vector(20, 20, 40))
+	self:SetUseType(SIMPLE_USE)
 
-	-- Set up proper collision bounds to allow spawning on surfaces
-	local min, max = Vector(-20, -20, 0), Vector(20, 20, 40)
-	self:SetCollisionBounds(min, max)
-	self:SetCollisionGroup(COLLISION_GROUP_WORLD)
+	--self:SetCollisionGroup(COLLISION_GROUP_DEBRIS_TRIGGER)
+	self:SetCustomCollisionCheck(true)
+	self:CollisionRulesChanged()
+
+	self:ManipulateBoneScale(0, self.ModelScale)
 
 	local phys = self:GetPhysicsObject()
 	if phys:IsValid() then
@@ -27,7 +29,6 @@ function ENT:Initialize()
 
 	self.LastBuild = CurTime()
 end
-
 
 function ENT:BuildUp()
 	if CurTime() ~= self.LastBuildTime then
