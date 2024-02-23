@@ -195,6 +195,13 @@ function GM:Initialize()
 	if string.find(mapname, "_obj_", 1, true) or string.find(mapname, "objective", 1, true) then
 		self.ObjectiveMap = true
 	end
+	-- Perk Limitters 
+
+	if ply:IsPlayer() and ply:Team() == TEAM_HUMANS then
+  	  if ply:GetWalkSpeed() > 260 then
+        ply:SetWalkSpeed(260)
+    end
+end
 
 	--[[if string.sub(mapname, 1, 3) == "zm_" then
 		NOZOMBIEGASSES = true
@@ -3659,7 +3666,7 @@ function GM:PlayerSpawn(pl)
 			if #desiredname == 0 then
 				pl:SelectRandomPlayerModel()
 			else	
-			pl:SetModel("models/player/AR_combine_soldier03B.mdl")
+			pl:SetModel("models/player/Group03/male_04.mdl")
 			end
 		elseif classtab.UsePreviousModel then
 			local curmodel = string.lower(pl:GetModel())

@@ -12,7 +12,7 @@ SWEP.Secondary.Delay = 8 --For this, I don't know what to do here... I won't tou
 SWEP.ViewModel = "models/weapons/v_crowbar.mdl"
 SWEP.WorldModel = "models/weapons/w_crowbar.mdl"
 
-SWEP.PukeAmt = 35
+SWEP.PukeAmt = 45
 SWEP.PukeAmtFocus = 10
 SWEP.NextPuke = 0
 SWEP.PukeLeft = 0

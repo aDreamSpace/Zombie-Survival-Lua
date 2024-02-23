@@ -287,10 +287,55 @@ hook.Add("OnNPCKilled", "AddPointsOnZombieDeath", function(npc, attacker, inflic
 end)
 
 
--- Perk Limitters 
+-- ZOMBIE ABILITIES & POWERS
 
-if ply:IsPlayer() and ply:Team() == TEAM_HUMANS then
-    if ply:GetWalkSpeed() > 260 then
-        ply:SetWalkSpeed(260)
+
+-- Nightmare Slow Speed Ability 
+
+local originalWalkSpeeds = {}
+
+hook.Add("Think", "AncientNightmareSpeedReduction", function()
+    -- Get all "Ancient Nightmare" players
+    local nightmares = {}
+    for _, ply in ipairs(player.GetAll()) do
+        if ply:Alive() and ply:GetZombieClassTable().Name == "Ancient Nightmare" then
+            table.insert(nightmares, ply)
+        end
+    end
+
+    -- Check each human player
+    for _, ply in ipairs(team.GetPlayers(TEAM_HUMAN)) do
+        if ply:Alive() then
+            -- Get the closest "Ancient Nightmare"
+            local closestDist = math.huge
+            for _, nightmare in ipairs(nightmares) do
+                local dist = ply:GetPos():Distance(nightmare:GetPos())
+                if dist < closestDist then
+                    closestDist = dist
+                end
+            end
+
+            -- If within range, reduce walk speed
+            if closestDist <= 500 then  -- Change this to your desired range
+                if not originalWalkSpeeds[ply] then
+                    originalWalkSpeeds[ply] = ply:GetWalkSpeed()
+                end
+                -- Increase the divisor for a more significant speed reduction
+                ply:SetWalkSpeed(math.max(originalWalkSpeeds[ply] - closestDist / 2, 100))  -- Change these numbers as desired
+            -- If out of range, restore original walk speed
+            elseif originalWalkSpeeds[ply] then
+                ply:SetWalkSpeed(originalWalkSpeeds[ply])
+                originalWalkSpeeds[ply] = nil
+            end
+        end
+    end
+end)
+
+-- Puke Pus Damage Resistance 
+
+function GM:EntityTakeDamage(target, dmginfo)
+    if target:IsPlayer() and target:GetZombieClassTable().Name == "Puke Pus" then
+        local reducedDamage = dmginfo:GetDamage() * 0.70
+        dmginfo:SetDamage(reducedDamage)
     end
 end

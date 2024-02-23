@@ -77,6 +77,7 @@ function CLASS:PlayerStepSoundTime(pl, iType, bWalking)
 	return 200
 end
 
+
 function CLASS:UpdateAnimation(pl, velocity, maxseqgroundspeed)
 	pl:FixModelAngles(velocity)
 

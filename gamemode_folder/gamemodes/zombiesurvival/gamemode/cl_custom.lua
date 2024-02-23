@@ -71,20 +71,26 @@ local x2, y2 = wid2 * 0, hei2 * 2.4
 --local tTHealed = {strTHealed, nil}
 
 hook.Add("HUDPaint", "creditAmount", function()
-	hkills = MySelf.statHKills or strNA
-	zkills = MySelf.statZKills or strNA
-	theals = MySelf.statTHealed or strNA
+    hkills = MySelf.statHKills or strNA
+    zkills = MySelf.statZKills or strNA
+    theals = MySelf.statTHealed or strNA
 
-	draw.RoundedBox(4, x2, y2, wid2, hei2, colBG2)
-	draw.SimpleText("Metro Account", font, wid2 * 0.25, hei2 * 2.5, Color(255, 255, 0), TEXT_ALIGN_LEFT, TEXT_ALIGHT_TOP)
+    draw.RoundedBox(4, x2, y2, wid2, hei2, colBG2)
+    draw.SimpleText("Metro Account", font, wid2 * 0.25, hei2 * 2.5, Color(255, 255, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
 
-	if statCookie == 1 then
-		draw.SimpleText(strKaZ..hkills, font, 10, 400, colStat, TEXT_ALIGN_LEFT, TEXT_ALIGHT_TOP)
-		draw.SimpleText(strKaH..zkills, font, 10, 425, colStat, TEXT_ALIGN_LEFT, TEXT_ALIGHT_TOP)
-		if healCookie == 1 then
-			draw.SimpleText(strTHealed..theals, font, 10, 450, colStat, TEXT_ALIGN_LEFT, TEXT_ALIGHT_TOP)
-		end
-	end
+    if statCookie == 1 then
+        draw.SimpleText(strKaZ..hkills, font, 10, 400, colStat, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        draw.SimpleText(strKaH..zkills, font, 10, 425, colStat, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        if healCookie == 1 then
+            draw.SimpleText(strTHealed..theals, font, 10, 450, colStat, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        end
+    end
+
+    -- Always display PointShop points
+    if MySelf.PS then
+        local points = MySelf:PS_GetPoints()
+        draw.SimpleText("Anon Coins: "..points, font, 10, 475, colStat, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+    end
 end)
 
 --settings

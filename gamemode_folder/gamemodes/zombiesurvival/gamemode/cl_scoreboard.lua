@@ -7,7 +7,7 @@ function GM:ScoreboardShow()
 		ScoreBoard = vgui.Create("ZSScoreBoard")
 	end
 
-	ScoreBoard:SetSize(math.min(ScrW(), ScrH()) * 1.3, ScrH() * 1.15)
+	ScoreBoard:SetSize(math.min(ScrW(), ScrH()) * 1.3, ScrH() * 0.8)
 	ScoreBoard:AlignTop(ScrH() * 0.05)
 	ScoreBoard:CenterHorizontal()
 	ScoreBoard:SetVisible(true)

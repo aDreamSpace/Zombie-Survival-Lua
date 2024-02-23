@@ -999,8 +999,8 @@ function surface.CreateLegacyFont(font, size, weight, antialias, additive, name,
 end
 
 function GM:CreateFonts()
-	local fontfamily = "typenoksidi"
-	local fontfamily3d = "typenoksidi"
+	local fontfamily = "bahnschrift"
+	local fontfamily3d = "bahnschrift"
 	local fontweight = 0
 	local fontweight3D = 0
 	local fontaa = true
