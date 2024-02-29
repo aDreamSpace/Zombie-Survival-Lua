@@ -152,7 +152,7 @@ SWEP.Primary.DefaultClip	= 140
 SWEP.Primary.Automatic		= true
 SWEP.Primary.Ammo			= "SMG1"
 
-SWEP.FireDelay = 0.08
+SWEP.FireDelay = 0.09
 SWEP.FireSound = "CW_TACTICAL_THOMPSON_FIRE"
 SWEP.FireSoundSuppressed = "CW_TACTICAL_THOMPSON_FIRE_SUPPRESSED"
 SWEP.Recoil = 0.5
@@ -164,7 +164,7 @@ SWEP.MaxSpreadInc = 0.05
 SWEP.SpreadPerShot = 0.005
 SWEP.SpreadCooldown = 0.13
 SWEP.Shots = 1
-SWEP.Damage =  125
+SWEP.Damage =  215
 SWEP.DeployTime = 0.6
 
 SWEP.ReloadSpeed = 1.19

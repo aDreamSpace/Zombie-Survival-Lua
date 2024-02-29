@@ -46,7 +46,7 @@ function ENT:Think()
         self:Remove()
     else
         if (!self.ns or RealTime() >= self.ns) then
-            self.ns = RealTime() + 45 -- Reset the timer for ammo regeneration
+            self.ns = RealTime() + 25 -- Reset the timer for ammo regeneration
             for _, ply in pairs (player.GetAll()) do
                 if (ply:GetPos():Distance(self:GetPos()) <= 200 and ply:Team() == TEAM_HUMAN) then -- Check if player is within 200 units and is human
                     for ammoType, ammoAmount in pairs(ammoTable) do

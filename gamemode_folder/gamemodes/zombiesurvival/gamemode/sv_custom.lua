@@ -890,20 +890,17 @@ hook.Add("ScalePlayerDamage", "AntiKnockbackPre", function(ply, hitgroup, dmginf
             local wep = att:GetActiveWeapon()
             if IsValid(wep) and wep.CW20Weapon then
                 ply.PrevVel = ply:GetVelocity()
-                ply:SetMoveType(MOVETYPE_NONE) --HACK HACK, I really dont want to do this but there is no other way to reliably get rid of knockback
             end
         end
     end
 end)
 
 hook.Add("PlayerHurt", "AntiKnockbackPost", function(ply, attacker, remainingHealth, takenHealth)
-	if ply:IsValid() and ply:IsPlayer() and ply:Team() == TEAM_UNDEAD and ply.PrevVel then
-		ply:SetMoveType(MOVETYPE_WALK)
-		ply:SetLocalVelocity(ply.PrevVel)
-		ply.PrevVel = nil
-	end
+    if ply:IsValid() and ply:IsPlayer() and ply:Team() == TEAM_UNDEAD and ply.PrevVel then
+        ply:SetLocalVelocity(ply.PrevVel)
+        ply.PrevVel = nil
+    end
 end)
-
 
 --afk library
 --------------------------------------------------

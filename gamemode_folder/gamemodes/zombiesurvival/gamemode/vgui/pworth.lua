@@ -337,7 +337,7 @@ function MakepWorth()
 	local maxworth = GAMEMODE.StartingWorth
 	WorthRemaining = maxworth
 
-	local wid, hei = math.min(ScrW(), 1050), ScrH() * 0.9
+	local wid, hei = math.min(ScrW(), 1200), ScrH() * 0.9
 
 	local frame = vgui.Create("DFrame")
 	pWorth = frame
@@ -367,7 +367,7 @@ function MakepWorth()
 	list:AddItem(savebutton)
 
 	local panfont = "ZSHUDFontSmall"
-	local panhei = 40
+	local panhei = 80
 
 	local defaultcart = cvarDefaultCart:GetString()
 
@@ -439,38 +439,91 @@ function MakepWorth()
 		list:AddItem(cartpan)
 	end
 
-	for catid, catname in ipairs(GAMEMODE.ItemCategories) do
-		local hasitems = false
+-- Define WeaponStatBarVals as a global variable
+WeaponStatBarVals = {
+    {"Damage", "Damage", 1, 105, false, false},
+    {"Primary.Delay", "Attack Delay", 0.05, 2, true, "Primary"},
+    {"Primary.ClipSize", "Clip Size", 1, 35, false, "Primary"},
+    {"FireDelay", "Firerate", 0.05, 2, true, "Primary"},
+    {"ClipSize", "Clip Size", 1, 35, false, "Primary"},
+    {"MeleeDamage", "Melee Damage", 1, 105, false, false},
+    {"Shots", "Shots", 1, 10, false, "Primary"} -- Add this line
+}
+
+
+for catid, catname in ipairs(GAMEMODE.ItemCategories) do
+    local hasitems = false
+    for i, tab in ipairs(GAMEMODE.Items) do
+        if tab.Category == catid and tab.WorthShop then
+            hasitems = true
+            break
+        end
+    end
+
+    if hasitems then
+        local list = vgui.Create("DPanelList", propertysheet)
+        list:SetPaintBackground(false)
+        local sheet = propertysheet:AddSheet(catname, list, GAMEMODE.ItemCategoryIcons[catid], false, false)
+        sheet.Tab:SetFont(tabfont)
+        sheet.Tab.GetTabHeight = return30
+        list:EnableVerticalScrollbar(true)
+        list:SetWide(propertysheet:GetWide() - 32)
+        list:SetSpacing(25)
+        list:SetPadding(25)
+
 		for i, tab in ipairs(GAMEMODE.Items) do
 			if tab.Category == catid and tab.WorthShop then
-				hasitems = true
-				break
-			end
-		end
+				if tab.SWEP and not tab.Stats then
+					tab.Stats = {}
 		
-		if hasitems then
-			local list = vgui.Create("DPanelList", propertysheet)
-			list:SetPaintBackground(false)
-			local sheet = propertysheet:AddSheet(catname, list, GAMEMODE.ItemCategoryIcons[catid], false, false)
-			sheet.Tab:SetFont(tabfont)
-			sheet.Tab.GetTabHeight = return30
-			list:EnableVerticalScrollbar(true)
-			list:SetWide(propertysheet:GetWide() - 16)
-			list:SetSpacing(2)
-			list:SetPadding(2)
+					for _, stat in pairs(WeaponStatBarVals) do
+						local statKey, statName, minValue, maxValue, invert, statType = unpack(stat)
+					
+						-- Fetch the actual stat value from the SWEP
+						local statValue = weapons.GetStored(tab.SWEP)
+						for key in string.gmatch(statKey, "[^.]+") do
+							statValue = statValue and statValue[key]
+						end
+					
+						-- Only add the stat if it exists in the SWEP
+						if statValue then
+							tab.Stats[statKey] = {
+								Name = statName,
+								Value = statValue,
+								Min = minValue,
+								Max = maxValue,
+								Invert = invert,
+								Type = statType
+							}
+						end
+					end
+				end 
+		
+		
 
-			for i, tab in ipairs(GAMEMODE.Items) do
-			local hasitems = false
-				if tab.Category == catid and tab.WorthShop then
-					local button = vgui.Create("ZSWorthButton")
-					button:SetWorthID(tab.Signature or i, i) --pass i as a second argument so that the counters work
-					list:AddItem(button)
-					WorthButtons[i] = button
-				end
-			end
-		end
-	end
+                local button = vgui.Create("ZSWorthButton")
+                button:SetWorthID(tab.Signature or i, i) --pass i as a second argument so that the counters work
 
+                -- Add a label to the button for each stat
+                if tab.Stats then
+                    local xPos = 200 -- Initial x position for the labels
+                    local yPos = 10 -- Initial y position for the labels
+					for _, stat in pairs(tab.Stats) do
+						local label = vgui.Create("DLabel", button)
+						label:SetText(stat.Name .. ": " .. tostring(stat.Value))
+						label:SetFont("ZSHUDFontSmall") -- Set the font of the label
+						label:SizeToContents() -- Make the label only as wide as the text
+						label:SetPos(xPos, yPos) -- Set the position of the label
+						yPos = yPos + label:GetTall() + 5 -- Increase the y position for the next label
+					end
+                end
+
+                list:AddItem(button)
+                WorthButtons[i] = button
+            end
+        end
+    end
+end
 	local worthlab = EasyLabel(frame, "Worth: "..tostring(WorthRemaining), "ZSHUDFontSmall", COLOR_PURPLE)
 	worthlab:SetPos(8, frame:GetTall() - worthlab:GetTall() - 8)
 	frame.WorthLab = worthlab
@@ -592,11 +645,11 @@ function PANEL:Init()
     self:SetText("")
 
     self:DockPadding(6, 6, 6, 6)
-    self:SetTall(132)  -- Increased button height to accommodate larger models and descriptions
+    self:SetTall(190)  -- Increased button height to accommodate larger models and descriptions
 
     local mdlframe = vgui.Create("DEXRoundedPanel", self)
-    mdlframe:SetWide(self:GetTall() * 1.5)  -- Increased model panel width by 50%
-    mdlframe:SetTall(self:GetTall() * 1.5)  -- Increased model panel height by 50%
+    mdlframe:SetWide(self:GetTall() * 2.5)  -- Increased model panel width by 50%
+    mdlframe:SetTall(self:GetTall() * 2.5)  -- Increased model panel height by 50%
     mdlframe:Dock(LEFT)
     mdlframe:DockMargin(0, 0, 10, 0)
 

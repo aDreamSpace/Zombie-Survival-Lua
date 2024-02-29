@@ -68,7 +68,7 @@ end
 						self.Entity:Remove()
 						return
 					end
-					util.BlastDamage(self.Entity, self.Owner, tr.HitPos, 600, 150)
+					util.BlastDamage(self.Entity, self.Owner, tr.HitPos, 1900, 400)
 					local effectdata = EffectData()
 					effectdata:SetOrigin(tr.HitPos)			// Where is hits
 					effectdata:SetNormal(tr.HitNormal)		// Direction of particles

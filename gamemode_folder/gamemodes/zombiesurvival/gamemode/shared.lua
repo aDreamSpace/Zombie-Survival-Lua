@@ -279,7 +279,7 @@ function GM:GetDynamicSpawnsOld(pl)
 end
 
 GM.DynamicSpawnDist = 400
-GM.DynamicSpawnDistBuild = 650
+GM.DynamicSpawnDistBuild = 250
 function GM:DynamicSpawnIsValid(nest, humans, allplayers)
 	if self:ShouldUseAlternateDynamicSpawn() then
 		return self:DynamicSpawnIsValidOld(nest, humans, allplayers)

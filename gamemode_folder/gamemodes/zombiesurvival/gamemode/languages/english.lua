@@ -240,6 +240,16 @@ LANGUAGE.class_spitter               = "MUTATION: Spitter"
 LANGUAGE.class_gigacrab              = "MUTATION: Giga Crab"
 LANGUAGE.class_carni                 = "MUTATION: Carni"
 
+LANGUAGE.class_dweller                = "Dweller"
+LANGUAGE.class_stalker               = "Stalker"
+LANGUAGE.class_advisor               = "Advisor"
+LANGUAGE.class_pheonix						  = "Pheonix"
+LANGUAGE.class_hunter						  = "Hunter"
+LANGUAGE.class_skeletor                 = "Skeletor"
+LANGUAGE.class_icepheonix						  = "Ice Pheonix"
+LANGUAGE.class_mechdog						  = "Mech Dog"
+LANGUAGE.class_scorpio                 = "Scorpio"
+
 
 -- Class descriptions
 LANGUAGE.description_zombie							= "The basic zombie is very durable and has powerful claws.\nIt's hard to keep down, especially if not shot in the head."
@@ -291,6 +301,16 @@ LANGUAGE.description_warlock							  = "Warlock Zombie can damage nearby nails o
 LANGUAGE.description_slapper							  = "Slapper is a giant zombie torso with powerful damage."
 LANGUAGE.description_gregori							  = "Father Gregori is a strong zombie with powers to heal nearby zombies"
 LANGUAGE.description_dreadnaut							  = "Anything it attacks gets smited with fire!"
+LANGUAGE.description_jugg                 = ""
+LANGUAGE.description_dweller						  = "Dwellers can slowly drain the HP of nearby Humans."
+LANGUAGE.description_stalker							  = "Stalkers deal 2.5x the damage to barricades and move quickly."
+LANGUAGE.description_advisor							  = "Combine Advisor is a powerful being with a weapon to shoot orbs."
+LANGUAGE.description_pheonix						  = ""
+LANGUAGE.description_hunter						  = ""
+
+
+
+
 
 -- Class control schemes
 LANGUAGE.controls_zombie							= "> PRIMARY: Claws\n> SECONDARY: Scream\n> RELOAD: Moan\n> SPRINT: Feign death\n> ON FATAL HIT IN LEGS: Revive / Transform"
@@ -335,6 +355,14 @@ LANGUAGE.controls_warlock							  = "> LEFT CLICK: Bite / Swipe"
 LANGUAGE.controls_slapper							  = "> LEFT CLICK: Bite / Swipe"
 LANGUAGE.controls_gregori							  = "> LEFT CLICK: Bite / Swipe"
 LANGUAGE.controls_dreadnaut							  = "> LEFT CLICK: Bite / Swipe"
+LANGUAGE.controls_dweller						  = ""
+LANGUAGE.controls_stalker							  = ""
+LANGUAGE.controls_advisor							  = ""
+LANGUAGE.controls_pheonix						  = ""
+LANGUAGE.controls_hunter						  = ""
+LANGUAGE.controls_jugg                 = ""
+
+
 
 -- The help file... Quite big! I wouldn't blame you if you didn't translate this part.
 LANGUAGE.help_cat_introduction						= "Introduction"

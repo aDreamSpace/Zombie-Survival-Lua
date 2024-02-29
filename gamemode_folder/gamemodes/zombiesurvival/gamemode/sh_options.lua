@@ -326,7 +326,7 @@ GM:AddStartingItem("3mg", "375 machine gun rounds", nil, ITEMCAT_AMMO, 20, nil, 
 
 -- WORTH MELEE 
 
-GM:AddStartingItem("csknf", "Knife", nil, ITEMCAT_MELEE, 25, "cw_melee_knife")
+GM:AddStartingItem("csknf2", "Knife", nil, ITEMCAT_MELEE, 25, "cw_melee_knife")
 GM:AddStartingItem("crwbar", "Crowbar", nil, ITEMCAT_MELEE, 25, "cw_melee_crowbar")
 GM:AddStartingItem("stnbtn", "Stun Baton", nil, ITEMCAT_MELEE, 25, "cw_melee_stunstick")
 GM:AddStartingItem("brknswrd", "Broken Sword", "A sword with most of its blade broken off.\nOnly a madman would choose to fight with such a weapon.", ITEMCAT_MELEE, 30, "cw_melee_brokensword")
@@ -335,10 +335,10 @@ GM:AddStartingItem("sdagger", "Secret Dagger", "A dagger favored by many assassi
 GM:AddStartingItem("cutjavelin", "Cut Javelin", "A javelin cut into a makeshift spear.", ITEMCAT_MELEE, 30, "cw_melee_cjavelin")
 
 
-GM:AddStartingItem("zpaxe", "Axe", nil, ITEMCAT_VMELEE, 30, "weapon_zs_axe")
-GM:AddStartingItem("crwbar", "Crowbar", nil, ITEMCAT_VMELEE, 30, "weapon_zs_crowbar")
-GM:AddStartingItem("stnbtn", "Stun Baton", nil, ITEMCAT_VMELEE, 25, "weapon_zs_stunbaton")
-GM:AddStartingItem("csknf", "Knife", nil, ITEMCAT_VMELEE, 20, "weapon_zs_swissarmyknife")
+GM:AddStartingItem("zpaxe", "Axe", "ACTIVE ABILITY: Sundering Strike", ITEMCAT_VMELEE, 30, "weapon_zs_axe")
+GM:AddStartingItem("vcrwbar", "Crowbar", nil, ITEMCAT_VMELEE, 30, "weapon_zs_crowbar")
+GM:AddStartingItem("vstnbtn", "Stun Baton", nil, ITEMCAT_VMELEE, 25, "weapon_zs_stunbaton")
+GM:AddStartingItem("vcsknf", "Knife", nil, ITEMCAT_VMELEE, 20, "weapon_zs_swissarmyknife")
 GM:AddStartingItem("zpplnk", "Plank", nil, ITEMCAT_VMELEE, 20, "weapon_zs_plank")
 GM:AddStartingItem("zpfryp", "Frying Pan", nil, ITEMCAT_VMELEE, 20, "weapon_zs_fryingpan")
 GM:AddStartingItem("zpcpot", "Cooking Pot", nil, ITEMCAT_VMELEE, 20, "weapon_zs_pot")
@@ -413,7 +413,7 @@ GM:AddStartingItem("detpck", "Detonation Pack", nil, ITEMCAT_OTHER, 15, "weapon_
 GM:AddStartingItem("oxtank", "Oxygen Tank", "Grants signitifantly more underwater breathing time to the user.", ITEMCAT_OTHER, 5, "weapon_zs_oxygentank")
 GM:AddStartingItem("nanite", "Nanite Cloud Bomb", "On throw, it releases a repair cloud that repairs all nearby props for a short time.", ITEMCAT_OTHER, 10, "weapon_zs_nanitecloudbomb")
 GM:AddStartingItem("corogas", "Coro Gas", "Becareful when using this, will dissolve YOU and any zombies near by.", ITEMCAT_OTHER, 10, "weapon_zs_corogas")
-GM:AddStartingItem("cryogas", "Cryo Gas", "Becareful when using this, will freeze and damage you and nearby zombies, and will reduce attack speeds.", ITEMCAT_OTHER, 10, "weapon_zs_crygasgrenade")
+GM:AddStartingItem("medicbomb", "Medic Cloud Bomb", "Heals nearby players for a short time.", ITEMCAT_OTHER, 10, "weapon_zs_mediccloudbomb")
 
 
 -- TRAITS 
@@ -605,27 +605,28 @@ GM:AddPointShopItem("hmg", "HMG", "", ITEMCAT_MG , 1400, "cw_lmg_hmg")
 --
 -- BASE
 
-GM:AddPointShopItem("knife", "Knife", nil, ITEMCAT_VMELEE, 35, "weapon_zs_swissarmyknife")
-GM:AddPointShopItem("axe", "Axe", nil, ITEMCAT_VMELEE, 50, "weapon_zs_axe")
-GM:AddPointShopItem("hooky", "Hook", "You for spending this much on a hook!", ITEMCAT_VMELEE, 55, "weapon_zs_hook")
-GM:AddPointShopItem("crowbar", "Crowbar", nil, ITEMCAT_VMELEE, 60, "weapon_zs_crowbar")
-GM:AddPointShopItem("stunbaton", "Stun Baton", nil, ITEMCAT_VMELEE, 60, "weapon_zs_stunbaton")
-GM:AddPointShopItem("shovel", "Shovel", nil, ITEMCAT_VMELEE, 90, "weapon_zs_shovel")
-GM:AddPointShopItem("sledgehammer", "Sledge Hammer", nil, ITEMCAT_VMELEE, 150, "weapon_zs_sledgehammer")
-GM:AddPointShopItem("butcherknife", "Chef Blade", nil, ITEMCAT_VMELEE, 230, "weapon_zs_butcherknife")
-GM:AddPointShopItem("carver", "Carving Blade", nil, ITEMCAT_VMELEE, 290, "weapon_zs_carver")
-GM:AddPointShopItem("osiris", "Osiris", nil, ITEMCAT_VMELEE, 320, "weapon_zs_osiris")
-GM:AddPointShopItem("excursion", "Excursion Blade", nil, ITEMCAT_VMELEE, 380, "weapon_zs_excursion")
-GM:AddPointShopItem("sawhack", "Saw Hack", nil, ITEMCAT_VMELEE, 400, "weapon_zs_sawhack")
-GM:AddPointShopItem("bustonstick", "Bluster Stick", nil, ITEMCAT_VMELEE, 430, "weapon_zs_bust")
-GM:AddPointShopItem("nukeplank", "Nuclear Plank", nil, ITEMCAT_VMELEE, 480, "weapon_zs_nukeplank")
-GM:AddPointShopItem("megamasher", "Mega-Masher", nil, ITEMCAT_VMELEE, 515, "weapon_zs_megamasher")
-GM:AddPointShopItem("rebellion", "Rebellion", nil, ITEMCAT_VMELEE, 545, "weapon_zs_rebellion")
-GM:AddPointShopItem("arbiter", "Arbiter", nil, ITEMCAT_VMELEE, 585, "weapon_zs_arbiter")
-GM:AddPointShopItem("yamato", "Yamato Blade", nil, ITEMCAT_VMELEE, 635, "weapon_zs_katana")
-GM:AddPointShopItem("psykin", "Psy-Kinetic Blade", nil, ITEMCAT_VMELEE, 780, "weapon_zs_psykineticblade")
-GM:AddPointShopItem("cocknballs", "Golden Cock N Balls", nil, ITEMCAT_VMELEE, 900, "weapon_zs_cocknballs")
-GM:AddPointShopItem("gravestone", "Gravestone", nil, ITEMCAT_VMELEE, 1000, "weapon_zs_gravestone")
+GM:AddPointShopItem("zknife", "Knife", nil, ITEMCAT_VMELEE, 35, "weapon_zs_swissarmyknife")
+GM:AddPointShopItem("zaxe", "Axe", nil, ITEMCAT_VMELEE, 50, "weapon_zs_axe")
+GM:AddPointShopItem("zhooky", "Hook", "You for spending this much on a hook!", ITEMCAT_VMELEE, 55, "weapon_zs_hook")
+GM:AddPointShopItem("zcrowbar", "Crowbar", nil, ITEMCAT_VMELEE, 60, "weapon_zs_crowbar")
+GM:AddPointShopItem("zstunbaton", "Stun Baton", nil, ITEMCAT_VMELEE, 60, "weapon_zs_stunbaton")
+GM:AddPointShopItem("zshovel", "Shovel", nil, ITEMCAT_VMELEE, 90, "weapon_zs_shovel")
+GM:AddPointShopItem("zsledgehammer", "Sledge Hammer", nil, ITEMCAT_VMELEE, 150, "weapon_zs_sledgehammer")
+GM:AddPointShopItem("zbutcherknife", "Chef Blade", nil, ITEMCAT_VMELEE, 230, "weapon_zs_butcherknife")
+GM:AddPointShopItem("zcarver", "Carving Blade", nil, ITEMCAT_VMELEE, 290, "weapon_zs_carver")
+GM:AddPointShopItem("zosiris", "Osiris", nil, ITEMCAT_VMELEE, 320, "weapon_zs_osiris")
+GM:AddPointShopItem("zexcursion", "Excursion Blade", nil, ITEMCAT_VMELEE, 380, "weapon_zs_excursion")
+GM:AddPointShopItem("zsawhack", "Saw Hack", nil, ITEMCAT_VMELEE, 400, "weapon_zs_sawhack")
+GM:AddPointShopItem("zbustonstick", "Bluster Stick", nil, ITEMCAT_VMELEE, 430, "weapon_zs_bust")
+GM:AddPointShopItem("znukeplank", "Nuclear Plank", nil, ITEMCAT_VMELEE, 480, "weapon_zs_nukeplank")
+GM:AddPointShopItem("zmegamasher", "Mega-Masher", nil, ITEMCAT_VMELEE, 515, "weapon_zs_megamasher")
+GM:AddPointShopItem("zrebellion", "Rebellion", nil, ITEMCAT_VMELEE, 545, "weapon_zs_rebellion")
+GM:AddPointShopItem("zarbiter", "Arbiter", nil, ITEMCAT_VMELEE, 585, "weapon_zs_arbiter")
+GM:AddPointShopItem("zyamato", "Yamato Blade", "ACTIVE ABILITY: Temporal Edge", ITEMCAT_VMELEE, 635, "weapon_zs_katana")
+GM:AddPointShopItem("zpsykin", "Psy-Kinetic Blade", nil, ITEMCAT_VMELEE, 780, "weapon_zs_psykineticblade")
+GM:AddPointShopItem("zcocknballs", "Golden Cock N Balls", nil, ITEMCAT_VMELEE, 900, "weapon_zs_cocknballs")
+GM:AddPointShopItem("zgravestone", "Gravestone", nil, ITEMCAT_VMELEE, 1000, "weapon_zs_gravestone")
+
 
 
 -- PULSE WEAPONS
@@ -693,32 +694,32 @@ GM:AddPointShopItem("rpg", "1 Rocket Propelled Grenade", nil, ITEMCAT_AMMO, 30, 
 GM:AddPointShopItem("3rpg", "3 Rocket Propelled Grenades", nil, ITEMCAT_AMMO, 70, nil, function(pl) pl:GiveAmmo(3, "rpg_round", true) end, "models/items/ar2_grenade.mdl") --end,  "models/weapons/w_missle.mdl")
 
 --melee
-GM:AddPointShopItem("knife", "Knife", "A simple knife with no exceptional qualities.", ITEMCAT_MELEE, 5, "cw_melee_knife")
-GM:AddPointShopItem("crowbar", "Crowbar", "A common crowbar, useful for destroying headcrabs.", ITEMCAT_MELEE, 10, "cw_melee_crowbar")
-GM:AddPointShopItem("dagger", "Dagger", "A common dagger, favored for its quick slashes, but has poor range.", ITEMCAT_MELEE, 25, "cw_melee_dagger")
-GM:AddPointShopItem("wspear", "Winged Spear", "A simple spear with pointed ends.", ITEMCAT_MELEE, 35, "cw_melee_wspear")
-GM:AddPointShopItem("stunbaton", "Stun Baton", "A baton which carries an electric charge on power attack.", ITEMCAT_MELEE, 40, "cw_melee_stunstick")
-GM:AddPointShopItem("ssword", "Short Sword", "A lightweight shortsword, which excels in thrusting attacks.", ITEMCAT_MELEE, 50, "cw_melee_shortsword")
-GM:AddPointShopItem("mbreaker", "Mail Breaker", "A powerful dagger which excels in piercing damage.", ITEMCAT_MELEE, 70, "cw_melee_mailbreaker")
-GM:AddPointShopItem("brsword", "Broad Sword", "A sword with a broad blade designed for slashing.", ITEMCAT_MELEE, 80, "cw_melee_broadsword")
-GM:AddPointShopItem("mhammer", "Mirdan Hammer", "A long polearm with a forked hammerhead.", ITEMCAT_MELEE, 90, "cw_melee_mirdanhammer")
-GM:AddPointShopItem("claymore", "Claymore", "A versatile greatsword which combines pointed stab attacks with heavy slashes.", ITEMCAT_MELEE, 100, "cw_melee_claymore")
-GM:AddPointShopItem("ivory", "Ivory Sword", "A sword originally belonging to the ivory knights from an age long ago.", ITEMCAT_MELEE, 120, "cw_melee_ivorysword")
-GM:AddPointShopItem("halberd", "Halberd", "A polearm combining spear and axe, requiring some skill to wield.", ITEMCAT_MELEE, 135, "cw_melee_halberd")
-GM:AddPointShopItem("bivory", "Burnt Ivory Sword", "A sword belonging to the knights who followed the Burnt Ivory King.\nThe ivory is said to be burned by avarice.", ITEMCAT_MELEE, 150, "cw_melee_burntivorysword")
-GM:AddPointShopItem("bnail", "Baby's Nail", "A dagger made from the tooth of a ferocious beast's infant.", ITEMCAT_MELEE, 180, "cw_melee_babynail")
-GM:AddPointShopItem("flamegs", "Flamberge", "A greatsword with a unique, flame-like, blade pattern.", ITEMCAT_MELEE, 180, "cw_melee_flameberge")
-GM:AddPointShopItem("sspear", "Scraping Spear", "A spear made with an extremely pointed tip.", ITEMCAT_MELEE, 215, "cw_melee_sspear")
-GM:AddPointShopItem("strm", "Stormruler", "A sword used by kings that felled mighty giants.", ITEMCAT_MELEE, 240, "cw_melee_stormruler")
-GM:AddPointShopItem("zwei", "Zweihander", "An ultra-greatsword which requires two hands to wield effectively.", ITEMCAT_MELEE, 265, "cw_melee_zweihander")
-GM:AddPointShopItem("stil", "Stiletto", "A powerful and large dagger, used in ceremonies.", ITEMCAT_MELEE, 275, "cw_melee_stiletto")
-GM:AddPointShopItem("scimmy", "Scimitar", "A simple weapon that causes intense bleeding on strikes.", ITEMCAT_MELEE, 370, "cw_melee_scimitar")
-GM:AddPointShopItem("mcleaver", "Meat Cleaver", "A barbaric greatsword which easily slices meat. Fitting for a zombie apocalypse.", ITEMCAT_MELEE, 390, "cw_melee_cleaver")
-GM:AddPointShopItem("lngswrd", "Long Sword", "Proclaimed as top tier by /dsg/, this sword is capable of a solid dps output.", ITEMCAT_MELEE, 450, "cw_melee_longsword")
-GM:AddPointShopItem("moonblade", "Moonlight Greatsword", "A greatsword that is seen throughout history, seemingly outside time itself. Its origins are unknown.", ITEMCAT_MELEE, 475, "cw_melee_moonblade")
-GM:AddPointShopItem("dbsmasher", "Dragon Bone Smasher", "An ultra-greatsword that requires inhuman strength to carry.", ITEMCAT_MELEE, 650, "cw_melee_dragonsmasher")
+GM:AddPointShopItem("cknife", "Knife", "A simple knife with no exceptional qualities.", ITEMCAT_MELEE, 5, "cw_melee_knife")
+GM:AddPointShopItem("ccrowbar", "Crowbar", "A common crowbar, useful for destroying headcrabs.", ITEMCAT_MELEE, 10, "cw_melee_crowbar")
+GM:AddPointShopItem("cdagger", "Dagger", "A common dagger, favored for its quick slashes, but has poor range.", ITEMCAT_MELEE, 25, "cw_melee_dagger")
+GM:AddPointShopItem("cwspear", "Winged Spear", "A simple spear with pointed ends.", ITEMCAT_MELEE, 35, "cw_melee_wspear")
+GM:AddPointShopItem("cstunbaton", "Stun Baton", "A baton which carries an electric charge on power attack.", ITEMCAT_MELEE, 40, "cw_melee_stunstick")
+GM:AddPointShopItem("cssword", "Short Sword", "A lightweight shortsword, which excels in thrusting attacks.", ITEMCAT_MELEE, 50, "cw_melee_shortsword")
+GM:AddPointShopItem("cmbreaker", "Mail Breaker", "A powerful dagger which excels in piercing damage.", ITEMCAT_MELEE, 70, "cw_melee_mailbreaker")
+GM:AddPointShopItem("cbrsword", "Broad Sword", "A sword with a broad blade designed for slashing.", ITEMCAT_MELEE, 80, "cw_melee_broadsword")
+GM:AddPointShopItem("cmhammer", "Mirdan Hammer", "A long polearm with a forked hammerhead.", ITEMCAT_MELEE, 90, "cw_melee_mirdanhammer")
+GM:AddPointShopItem("cclaymore", "Claymore", "A versatile greatsword which combines pointed stab attacks with heavy slashes.", ITEMCAT_MELEE, 100, "cw_melee_claymore")
+GM:AddPointShopItem("civory", "Ivory Sword", "A sword originally belonging to the ivory knights from an age long ago.", ITEMCAT_MELEE, 120, "cw_melee_ivorysword")
+GM:AddPointShopItem("chalberd", "Halberd", "A polearm combining spear and axe, requiring some skill to wield.", ITEMCAT_MELEE, 135, "cw_melee_halberd")
+GM:AddPointShopItem("cbivory", "Burnt Ivory Sword", "A sword belonging to the knights who followed the Burnt Ivory King.\nThe ivory is said to be burned by avarice.", ITEMCAT_MELEE, 150, "cw_melee_burntivorysword")
+GM:AddPointShopItem("cbnail", "Baby's Nail", "A dagger made from the tooth of a ferocious beast's infant.", ITEMCAT_MELEE, 180, "cw_melee_babynail")
+GM:AddPointShopItem("cflamegs", "Flamberge", "A greatsword with a unique, flame-like, blade pattern.", ITEMCAT_MELEE, 180, "cw_melee_flameberge")
+GM:AddPointShopItem("csspear", "Scraping Spear", "A spear made with an extremely pointed tip.", ITEMCAT_MELEE, 215, "cw_melee_sspear")
+GM:AddPointShopItem("cstrm", "Stormruler", "A sword used by kings that felled mighty giants.", ITEMCAT_MELEE, 240, "cw_melee_stormruler")
+GM:AddPointShopItem("czwei", "Zweihander", "An ultra-greatsword which requires two hands to wield effectively.", ITEMCAT_MELEE, 265, "cw_melee_zweihander")
+GM:AddPointShopItem("cstil", "Stiletto", "A powerful and large dagger, used in ceremonies.", ITEMCAT_MELEE, 275, "cw_melee_stiletto")
+GM:AddPointShopItem("cscimmy", "Scimitar", "A simple weapon that causes intense bleeding on strikes.", ITEMCAT_MELEE, 370, "cw_melee_scimitar")
+GM:AddPointShopItem("cmcleaver", "Meat Cleaver", "A barbaric greatsword which easily slices meat. Fitting for a zombie apocalypse.", ITEMCAT_MELEE, 390, "cw_melee_cleaver")
+GM:AddPointShopItem("clngswrd", "Long Sword", "Proclaimed as top tier by /dsg/, this sword is capable of a solid dps output.", ITEMCAT_MELEE, 450, "cw_melee_longsword")
+GM:AddPointShopItem("cmoonblade", "Moonlight Greatsword", "A greatsword that is seen throughout history, seemingly outside time itself. Its origins are unknown.", ITEMCAT_MELEE, 475, "cw_melee_moonblade")
+GM:AddPointShopItem("cdbsmasher", "Dragon Bone Smasher", "An ultra-greatsword that requires inhuman strength to carry.", ITEMCAT_MELEE, 650, "cw_melee_dragonsmasher")
 --GM:AddPointShopItem("rune", "Rune Sword", "A deeply enchanted sword capable of devastating damage.", ITEMCAT_MELEE, 800, "cw_melee_runesword")
-GM:AddPointShopItem("dslayer", "Dragon Slayer Ultra-Greatsword", "A greatsword which resembles a large chunk of iron than a sword.\nToo big, too thick, too heavy to be a sword.\nBut a sword, none-the-less.", ITEMCAT_MELEE, 900, "cw_melee_dragonslayer")
+GM:AddPointShopItem("cdslayer", "Dragon Slayer Ultra-Greatsword", "A greatsword which resembles a large chunk of iron than a sword.\nToo big, too thick, too heavy to be a sword.\nBut a sword, none-the-less.", ITEMCAT_MELEE, 900, "cw_melee_dragonslayer")
 
 --tools
 GM:AddPointShopItem("crphmr", "Hammer", nil, ITEMCAT_TOOLS, 15, "cw_tool_hammer").NoClassicMode = true
@@ -772,8 +773,9 @@ ITEMCAT_OTHER, 25, "weapon_zs_molotov")
 GM:AddPointShopItem("detpck", "Detonation Pack", nil, ITEMCAT_OTHER, 50, "weapon_zs_detpack")
 GM:AddPointShopItem("nanite", "Nanite Cloud Bomb", "On throw, it releases a repair cloud that repairs all nearby props for a short time.", ITEMCAT_OTHER, 50, "weapon_zs_nanitecloudbomb")
 GM:AddPointShopItem("corogas", "Coro Gas", "Becareful when using this, will dissolve YOU and any zombies near by.", ITEMCAT_OTHER, 50, "weapon_zs_corogas")
-GM:AddPointShopItem("cryogas", "Cryo Gas", "Becareful when using this, will freeze and damage you and nearby zombies, and will reduce attack speeds.", ITEMCAT_OTHER, 60, "weapon_zs_crygasgrenade")
-GM:AddPointShopItem("rpg", "RPG7", "Ready to blow up even the bigger things.", ITEMCAT_OTHER, 200, "m9k_rpg7")
+GM:AddPointShopItem("cryogas", "Cryo Gas", "Becareful when using this, will freeze and damage you and nearby zombies, and will reduce attack speeds.", ITEMCAT_OTHER, 50, "weapon_zs_crygasgrenade")
+GM:AddPointShopItem("zmedgas", "Medic Cloud Bomb", "Heals nearby players for a short time.", ITEMCAT_OTHER, 50, "weapon_zs_mediccloudbomb")
+GM:AddPointShopItem("zrpg", "RPG7", "Ready to blow up even the bigger things.", ITEMCAT_OTHER, 200, "m9k_rpg7")
 
 -- TRAITS 
 
@@ -936,7 +938,7 @@ GM.TimeAddedPerWave = 30
 GM.TimeAddedPerWaveClassic = 10
 
 -- New players are put on the zombie team if the current wave is this or higher. Do not put it lower than 1 or you'll break the game.
-GM.NoNewHumansWave = 5
+GM.NoNewHumansWave = 3
 
 -- Humans can not commit suicide if the current wave is this or lower.
 GM.NoSuicideWave = 0
@@ -945,14 +947,14 @@ GM.NoSuicideWave = 0
 GM.WaveZeroLength = 240 --210 is 3 minutes and 30 seconds, the previous values caused god cades to be made and give too much time for humans to prepare. Do not change this PLEASE.
 
 -- Time humans have between waves to do stuff without NEW zombies spawning. Any dead zombies will be in spectator (crow) view and any living ones will still be living.
-GM.WaveIntermissionLength = 90 --FUCK OFF. This should be no more than 60 seconds, otherwise with recading and everything else, it is simply unfair for zombies.
--- ^ ALSO PLEASE DONT CHANGE THIS OFF OF 60
+GM.WaveIntermissionLength = 60 --FUCK OFF. This should be no more than 60 seconds, otherwise with recading and everything else, it is simply unfair for zombies.
+
 
 -- For Classic Mode
 GM.WaveIntermissionLengthClassic = 20
 
 -- Time in seconds between end round and next map.
-GM.EndGameTime = 30
+GM.EndGameTime = 45
 
 -- How many clips of ammo guns from the Worth menu start with. Some guns such as shotguns and sniper rifles have multipliers on this.
 GM.SurvivalClips = 2
@@ -961,7 +963,7 @@ GM.SurvivalClips = 2
 GM.LastHumanSound = Sound("music/HL2_song15.mp3")
 
 -- Sound played when humans all die.
-GM.AllLoseSound = Sound("music/HL2_song16.mp3") -- music/HL2_song16.mp3
+GM.AllLoseSound = Sound("soundtrack/hl2/track02.mp3") -- music/HL2_song16.mp3
 
 -- Sound played when humans survive.
 GM.HumanWinSound = Sound("music/HL1_song25_REMIX3.mp3")

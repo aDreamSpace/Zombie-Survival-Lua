@@ -93,14 +93,15 @@ SWEP.FullAimViewmodelRecoil = true
 SWEP.ADSFireAnim = false
 SWEP.ForceBackToHipAfterAimedShot = true
 SWEP.GlobalDelayOnShoot = 0.5
-SWEP.CustomizationMenuScale = 0.018
+SWEP.CustomizationMenuScale = 0.01
 SWEP.LuaVMRecoilAxisMod = {vert = 1, hor = 1, roll = 1, forward = 1.5, pitch = 1}
 
 SWEP.Attachments = {[3] = {header = "Sight", offset = {-350, -550},  atts = {"md_makeshift", "md_schmidt_shortdot", "md_uecw_csgo_acog", "md_nightforce_nxs"}},
 	[1] = {header = "Barrel", offset = {-550, -150},  atts = {"md_cblongbarrel","md_cblongerbarrel"}},
-	[4] = {header = "Stock", offset = {500, -120}, atts = {"bg_cbstock"}},
+	[4] = {header = "Stock", offset = {1000, 20}, atts = {"bg_cbstock"}},
 	[2] = {header = "Grip", offset = {-350, 300}, atts = {"md_foregrip"}},
 	[5] = {header = "Perks", offset = {-100, 200}, atts = {"Cod_Extreme_Conditioning", "Cod_Fast_Hands", "Cod_Steady_Aim", "Perk_Force", "Cod_Double_Tap", "Perk_Stopping_Power"}},
+	["+reload"] = {header = "Ammo", offset = {250, -400}, atts = {"am_flechetterounds2", "am_slugrounds2", "am_shrapnel2", "am_minishells2", "am_sabots2", "am_dragonsbreath2", "am_explosive2", "am_kristallnacht2"}}
 }
 	
 --SWEP.AttachmentDependencies = {} -- this is on a PER ATTACHMENT basis, NOTE: the exclusions and dependencies in the Attachments table is PER CATEGORY
@@ -161,7 +162,7 @@ SWEP.SpreadPerShot = 0.007
 SWEP.SpreadCooldown = 0.13
 SWEP.Shots = 20
 SWEP.ClumpSpread = .04
-SWEP.Damage = 12
+SWEP.Damage = 25
 SWEP.DeployTime = 0.5
 SWEP.ForcedHipWaitTime = 1
 

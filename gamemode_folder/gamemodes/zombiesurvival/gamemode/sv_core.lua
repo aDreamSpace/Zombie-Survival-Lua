@@ -1,9 +1,10 @@
 local zombieBossClasses = {"Carni", "Spitter", "Puker", "Brute", "The Butcher"}
-local maxBossesAllowed = 4
+local maxBossesAllowed = 9
 local minPlayersForBossSpawn = 26
 local enableBossClassAssignment = CreateConVar("enable_boss_class_assignment", "1", FCVAR_ARCHIVE, "Enable/disable boss class assignment (1 = enabled, 0 = disabled)")
 
--- Function to set a random zombie boss class to a player
+util.AddNetworkString("PlayerBecomeBoss")
+
 local function setZombieBossClass(ply)
     if ply:Team() == TEAM_ZOMBIES then
         -- Check if the player is already one of the boss classes
@@ -18,8 +19,10 @@ local function setZombieBossClass(ply)
         ply:SetZombieClassName(bossClass)
         ply:UnSpectateAndSpawn()
 
-        -- Display a notification
-        PrintMessage(HUD_PRINTTALK, ply:Nick() .. " has become a " .. bossClass .. "!", COLOR_ORANGE)
+        -- Send a notification to the client
+        net.Start("PlayerBecomeBoss")
+        net.WriteString(ply:Nick() .. " has become " .. bossClass .. "!")
+        net.Broadcast()
     end
 end
 
@@ -42,14 +45,21 @@ concommand.Add("toggleBossClassAssignment", function(ply, cmd, args)
 end)
 
 -- Set zombie boss classes periodically
-timer.Create("ZombieBossClassSetter", 30, 0, function()
+-- Set zombie boss classes periodically
+timer.Create("ZombieBossClassSetter", 45, 0, function()
     -- Check if boss class assignment is enabled
     if not enableBossClassAssignment:GetBool() then
         return
     end
 
-    -- Check if it's not wave 0 and there are enough players for boss spawn
-    if GetGlobalInt("Wave") == 0 or #player.GetAll() < minPlayersForBossSpawn then
+    -- Check if it's wave 3, not wave 0 and there are enough players for boss spawn
+    local wave = GAMEMODE:GetWave()
+    if wave == 3 or wave == 0 or #player.GetAll() < minPlayersForBossSpawn then
+        return
+    end
+
+    -- Check if it's wave intermission
+    if not GAMEMODE:GetWaveActive() then
         return
     end
 
@@ -73,6 +83,10 @@ timer.Create("ZombieBossClassSetter", 30, 0, function()
     local bossCount = 0
     while bossCount < 3 do
         local ply = table.Random(alivePlayers)
+        -- If the selected player is already a boss, continue with the next iteration
+        if table.HasValue(zombieBossClasses, ply:GetZombieClass()) then
+            continue
+        end
         setZombieBossClass(ply)
         bossCount = bossCount + 1
         if bossCount >= maxBossesAllowed then
@@ -125,12 +139,21 @@ end)
 if SERVER then
     -- List of entity names
     local entities = {
-        "sigil_barricadetower", 
-        "sigil_medicaltower", 
-        "sigil_ammotower", 
-        "sigil_pointstower",
-        "sigil_pctower"
+        {name = "sigil_barricadetower", chance = 0.35},
+        {name = "sigil_medicaltower", chance = 0.3},
+        {name = "sigil_ammotower", chance = 0.25},
+        {name = "sigil_pointstower", chance = 0.2},
+        {name = "sigil_pctower", chance = 0.3},
+        {name = "zsigil_undead_haunted", chance = 0.4}
     }
+
+    -- We have big maps, so we twice the amount of sigils
+    local mapExceptions = {
+        ["zs_abandoned_mall_v10"] = 6,
+        ["zs_abandoned_mallmart_b4"] = 6,
+        ["zs_damiens_house_v2c"] = 8, -- This map is very small, so we need more sigils 
+    }
+
     local evilentities = {"zsigil_undead_haunted"}
     -- Table to store the node locations
     local nodeLocations = {}
@@ -208,38 +231,67 @@ if SERVER then
         end
     end)
 
-    -- Spawn the entities and set up the spawn points
-    local function SpawnEntities()
-        LoadNodes()
-        -- Repeat the entities to match the number of nodes
-        local repeatedEntities = {}
-        for i = 1, #nodeLocations do
-            local entityName = entities[(i - 1) % #entities + 1]
-            table.insert(repeatedEntities, entityName)
+    local function selectEntity()
+        local totalChance = 0
+        for _, entity in ipairs(entities) do
+            totalChance = totalChance + entity.chance
         end
+    
+        local rand = math.random() * totalChance
+        for _, entity in ipairs(entities) do
+            if rand < entity.chance then
+                return entity.name
+            end
+            rand = rand - entity.chance
+        end
+    end
 
-        -- Spawn an entity at each node
-        for i, entityName in ipairs(repeatedEntities) do
-            local location = nodeLocations[i]
-            if location then
-                local ent = ents.Create(entityName)
-                if IsValid(ent) then
-                    ent:SetPos(location)
-                    ent:Spawn()
-                end
+    local function shuffleTable(t)
+        for i = #t, 2, -1 do
+            local j = math.random(i)
+            t[i], t[j] = t[j], t[i]
+        end
+    end
+
+-- Function to spawn entities
+
+local function SpawnEntities()
+    LoadNodes()
+
+    -- Shuffle the node locations
+    shuffleTable(nodeLocations)
+
+    -- Determine the number of entities to spawn
+    local mapName = game.GetMap()
+    local numEntitiesToSpawn = mapExceptions[mapName] or math.min(#nodeLocations, 3)
+
+    -- Spawn an entity at each node
+    for i = 1, numEntitiesToSpawn do
+        local location = nodeLocations[i]
+        if location then
+            local entityName = selectEntity()
+            local ent = ents.Create(entityName)
+            if IsValid(ent) then
+                ent:SetPos(location)
+                ent:Spawn()
             end
         end
     end
-    hook.Add("InitPostEntity", "SpawnEntities", SpawnEntities)
+end
+
+
+hook.Add("InitPostEntity", "SpawnEntities", SpawnEntities)
 
     -- Handle entity destruction
     hook.Add("EntityRemoved", "HandleEntityDestruction", function(ent)
         if table.HasValue(entities, ent:GetClass()) or table.HasValue(evilentities, ent:GetClass()) then
             local newEntityName
-            if table.HasValue(entities, ent:GetClass()) then
-                newEntityName = evilentities[math.random(#evilentities)]
+            if table.HasValue(evilentities, ent:GetClass()) then
+                -- If the entity that was removed is an evil entity, spawn a new entity from the entities table
+                newEntityName = entities[math.random(#entities)].name
             else
-                newEntityName = entities[math.random(#entities)]
+                -- If the entity that was removed is not an evil entity, spawn a new entity from the evilentities table
+                newEntityName = evilentities[math.random(#evilentities)].name
             end
             local newEnt = ents.Create(newEntityName)
             if IsValid(newEnt) then
@@ -269,22 +321,101 @@ local zombieNPCs = {
     "npc_fastzombie",
     "npc_poisonzombie",
     "npc_zombine"
-}
-
--- Function to add points to a player
-local function AddPoints(ply, points)
+  }
+  
+  -- Function to add points to a player
+  local function AddPoints(ply, points)
     -- Assuming you have a function or method to add points to a player
     ply:AddPoints(points)
-end
+  end
+  
+  -- Function to determine points awarded for each NPC class
+  local function GetPointsForNPC(npcClass)
+    -- Define points and health/damage data for each NPC class in a table
+    local npcData = {
+      ["npc_zombie"] = {
+        points = 3,
+        damage = 30,
+        health = 300,
+      },
+      ["npc_fastzombie"] = {
+        points = 5,
+        damage = 8,
+        health = 225,
+      },
+      ["npc_poisonzombie"] = {
+        points = 7,
+        damage = 45,
+        health = 425,
+        poisonDamage = 5,
+      },
+      ["npc_zombine"] = {
+        points = 10,
+        damage = 20,
+        health = 200,
+      },
+    }
+    
+    -- Return the points and data based on the NPC class, or defaults if not found
+    return npcData[npcClass] or { points = 1, damage = 10, health = 100 }
+  end
 
--- Hook into the NPC death event
-hook.Add("OnNPCKilled", "AddPointsOnZombieDeath", function(npc, attacker, inflictor)
-    -- Check if the NPC is a zombie and the attacker is a player
-    if table.HasValue(zombieNPCs, npc:GetClass()) and attacker:IsPlayer() then
-        -- Add points to the player
-        AddPoints(attacker, 3)  -- Replace 10 with the number of points you want to give
+-- Store the initial health of NPCs in a table
+-- Store the initial health of NPCs in a table
+local npcInitialHealth = {}
+
+-- Hook into the NPC spawn event
+hook.Add("NPCSpawned", "SetNPCHPDamage", function(npc)
+    -- Check if the NPC is in the zombie list
+    if table.HasValue(zombieNPCs, npc:GetClass()) then
+        -- Get NPC data based on its class
+        local npcData = GetPointsForNPC(npc:GetClass())
+      
+        if npcData then
+            -- Store the NPC's initial health
+            npcInitialHealth[npc] = npcData.health
+            -- Set the NPC's health
+            npc:SetHealth(npcData.health)
+        end
     end
 end)
+
+-- Hook into the ScaleNPCDamage event
+hook.Add("ScaleNPCDamage", "ControlNPCHP", function(npc, hitgroup, dmginfo)
+    -- Check if the NPC's initial health is stored
+    if npcInitialHealth[npc] then
+        -- Calculate the NPC's current health
+        local health = npcInitialHealth[npc] - dmginfo:GetDamage()
+
+        -- If the NPC's health is less than or equal to 0, kill the NPC
+        if health <= 0 then
+            dmginfo:SetDamage(npc:Health())
+        else
+            -- Otherwise, scale the damage so that the NPC's health is correct
+            dmginfo:SetDamage(dmginfo:GetDamage() * (npc:Health() / health))
+            -- Update the NPC's initial health
+            npcInitialHealth[npc] = health
+        end
+    end
+end)
+  
+  -- Hook into the NPC death event
+  hook.Add("OnNPCKilled", "AddPointsOnZombieDeath", function(npc, attacker, inflictor)
+    -- Check if the attacker is a player
+    if attacker:IsPlayer() then
+      -- Get NPC data based on its class
+      local npcData = GetPointsForNPC(npc:GetClass())
+  
+      -- Check if data exists and award points
+      if npcData then
+        AddPoints(attacker, npcData.points)
+        
+    
+        
+      end
+    end
+  end)
+
 
 
 -- ZOMBIE ABILITIES & POWERS
@@ -331,11 +462,86 @@ hook.Add("Think", "AncientNightmareSpeedReduction", function()
     end
 end)
 
--- Puke Pus Damage Resistance 
+-- Class Damage Resistance Function 
 
 function GM:EntityTakeDamage(target, dmginfo)
-    if target:IsPlayer() and target:GetZombieClassTable().Name == "Puke Pus" then
-        local reducedDamage = dmginfo:GetDamage() * 0.70
-        dmginfo:SetDamage(reducedDamage)
+    if target:IsPlayer() then
+        local class = target:GetZombieClassTable()
+        if class.DamageMultiplier then
+            local reducedDamage = dmginfo:GetDamage() * class.DamageMultiplier
+            dmginfo:SetDamage(reducedDamage)
+        end
     end
 end
+
+
+
+util.AddNetworkString("NPCDeathPoints")
+
+-- Hook into the NPC death event
+hook.Add("OnNPCKilled", "AddPointsOnZombieDeath", function(npc, attacker, inflictor)
+    -- Check if the attacker is a player
+    if attacker:IsPlayer() then
+        -- Get NPC data based on its class
+        local npcData = GetPointsForNPC(npc:GetClass())
+
+        -- Check if data exists and award points
+        if npcData then
+            AddPoints(attacker, npcData.points)
+
+            -- Send a network message to the client with the points and the NPC's position
+            net.Start("NPCDeathPoints")
+            net.WriteInt(npcData.points, 16)
+            net.WriteVector(npc:GetPos())
+            net.Send(attacker)
+        end
+    end
+end)
+
+
+-- Soundtrack System
+-- SUCH a headache 
+-- Define the soundtracks
+local soundtracks = {
+    "soundtrack/hl2/track01.mp3",
+    "soundtrack/hl2/track02.mp3",
+    "soundtrack/hl2/track03.mp3",
+    "soundtrack/hl2/track04.mp3",
+    "soundtrack/hl2/track05.mp3",
+    "soundtrack/hl2/track06.mp3",
+    "soundtrack/hl2/track07.mp3",
+    "soundtrack/hl2/track08.mp3",
+    "soundtrack/hl2/track09.mp3",
+    "soundtrack/hl2/track10.mp3",
+    "soundtrack/hl2/track11.mp3",
+    "soundtrack/hl2/track12.mp3",
+    "soundtrack/hl2/track13.mp3",
+    "soundtrack/hl2/track14.mp3",
+    "soundtrack/hl2/track15.mp3",
+    "soundtrack/hl2/track16.mp3",
+    "soundtrack/hl2/track17.mp3",
+    "soundtrack/hl2/track18.mp3",
+    "soundtrack/hl2/track19.mp3",
+    "soundtrack/hl2/track20.mp3",
+    "soundtrack/hl2/track21.mp3",
+    "soundtrack/hl2/track22.mp3",
+    "soundtrack/hl2/track23.mp3",
+    "soundtrack/hl2/track24.mp3",
+    "soundtrack/hl2/track25.mp3",
+}
+
+util.AddNetworkString("PlaySoundtrack")
+
+hook.Add("PlayerInitialSpawn", "PlayInitialSoundtrack", function(ply)
+    net.Start("PlaySoundtrack")
+    net.WriteString(soundtracks[math.random(#soundtracks)])
+    net.Send(ply)
+
+    timer.Simple(320, function() -- 320 seconds (Over 5 minutes) -- Was too lazy to put sound durations in
+        if IsValid(ply) then
+            net.Start("PlaySoundtrack")
+            net.WriteString(soundtracks[math.random(#soundtracks)])
+            net.Send(ply)
+        end
+    end)
+end)

@@ -94,15 +94,36 @@ function CLASS:DoAnimationEvent(pl, event, data)
 end
 
 if SERVER then
-	function CLASS:OnSpawned(pl)
-		local status = pl:GiveStatus("overridemodel")
-		if status and status:IsValid() then
-			status:SetModel("models/Zombie/Poison.mdl")
-		end
+    function CLASS:OnSpawned(pl)
+        local status = pl:GiveStatus("overridemodel")
+        if status and status:IsValid() then
+            status:SetModel("models/Zombie/Poison.mdl")
+        end
 
-		pl:CreateAmbience("bonemeshambience")
-	end
+        pl:CreateAmbience("bonemeshambience")
+
+        -- Start a timer that runs every second
+        timer.Create("HealZombies"..pl:EntIndex(), 1, 0, function()
+            if not IsValid(pl) then return end  -- Stop if the Bonemesh is no longer valid
+
+            -- Get all entities in a certain radius around the Bonemesh
+            local entities = ents.FindInSphere(pl:GetPos(), 200)
+
+            -- Loop over all entities
+            for _, ent in pairs(entities) do
+                -- If the entity is a player and is on TEAM_UNDEAD, increase their health
+                if ent:IsPlayer() and ent:Team() == TEAM_UNDEAD then
+                    ent:SetHealth(math.min(ent:GetMaxHealth(), ent:Health() + 35))  -- Increase health by 35, but don't go above max health
+                end
+            end
+        end)
+    end
+
+    function CLASS:SwitchedAway(pl)
+        timer.Remove("HealZombies"..pl:EntIndex())  -- Stop the timer when the Bonemesh is no longer the current class
+    end
 end
+
 
 if not CLIENT then return end
 

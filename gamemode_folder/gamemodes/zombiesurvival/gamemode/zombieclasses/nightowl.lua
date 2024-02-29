@@ -39,30 +39,30 @@ function CLASS:PlayerFootstep(pl, vFootPos, iFoot, strSoundName, fVolume, pFilte
 end
 
 function CLASS:CalcMainActivity(pl, velocity)
-	if pl:WaterLevel() >= 3 then
-		return ACT_HL2MP_SWIM_PISTOL, -1
-	end
+    if pl:WaterLevel() >= 3 then
+        return ACT_HL2MP_SWIM, -1
+    end
 
-	if pl:Crouching() and pl:OnGround() then
-		if velocity:Length2DSqr() <= 1 then
-			return ACT_HL2MP_IDLE_CROUCH_ZOMBIE, -1
-		end
+    if pl:Crouching() and pl:OnGround() then
+        return ACT_HL2MP_WALK_CROUCH, -1
+    end
 
-		return ACT_HL2MP_WALK_CROUCH_ZOMBIE_01 - 1 + math_ceil((CurTime() / 4 + pl:EntIndex()) % 3), -1
-	end
+    if velocity:Length2DSqr() > 0.5 then
+        return ACT_HL2MP_RUN_FAST, -1
+    end
 
-	return ACT_HL2MP_RUN_ZOMBIE, -1
+    return ACT_HL2MP_IDLE, -1
 end
 
 function CLASS:UpdateAnimation(pl, velocity, maxseqgroundspeed)
-	local len2d = velocity:Length2D()
-	if len2d > 0.5 then
-		pl:SetPlaybackRate(math.min(len2d / maxseqgroundspeed, 3))
-	else
-		pl:SetPlaybackRate(1)
-	end
+    local len2d = velocity:Length2D()
+    if len2d > 0.5 then
+        pl:SetPlaybackRate(math.min(len2d / maxseqgroundspeed, 3))
+    else
+        pl:SetPlaybackRate(1)
+    end
 
-	return true
+    return true
 end
 
 function CLASS:DoAnimationEvent(pl, event, data)

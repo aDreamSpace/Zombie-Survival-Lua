@@ -41,7 +41,6 @@ SWEP.WalkSpeed = SPEED_FASTEST
 
 SWEP.UseMelee1 = true
 
-SWEP.StaminaUse = 6
 
 SWEP.HitGesture = ACT_HL2MP_GESTURE_RANGE_ATTACK_MELEE
 SWEP.MissGesture = SWEP.HitGesture

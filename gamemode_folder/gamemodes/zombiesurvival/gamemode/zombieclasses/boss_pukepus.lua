@@ -13,7 +13,7 @@ CLASS.FearPerInstance = 1
 
 CLASS.Health = 5500
 CLASS.SWEP = "weapon_zs_pukepus"
-
+CLASS.DamageMultiplier = 0.50 
 CLASS.Model = Model("models/Zombie/Poison.mdl")
 
 CLASS.Speed = 185

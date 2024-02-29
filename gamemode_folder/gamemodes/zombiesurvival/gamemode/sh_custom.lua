@@ -1,3 +1,4 @@
+
 --anti juke
 hook.Add("OnPlayerHitGround", "CrouchReset", function(ply, water, floater, speed)
 	if ply:IsValid() and ply:Alive() then

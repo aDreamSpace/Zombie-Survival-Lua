@@ -38,7 +38,6 @@ SWEP.MeleeRange = 110
 SWEP.MeleeSize = 0.875
 SWEP.Primary.Delay = 0.5
 
-SWEP.StaminaUse = 15
 
 SWEP.WalkSpeed = SPEED_FASTEST
 

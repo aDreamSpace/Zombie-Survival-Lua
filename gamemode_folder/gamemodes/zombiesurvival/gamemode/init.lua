@@ -195,14 +195,6 @@ function GM:Initialize()
 	if string.find(mapname, "_obj_", 1, true) or string.find(mapname, "objective", 1, true) then
 		self.ObjectiveMap = true
 	end
-	-- Perk Limitters 
-
-	if ply:IsPlayer() and ply:Team() == TEAM_HUMANS then
-  	  if ply:GetWalkSpeed() > 260 then
-        ply:SetWalkSpeed(260)
-    end
-end
-
 	--[[if string.sub(mapname, 1, 3) == "zm_" then
 		NOZOMBIEGASSES = true
 	end]]
@@ -429,15 +421,23 @@ function GM:RemoveUnusedEntities()
 	util.RemoveAll("prop_ragdoll")
 
 	-- Remove NPCs because first of all this game is PvP and NPCs can cause crashes.
-	
+	util.RemoveAll("npc_maker")
+	util.RemoveAll("npc_template_maker")
+	util.RemoveAll("npc_zombie")
+	util.RemoveAll("npc_zombie_torso")
+	util.RemoveAll("npc_fastzombie")
+	util.RemoveAll("npc_headcrab")
+	util.RemoveAll("npc_headcrab_fast")
+	util.RemoveAll("npc_headcrab_black")
+	util.RemoveAll("npc_poisonzombie")
 
 	-- Such a headache. Just remove them all.
 	util.RemoveAll("item_ammo_crate")
 
 	-- Shouldn't exist.
-	util.RemoveAll("item_suitcharger")
+	util.RemoveAll("item_suit*")
+	util.RemoveAll("func_recharge")
 end
-
 
 local weaponreplacements = {
 weapon_zs_owens = "cw_pist_cz75",
@@ -1436,6 +1436,10 @@ function GM:EndRound(winner)
 	self.RoundEndedTime = CurTime()
 	ROUNDWINNER = winner
 
+	for _, client in ipairs(player.GetAll()) do
+        client:ConCommand("stopsound")
+    end
+	
 	if self.OverrideEndSlomo == nil or self.OverrideEndSlomo then
 		game.SetTimeScale(0.25)
 		timer.Simple(2, function() game.SetTimeScale(1) end)
@@ -3613,6 +3617,9 @@ VoiceSetTranslate["models/player/dewobedil/touhou/junko/default_p.mdl"] = VOICES
 
 
 function GM:PlayerSpawn(pl)
+
+	
+
 	pl:StripWeapons()
 	pl:RemoveStatus("confusion", false, true)
 
@@ -3666,7 +3673,7 @@ function GM:PlayerSpawn(pl)
 			if #desiredname == 0 then
 				pl:SelectRandomPlayerModel()
 			else	
-			pl:SetModel("models/player/Group03/male_04.mdl")
+			pl:SetModel("models/player/Group01/male_07.mdl")
 			end
 		elseif classtab.UsePreviousModel then
 			local curmodel = string.lower(pl:GetModel())
@@ -3765,10 +3772,10 @@ function GM:PlayerSpawn(pl)
 		pl.PackedItems = {}
 
 		local desiredname = pl:GetInfo("cl_playermodel")
-		local modelname = "models/player/AR_combine_soldier03B.mdl"
+		local modelname = "models/player/Group01/male_07.mdl"
 		local lowermodelname = string.lower(modelname)
 		if table.HasValue(self.RestrictedModels, lowermodelname) then
-			modelname = "models/player/AR_combine_soldier03B.mdl"
+			modelname = "models/player/Group01/male_07.mdl"
 			lowermodelname = modelname
 		end
 		pl:SetModel(modelname)

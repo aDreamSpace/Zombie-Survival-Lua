@@ -3,7 +3,7 @@ local function pointslabelThink(self)
 	if self.m_LastPoints ~= points then
 		self.m_LastPoints = points
 
-		self:SetText("Points to spend: "..points)
+		self:SetText("Points: "..points)
 		self:SizeToContents()
 	end
 end
@@ -105,11 +105,15 @@ local function ItemPanelThink(self)
                 self.m_NameLabel:SetTextColor(COLOR_WHITE)
                 self.m_NameLabel:InvalidateLayout()
                 self.m_BuyButton:SetImage("zombiesurvival/cwui/buy.png")
+				self.m_BuyButton:SetSize(64, 64)
+				self.m_BuyButton:SetPos(800, 10) -- Adjust the position of the button here
             else
-                self:AlphaTo(90, 0.75, 0)
-                self.m_NameLabel:SetTextColor(COLOR_RED)
-                self.m_NameLabel:InvalidateLayout()
-                self.m_BuyButton:SetImage("zombiesurvival/cwui/nobuy.png")
+					self:AlphaTo(90, 0.75, 0)
+					self.m_NameLabel:SetTextColor(COLOR_RED)
+					self.m_NameLabel:InvalidateLayout()
+					self.m_BuyButton:SetImage("zombiesurvival/cwui/nobuy.png")
+					self.m_BuyButton:SetSize(64, 64)
+					self.m_BuyButton:SetPos(800, 10) -- Adjust the position of the button here
             end
         end
 
@@ -477,10 +481,10 @@ function GM:OpenPointsShop()
 				
 						-- Adjust the size of the panel to fit the text
 						local textHeight = desclab:GetTall()
-						itempan:SetSize(list:GetWide(), textHeight + 250)  -- Add 50 for padding
+						itempan:SetSize(list:GetWide(), textHeight + 150)  -- Add 50 for padding
 				
 						local button = vgui.Create("DImageButton", itempan)
-						button:SetImage("icon16/lorry_add.png")
+						button:SetImage("zombiesurvival/cwui/buy.png")
 						button:SizeToContents()
 						button:SetPos(itempan:GetWide() - 90 - button:GetWide(), itempan:GetTall() - 150)
 						button:SetTooltip("Purchase "..name)
@@ -507,44 +511,82 @@ function GM:OpenPointsShop()
 			propertysheet:AddSheet(catname, list, GAMEMODE.ItemCategoryIcons[catid], false, false)
 			list:EnableVerticalScrollbar(true)
 			list:SetWide(propertysheet:GetWide() - 32)
-			list:SetSpacing(2)
-			list:SetPadding(2)
+			list:SetSpacing(25)
+			list:SetPadding(25)
 		
-			local kek
-
 			for i, tab in ipairs(GAMEMODE.Items) do
 				if tab.Category == catid and tab.PointShop and catid ~= ITEMCAT_ATT then
+					if tab.SWEP and not tab.Stats then
+						tab.Stats = {}
+		
+						for _, stat in pairs(WeaponStatBarVals) do
+							local statKey, statName, minValue, maxValue, invert, statType = unpack(stat)
+		
+							-- Fetch the actual stat value from the SWEP
+							local statValue = weapons.GetStored(tab.SWEP)
+							for key in string.gmatch(statKey, "[^.]+") do
+								statValue = statValue and statValue[key]
+							end
+		
+							-- Only add the stat if it exists in the SWEP
+							if statValue then
+								tab.Stats[statKey] = {
+									Name = statName,
+									Value = statValue,
+									Min = minValue,
+									Max = maxValue,
+									Invert = invert,
+									Type = statType
+								}
+							end
+						end
+					end 
+		
 					local itempan = vgui.Create("DPanel")
-					itempan:SetSize(list:GetWide(), 125)
+					itempan:SetSize(list:GetWide(), 225)
 					itempan.ID = tab.Signature or i
 					itempan.Think = ItemPanelThink
 					itempan.cost = tab.price or tab.Worth
 					list:AddItem(itempan)
-			
+		
+					-- Add a label to the button for each stat
+					if tab.Stats then
+						local xPos = 200 -- Initial x position for the labels
+						local yPos = 10 -- Initial y position for the labels
+						for _, stat in pairs(tab.Stats) do
+							local label = vgui.Create("DLabel", itempan)
+							label:SetText(stat.Name .. ": " .. tostring(stat.Value))
+							label:SetFont("ZSHUDFontSmall") -- Set the font of the label
+							label:SizeToContents() -- Make the label only as wide as the text
+							label:SetPos(xPos, yPos) -- Set the position of the label
+							yPos = yPos + label:GetTall() + 5 -- Increase the y position for the next label
+						end
+					end
+		
 					local mdlframe = vgui.Create("DPanel", itempan)
 					mdlframe:SetSize(128, 128)
-					mdlframe:SetPos(350, 4)
-			
+					mdlframe:SetPos(550, 4)
+		
 					local iconTable = killicon.Get(tab.SWEP or tab.Name)
 					if iconTable and iconTable[1] then
 						local iconPanel = vgui.Create("DImage", mdlframe)
 						iconPanel:SetSize(mdlframe:GetSize())
 						iconPanel:SetImage(iconTable[1])  -- Use the first element of the table
 					end
-			
+		
 					if tab.SWEP or tab.Countables then
 						local counter = vgui.Create("ItemAmountCounter", itempan)
 						counter:SetItemID(i)
 					end
-			
+		
 					local name = tab.Name or ""
 					local namelab = EasyLabel(itempan, name, "ZSHUDFontSmall", COLOR_WHITE)
 					namelab:SetPos(22, itempan:GetTall() * 0.5 - namelab:GetTall() * 0.5)
 					itempan.m_NameLabel = namelab
-			
+		
 					local pricelab = EasyLabel(itempan, tostring(tab.Worth).." Points", "ZSHUDFontSmallest")
-					pricelab:SetPos(22, itempan:GetTall() - pricelab:GetTall() - 2)
-			
+					pricelab:SetPos(52, itempan:GetTall() - pricelab:GetTall() - 52)
+					
 					local button = vgui.Create("DImageButton", itempan)
 					button:SetImage("icon16/lorry_add.png")
 					button:SizeToContents()
@@ -553,7 +595,7 @@ function GM:OpenPointsShop()
 					button.ID = itempan.ID
 					button.DoClick = PurchaseDoClick
 					itempan.m_BuyButton = button
-			
+		
 					if weptab and weptab.Primary then
 						local ammotype = weptab.Primary.Ammo
 						if ammonames[ammotype] then
@@ -567,20 +609,24 @@ function GM:OpenPointsShop()
 							ammobutton.DoClick = BuyAmmoDoClick
 						end
 					end
-			
+		
 					if tab.NoClassicMode and isclassic or tab.NoZombieEscape and GAMEMODE.ZombieEscape then
 						itempan:SetAlpha(120)
 					end
 				end
 			end
-			
 		end
+		if activetab then
+			if propertysheet and propertysheet.Items and propertysheet.Items[activetab] then
+				propertysheet:SetActiveTab(propertysheet.Items[activetab].Tab)
+			else
+				print("Error: propertysheet, propertysheet.Items, or propertysheet.Items[activetab] is nil")
+			end
+		end
+		frame:MakePopup()
+		frame:CenterMouse()
+		
 	end
-	if activetab then
-		propertysheet:SetActiveTab(propertysheet.Items[activetab].Tab)
-	end
-	frame:MakePopup()
-	frame:CenterMouse()
+end 
 
-end
 GM.OpenPointShop = GM.OpenPointsShop

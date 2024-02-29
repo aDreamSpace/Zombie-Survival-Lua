@@ -50,17 +50,21 @@ function SWEP:Initialize()
 end
 
 function SWEP:GetCone()
-	if not self.Owner:OnGround() or self.ConeMax == self.ConeMin then return self.ConeMax end
+    if not IsValid(self.Owner) or not self.Owner:OnGround() or self.ConeMax == self.ConeMin then return self.ConeMax end
 
-	local basecone = self.ConeMin
-	local conedelta = self.ConeMax - basecone
+    local basecone = self.ConeMin
+    local conedelta = self.ConeMax - basecone
 
-	local multiplier = math.min(self.Owner:GetVelocity():Length() / self.WalkSpeed, 1) * 0.5
-	if not self.Owner:Crouching() then multiplier = multiplier + 0.25 end
-	if not self:GetIronsights() then multiplier = multiplier + 0.25 end
+    local multiplier = 0
+    if self.WalkSpeed ~= 0 then
+        multiplier = math.min(self.Owner:GetVelocity():Length() / self.WalkSpeed, 1) * 0.5
+    end
+    if not self.Owner:Crouching() then multiplier = multiplier + 0.25 end
+    if not self:GetIronsights() then multiplier = multiplier + 0.25 end
 
-	return basecone + conedelta * multiplier ^ self.ConeRamp
+    return basecone + conedelta * multiplier ^ self.ConeRamp
 end
+
 
 function SWEP:PrimaryAttack()
 	if not self:CanPrimaryAttack() then return end
@@ -170,16 +174,17 @@ function SWEP:GetIronsights()
 end
 
 function SWEP:CanPrimaryAttack()
-	if self.Owner:IsHolding() or self.Owner:GetBarricadeGhosting() then return false end
+    if not IsValid(self.Owner) or self.Owner:IsHolding() or self.Owner:GetBarricadeGhosting() then return false end
 
-	if self:Clip1() < self.RequiredClip then
-		self:EmitSound("Weapon_Pistol.Empty")
-		self:SetNextPrimaryFire(CurTime() + math.max(0.25, self.Primary.Delay))
-		return false
-	end
+    if self:Clip1() < self.RequiredClip then
+        self:EmitSound("Weapon_Pistol.Empty")
+        self:SetNextPrimaryFire(CurTime() + math.max(0.25, self.Primary.Delay))
+        return false
+    end
 
-	return self:GetNextPrimaryFire() <= CurTime()
+    return self:GetNextPrimaryFire() <= CurTime()
 end
+
 
 function SWEP:SecondaryAttack()
 	if self:GetNextSecondaryFire() <= CurTime() and not self.Owner:IsHolding() then

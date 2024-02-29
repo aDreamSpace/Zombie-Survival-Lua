@@ -77,12 +77,16 @@ cmds.setselected = function( selcat, LineID )
 	if xlib.animRunning then xlib.animQueue_forceStop() end
 
 	local cmd = ULib.cmds.translatedCmds[cmds.selcmd]
-	if cmd.args[2] and ( cmd.args[2].type == ULib.cmds.PlayersArg or cmd.args[2].type == ULib.cmds.PlayerArg ) then
-		cmds.plist:Open( cmd.args[2] )
-	else
-		cmds.argslist:Open( cmd, true )
-	end
-	xlib.animQueue_start()
+    if cmd then  -- Check that cmd is not nil
+        if cmd.args[2] and ( cmd.args[2].type == ULib.cmds.PlayersArg or cmd.args[2].type == ULib.cmds.PlayerArg ) then
+            cmds.plist:Open( cmd.args[2] )
+        else
+            cmds.argslist:Open( cmd, true )
+        end
+    else
+        print("Command not found: " .. tostring(cmds.selcmd))  -- Print an error message
+    end
+    xlib.animQueue_start()
 end
 
 function cmds.refreshPlist( arg )

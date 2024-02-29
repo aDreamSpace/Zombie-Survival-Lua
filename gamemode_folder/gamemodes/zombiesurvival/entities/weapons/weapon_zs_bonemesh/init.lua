@@ -9,7 +9,6 @@ end
 
 local function DoFleshThrow(pl, wep)
 	if pl:IsValid() and pl:Alive() and wep:IsValid() then
-		pl:ResetSpeed()
 
 		local startpos = pl:GetPos()
 		startpos.z = pl:GetShootPos().z
@@ -52,8 +51,7 @@ function SWEP:SecondaryAttack()
 	self:SetSwingAnimTime(CurTime() + 1)
 	self.Owner:DoAnimationEvent(ACT_RANGE_ATTACK2)
 	self.Owner:EmitSound("NPC_PoisonZombie.Throw")
-	self.Owner:SetSpeed(1)
-	self:SetNextSecondaryFire(CurTime() + 1.6)
+	self:SetNextSecondaryFire(CurTime() + 0.6)
 	self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
 
 	timer.Simple(0.6, function() DoSwing(owner, self) end)

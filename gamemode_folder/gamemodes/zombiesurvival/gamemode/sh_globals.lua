@@ -87,7 +87,7 @@ CARRY_DRAG_MASS = 9000
 -- Anything bigger than this is dragged regardless of mass.
 CARRY_DRAG_VOLUME = 999999
 -- Humans are slowed by this amount per kg carried...
-CARRY_SPEEDLOSS_PERKG = 1
+CARRY_SPEEDLOSS_PERKG = 0.0005 
 -- but can never be slower than this.
 CARRY_SPEEDLOSS_MINSPEED = 150
 
@@ -154,7 +154,7 @@ GM.AmmoNames["pistol"] = "Pistol"
 GM.AmmoNames["smg1"] = "SMG"
 GM.AmmoNames["357"] = "Rifle"
 GM.AmmoNames["xbowbolt"] = "Bolts"
-GM.AmmoNames["buckshot"] = "Buckshot"
+GM.AmmoNames["Buckshot"] = "Buckshot"
 GM.AmmoNames["sniperround"] = "Boards"
 GM.AmmoNames["grenade"] = "Grenades"
 GM.AmmoNames["thumper"] = "Turrets"

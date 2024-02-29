@@ -61,31 +61,36 @@ local function draw_GetFontHeight(font)
 end
 
 local function draw_SimpleText(text, font, x, y, colour, xalign, yalign)
-	surface_SetFont(font)
+    surface_SetFont(font)
+    local w, h = surface_GetTextSize(text)
 
-	if xalign == TEXT_ALIGN_CENTER then
-		w, h = surface_GetTextSize( text )
-		x = x - w / 2
-	elseif xalign == TEXT_ALIGN_RIGHT then
-		w, h = surface_GetTextSize( text )
-		x = x - w
-	end
+    -- Check if w is nil
+    if not w then
+        print("surface_GetTextSize returned nil for width. Check your font.")
+        return
+    end
 
-	if yalign == TEXT_ALIGN_CENTER then
-		h = draw_GetFontHeight(font)
-		y = y - h / 2
-	elseif yalign == TEXT_ALIGN_BOTTOM then
-		h = draw_GetFontHeight(font)
-		y = y - h
-	end
+    if xalign == TEXT_ALIGN_CENTER then
+        x = x - w / 2
+    elseif xalign == TEXT_ALIGN_RIGHT then
+        x = x - w
+    end
 
-	surface_SetTextPos(x, y)
-	if colour then
-		surface_SetTextColor(colour.r, colour.g, colour.b, colour.a)
-	else
-		surface_SetTextColor(255, 255, 255, 255)
-	end
-	surface_DrawText(text)
+    if yalign == TEXT_ALIGN_CENTER then
+        h = draw_GetFontHeight(font)
+        y = y - h / 2
+    elseif yalign == TEXT_ALIGN_BOTTOM then
+        h = draw_GetFontHeight(font)
+        y = y - h
+    end
+
+    surface_SetTextPos(x, y)
+    if colour then
+        surface_SetTextColor(colour.r, colour.g, colour.b, colour.a)
+    else
+        surface_SetTextColor(255, 255, 255, 255)
+    end
+    surface_DrawText(text)
 end
 
 local curX, curY

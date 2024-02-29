@@ -1533,8 +1533,68 @@ surface.CreateFont("Snow5", {font = "Roboto", size = 10})
 
 local strParticle = "⬤"
 local colParticle = COLOR_PURPLE
+local rate = 0.033
+local anglerate = 0.01
+
 function AddSnowToPanel(panel, max)
-end	
+	max = max or 25
+
+	local w, h = panel:GetWide(), panel:GetTall()
+	local particles = {}
+	local angle = 0
+
+	local canvas = vgui.Create("DPanel", panel)
+	canvas:StretchToParent(0, 0, 0, 0)
+	canvas:SetDrawBackground(false)
+	canvas:SetMouseInputEnabled(false)
+	canvas:SetDrawOnTop(true)
+	canvas.Paint = function(me, w, h)
+		for _, v in ipairs (particles) do
+			draw.SimpleText(strParticle, v[5], v[1], v[2], colParticle)
+		end
+	end
+	canvas.Think = function(me)
+		local rt = RealTime()
+		if (me.m_fNextThink and me.m_fNextThink > rt) then
+			return end
+		
+		me.m_fNextThink = rt + rate
+		angle = angle + anglerate
+
+		for i, v in ipairs (particles) do
+			v[1] = v[1] + math.sin(angle) * 2
+			v[2] = v[2] + math.cos(angle + v[4]) + 1 + v[3] * 0.5
+
+			if (v[1] < -5 or v[1] > w + 5 or v[2] > h) then
+				if (i % 3 > 0) then
+					v[1] = math.random() * w
+					v[2] = -10
+				else
+					if (math.sin(angle) > 0) then
+						v[1] = -5
+						v[2] = math.random() * h
+					else
+						v[1] = w + 5
+						v[2] = math.random() * h
+					end
+				end
+			end
+		end
+	end
+
+	for i = 1, max do
+		local r = math.Round(math.random() * 4 + 1)
+	
+		table.insert(particles, {
+			math.random() * w,
+			math.random() * h,
+			r,
+			math.random() * max,
+			"Snow" .. math.random(r)
+		})
+	end
+end
+
 --[[
 --purpose: simply hook to notify players of things, such as LH music availablity
 hook.Add("PlayerBindPress", "Notify", function(ply, bind, pressed)

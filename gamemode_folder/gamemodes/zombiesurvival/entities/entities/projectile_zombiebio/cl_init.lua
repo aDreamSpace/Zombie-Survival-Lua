@@ -45,7 +45,7 @@ function ENT:OnRemove()
 	local pos = self:GetPos()
 	local alt = self:GetDTBool(0)
 
-	sound.Play("weapons/physcannon/energy_bounce1.wav", pos, 75, math.random(124, 135))
+	sound.Play("weapons/physcannon/energy_bounce1.wav", pos, 75, math.random(69, 82))
 
 	local emitter = ParticleEmitter(pos)
 	emitter:SetNearClip(24, 32)

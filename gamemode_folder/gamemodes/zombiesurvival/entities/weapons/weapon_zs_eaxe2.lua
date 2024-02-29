@@ -39,8 +39,6 @@ SWEP.MeleeKnockBack = 32
 
 SWEP.WalkSpeed = SPEED_NORMAL
 
---SWEP.StaminaUse = 20
-
 SWEP.SwingTime = 0.85
 
 SWEP.SwingRotation = Angle(0, -20, -40)

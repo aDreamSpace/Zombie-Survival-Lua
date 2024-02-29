@@ -126,36 +126,61 @@ end
 if not CLIENT then return end
 
 CLASS.Icon = "materials/zombiesurvival/killicons2/juggernaut.png"
-CLASS.IconColor = COLOR_BLUE 
+CLASS.IconColor = COLOR_RORANGE 
 
 local render_SetMaterial = render.SetMaterial
 local render_DrawSprite = render.DrawSprite
 local angle_zero = angle_zero
 local LocalToWorld = LocalToWorld
 local matSkin = Material("models/weapons/v_crossbow/rebar_glow")
-local colGlow = Color(240, 36, 0)
+local colGlow = Color(162, 0, 255)
 local matGlow = Material("sprites/glow04_noz")
 local vecEyeLeft = Vector(4, -4.6, -1)
 local vecEyeRight = Vector(4, -4.6, 1)
 
 function CLASS:PrePlayerDraw(pl)
-	render.SetColorModulation(0.4, 0.1, 0.6)
-	render.ModelMaterialOverride(matSkin)
+    render.SetColorModulation(0.984, 0.012, 0.012)
+    render.ModelMaterialOverride(matSkin)
 end
 
 function CLASS:PostPlayerDraw(pl)
-	render.SetColorModulation(0.4, 0.1, 0.6)
-	render.ModelMaterialOverride()
-	if pl == MySelf and not pl:ShouldDrawLocalPlayer() or pl.SpawnProtection then return end
+    render.SetColorModulation(0.984, 0.012, 0.012)
+    render.ModelMaterialOverride()
 
-	local id = pl:LookupBone("ValveBiped.Bip01_Head1")
-	if id and id > 0 then
-		local pos, ang = pl:GetBonePositionMatrixed(id)
-		if pos then
-			render_SetMaterial(matGlow)
-			render_DrawSprite(LocalToWorld(vecEyeLeft, angle_zero, pos, ang), 4, 4, colGlow)
-			render_DrawSprite(LocalToWorld(vecEyeRight, angle_zero, pos, ang), 4, 4, colGlow)
-			
-		end
-	end
+    if pl == MySelf and not pl:ShouldDrawLocalPlayer() or pl.SpawnProtection then return end
+
+    local id = pl:LookupBone("ValveBiped.Bip01_Head1")
+    if id and id > 0 then
+        local pos, ang = pl:GetBonePositionMatrixed(id)
+        if pos then
+            render_SetMaterial(matGlow)
+            render_DrawSprite(LocalToWorld(vecEyeLeft, angle_zero, pos, ang), 4, 4, colGlow)
+            render_DrawSprite(LocalToWorld(vecEyeRight, angle_zero, pos, ang), 4, 4, colGlow)
+        end
+    end
+
+    local min, max = pl:GetModelBounds()
+    local numParticles = 1
+    local emitter = ParticleEmitter(pl:GetPos())
+
+    for i = 1, numParticles do
+        local pos = Vector(
+            math.Rand(min.x, max.x),
+            math.Rand(min.y, max.y),
+            math.Rand(min.z, max.z)
+        )
+
+        local particle = emitter:Add("sprites/glow04_noz", pl:LocalToWorld(pos))
+
+        if particle then
+            particle:SetDieTime(1)
+            particle:SetStartAlpha(255)
+            particle:SetEndAlpha(0)
+            particle:SetStartSize(3)
+            particle:SetEndSize(0)
+            particle:SetColor(255, 251, 0)
+        end
+    end
+
+    emitter:Finish()
 end

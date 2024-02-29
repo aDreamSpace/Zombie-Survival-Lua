@@ -85,14 +85,14 @@ SKIN.PrintName = "Zombie Survival Derma Skin"
 SKIN.Author = "William \"JetBoom\" Moodhe"
 SKIN.DermaVersion = 1
 
-SKIN.bg_color = Color(3, 182, 0)
-SKIN.bg_color_sleep = Color(40, 40, 40, 255)
-SKIN.bg_color_dark = Color(30, 30, 30, 255)
-SKIN.bg_color_bright = Color(80, 80, 80, 255)
+SKIN.bg_color = Color(34, 0, 78)
+SKIN.bg_color_sleep = Color(58, 0, 94)
+SKIN.bg_color_dark = Color(35, 0, 68)
+SKIN.bg_color_bright = Color(34, 0, 63)
 
 SKIN.Colors = {}
 SKIN.Colors.Panel = {}
-SKIN.Colors.Panel.Normal = Color(30, 30, 30, 255)
+SKIN.Colors.Panel.Normal = Color(0, 0, 0, 230)
 
 function SKIN:PaintPanel(panel, w, h)
 	if not panel.m_bBackground then return end
@@ -103,23 +103,23 @@ end
 
 --SKIN.tooltip = Color(190, 190, 190, 230)
 
-local color_frame_background = Color(22, 0, 39, 170)
+local color_frame_background = Color(21, 0, 53, 250)
 
 
 
 SKIN.color_frame_background = color_frame_background
 SKIN.color_frame_border = Color(12, 246, 0)
 
-SKIN.colTextEntryText = Color(10, 10, 10)
+SKIN.colTextEntryText = Color(252, 139, 0)
 SKIN.colTextEntryTextHighlight = Color(30, 255, 0)
 SKIN.colTextEntryTextBorder = Color(142, 86, 3)
 
-SKIN.colPropertySheet = Color(4, 10, 3)
+SKIN.colPropertySheet = Color(0, 0, 0)
 SKIN.colTab = SKIN.colPropertySheet
-SKIN.colTabInactive = Color(25, 25, 25, 155)
+SKIN.colTabInactive = Color(0, 0, 0, 255)
 SKIN.colTabShadow = Color(0, 219, 0)
-SKIN.colTabText	= Color(240, 255, 240, 255)
-SKIN.colTabTextInactive	= Color(240, 255, 240, 120)
+SKIN.colTabText	= Color(0, 251, 247)
+SKIN.colTabTextInactive	= Color(132, 0, 255, 120)
 
 --[[SKIN.colTextEntryBG	= Color( 240, 240, 240, 255 )
 SKIN.colTextEntryBorder	= Color( 20, 20, 20, 255 )
@@ -156,7 +156,7 @@ local texDownEdge = surface.GetTextureID("gui/gradient_down")
 local texRightEdge = surface.GetTextureID("gui/gradient")
 function PaintGenericFrame(panel, x, y, wid, hei, edgesize)
 	edgesize = edgesize or math.ceil(math.min(hei * 0.1, math.min(16, wid * 0.1)))
-	local dedgesize = edgesize * 2
+	local dedgesize = edgesize * 4
 	local hedgesize = edgesize * 0.5
 	DisableClipping(true)
 	surface.DrawRect(x, y, wid, hei)
@@ -224,10 +224,10 @@ SKIN.Colours.Window.TitleActive			= GWEN.TextureColor( 4 + 8 * 0, 508 );
 SKIN.Colours.Window.TitleInactive		= GWEN.TextureColor( 4 + 8 * 1, 508 );
 
 SKIN.Colours.Button = {}
-SKIN.Colours.Button.Normal				= Color(200, 200, 200, 220)
-SKIN.Colours.Button.Hover				= Color(255, 255, 255, 220)
-SKIN.Colours.Button.Down				= Color(255, 255, 255, 255)
-SKIN.Colours.Button.Disabled			= Color(160, 160, 160, 220)
+SKIN.Colours.Button.Normal				= Color(115, 0, 255, 220)
+SKIN.Colours.Button.Hover				= Color(115, 0, 255, 220)
+SKIN.Colours.Button.Down				= Color(115, 0, 255, 220)
+SKIN.Colours.Button.Disabled			=  Color(115, 0, 255, 220)
 
 SKIN.Colours.Tab = {}
 SKIN.Colours.Tab.Active = {}
@@ -293,13 +293,13 @@ function SKIN:PaintButton(panel, w, h)
 	local col
 
 	if panel:GetDisabled() then
-		col = Color(5, 5, 5, 90)
+		col = Color(0, 0, 0, 90)
 	elseif panel.Depressed or panel:IsSelected() or panel:GetToggle() then
-		col = Color(60, 70, 100, 160)
+		col = Color(0, 0, 0, 160)
 	elseif panel.Hovered then
-		col = Color(45, 45, 80, 160)
+		col = Color(0, 0, 0, 160)
 	else
-		col = Color(32, 32, 35, 160)
+		col = Color(0, 0, 0, 160)
 	end
 
 	local edgesize = math.min(math.ceil(w * 0.2), 24)

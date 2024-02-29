@@ -5,7 +5,7 @@
 --this will make it easier to make a logging system later on
 --it is safe to say this will be broken if not used in ZS
 
-local CATEGORY_NAME = "ZS Utility"
+local CATEGORY_NAME = "Project Anon"
 
 
 

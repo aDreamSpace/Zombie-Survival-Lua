@@ -459,7 +459,6 @@ local rot
 local sy
 local size
 
-
 function GM:DrawFearMeter(power, screenscale)
 	if cvars.Number(strCvar, 1) == 0 then return end
 	if currentpower < power then
@@ -470,9 +469,9 @@ function GM:DrawFearMeter(power, screenscale)
 
 
 	w, h = ScrW(), ScrH()
-	wid = wid or 92 * screenscale
-	hei = hei or 92 * screenscale
-	mx, my = w * 0.5 - wid * -5, h - hei
+	wid = wid or 192 * screenscale
+	hei = hei or 192 * screenscale
+	mx, my = w * 0.5 - wid * 0.5, h - hei
 
 	surface_SetMaterial(matFearMeter)
 	surface_SetDrawColor(140, 140, 140, 220)
@@ -498,7 +497,7 @@ function GM:DrawFearMeter(power, screenscale)
 	surface_SetDrawColor(colSpr.r, colSpr.g, colSpr.b, 255)
 	rot = (math.rad(rot + 90) * -1)
 
-	surface_DrawTexturedRect((w * 0.77  - math.max(0, rot * wid * -0.0001)) + math.cos(rot) * (wid / 4 - 8) - 24, (h - hei * 0.5 - math.abs(rot) * hei * 0.00015) + math.sin(rot) * (hei / 4 - 8) - 24, 48, 48)
+	surface_DrawTexturedRect((w * 0.5 - math.max(0, rot * wid * -0.0001)) + math.cos(rot) * (wid / 4 - 8) - 24, (h - hei * 0.5 - math.abs(rot) * hei * 0.00015) + math.sin(rot) * (hei / 4 - 8) - 24, 48, 48)
 
 
 	if MySelf:Team() == TEAM_UNDEAD then

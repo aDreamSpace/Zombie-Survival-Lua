@@ -19,7 +19,6 @@ SWEP.Damage = 25
 SWEP.UppercutDamageMultiplier = 5
 SWEP.HitDistance = 40
 
-SWEP.StaminaUse = 15
 
 SWEP.ViewModelFOV = 52
 SWEP.Primary.Automatic = true 

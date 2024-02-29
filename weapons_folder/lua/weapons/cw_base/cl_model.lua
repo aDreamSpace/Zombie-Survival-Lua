@@ -75,22 +75,28 @@ function SWEP:getRenderTargetSize()
 end
 
 function SWEP:GetTracerOrigin()
-	if self.dt.State == CW_AIMING and self.SimulateCenterMuzzle then
-		return self.CenterPos
-	end
+    local owner = IsValid(self) and self:GetOwner() or nil
 
-	local tInfo = self:getMuzzlePosition()
-	if tInfo and tInfo.Pos then
-		return tInfo.Pos
-	else
-		print("GetTracerOrigin Called with Invalid MuzzlePosition!")
-		debug.Trace() --where is this coming from?
-		local owner = self:GetOwner() --and how is this happening?
-		print(owner)
-		print(self)
-	end
-	
-	return nil --where will returning nil cause an error down the line?
+    if not IsValid(self) then
+        print("SWEP:GetTracerOrigin() called on invalid entity!")
+        return Vector(0, 0, 0)
+    end
+
+    if self.dt.State == CW_AIMING and self.SimulateCenterMuzzle then
+        return self.CenterPos
+    end
+
+    local tInfo = self:getMuzzlePosition()
+    if tInfo and tInfo.Pos then
+        return tInfo.Pos
+    else
+        print("GetTracerOrigin Called with Invalid MuzzlePosition!")
+        debug.Trace() --where is this coming from?
+        print(owner)
+        print(self)
+    end
+
+    return Vector(0, 0, 0) -- Return a default position instead of nil
 end
 
 function SWEP:FireAnimationEvent(pos, ang, event, name)
@@ -1606,58 +1612,55 @@ local owner
 local bone
 local strBone = "ValveBiped.Bip01_R_Hand"
 function SWEP:DrawWorldModel()
-	if self.dt.Safe then
-		if self.CHoldType != self.RunHoldType then
-			self:SetHoldType(self.RunHoldType)
-			self.CHoldType = self.RunHoldType
-		end
-	else
-		if self.dt.State == CW_RUNNING or self.dt.State == CW_ACTION then
-			if self.CHoldType != self.RunHoldType then
-				self:SetHoldType(self.RunHoldType)
-				self.CHoldType = self.RunHoldType
-			end
-		else
-			if self.CHoldType != self.NormalHoldType then
-				self:SetHoldType(self.NormalHoldType)
-				self.CHoldType = self.NormalHoldType
-			end
-		end
-	end
-	
-	owner = self:GetOwner()
-	if owner:IsValid() and owner.ShadowMan then return end
-	
-	if self.DrawTraditionalWorldModel then
-		self:DrawModel()
-	else
-		wm = self.WMEnt
-		if IsValid(wm) then
-			if owner:IsValid() then
-				bone = owner:LookupBone(strBone)
-				if not bone then return end
-				pos, ang = GetBonePosition(owner, bone) --this causes issues with traces and worldmodel lagging, such a headache, if only matrices didn't flip out
-				if pos and ang then
-					RotateAroundAxis(ang, Right(ang), self.WMAng[1])
-					RotateAroundAxis(ang, Up(ang), self.WMAng[2])
-					RotateAroundAxis(ang, Forward(ang), self.WMAng[3])
+    if self.dt.Safe then
+        if self.CHoldType != self.RunHoldType then
+            self:SetHoldType(self.RunHoldType)
+            self.CHoldType = self.RunHoldType
+        end
+    else
+        if self.dt.State == CW_RUNNING or self.dt.State == CW_ACTION then
+            if self.CHoldType != self.RunHoldType then
+                self:SetHoldType(self.RunHoldType)
+                self.CHoldType = self.RunHoldType
+            end
+        else
+            if self.CHoldType != self.NormalHoldType then
+                self:SetHoldType(self.NormalHoldType)
+                self.CHoldType = self.NormalHoldType
+            end
+        end
+    end
 
-					pos = pos + self.WMPos[1] * Right(ang) 
-					pos = pos + self.WMPos[2] * Forward(ang)
-					pos = pos + self.WMPos[3] * Up(ang)
-					
-					wm:SetRenderOrigin(pos)
-					wm:SetRenderAngles(ang)
-					wm:DrawModel()
-				end
-			else
-				wm:SetRenderOrigin(self:GetPos())
-				wm:SetRenderAngles(self:GetAngles())
-				wm:DrawModel()
-				wm:DrawShadow()
-			end
-		else
-			self:DrawModel()
-		end
-	end
+    local owner = self:GetOwner()
+    if not IsValid(owner) or owner.ShadowMan then return end
+
+    if self.DrawTraditionalWorldModel then
+        if self:IsValid() then
+            self:DrawModel()
+        end
+    else
+        local wm = self.WMEnt
+        if IsValid(wm) then
+            local bone = owner:LookupBone(strBone)
+            if not bone then return end
+            local pos, ang = GetBonePosition(owner, bone)
+            if pos and ang then
+                RotateAroundAxis(ang, Right(ang), self.WMAng[1])
+                RotateAroundAxis(ang, Up(ang), self.WMAng[2])
+                RotateAroundAxis(ang, Forward(ang), self.WMAng[3])
+
+                pos = pos + self.WMPos[1] * Right(ang) 
+                pos = pos + self.WMPos[2] * Forward(ang)
+                pos = pos + self.WMPos[3] * Up(ang)
+                
+                wm:SetRenderOrigin(pos)
+                wm:SetRenderAngles(ang)
+                wm:DrawModel()
+            end
+        else
+            if self:IsValid() then
+                self:DrawModel()
+            end
+        end
+    end
 end

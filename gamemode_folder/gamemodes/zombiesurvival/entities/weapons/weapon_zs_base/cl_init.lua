@@ -28,22 +28,24 @@ function SWEP:AdjustMouseSensitivity()
 end
 
 function SWEP:PreDrawViewModel(vm)
-	if self.ShowViewModel == false then
-		render.SetBlend(0)
-	end
+    if self.ShowViewModel == false then
+        render.SetBlend(0)
+    else
+        render.SetBlend(1)
+    end
 end
 
 function SWEP:PostDrawViewModel(vm)
-	if self.ShowViewModel == false then
-		render.SetBlend(1)
-	end
+    if self.ShowViewModel == false then
+        render.SetBlend(1)
+    end
 
-	if not self.HUD3DPos or GAMEMODE.WeaponHUDMode == 1 then return end
+    if not self.HUD3DPos or GAMEMODE.WeaponHUDMode == 1 then return end
 
-	local pos, ang = self:GetHUD3DPos(vm)
-	if pos then
-		self:Draw3DHUD(vm, pos, ang)
-	end
+    local pos, ang = self:GetHUD3DPos(vm)
+    if pos then
+        self:Draw3DHUD(vm, pos, ang)
+    end
 end
 
 function SWEP:GetHUD3DPos(vm)

@@ -27,6 +27,12 @@ if CLIENT then
 	SWEP.CustomizePos = Vector(0, 0, 0)
 	SWEP.CustomizeAng = Vector(0, 0, 0)
 	
+	SWEP.WElements = {
+		["base"] = { type = "Model", model = "models/newhammer/w_tool_newhammer.mdl", bone = "ValveBiped.Bip01_R_Hand", rel = "", pos = Vector(3.72, 1.447, -0.875), angle = Angle(180, 92.654, 14.664), size = Vector(1.164, 1.164, 1.164), color = Color(255, 255, 255, 255), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
+	}
+	
+
+	
 	SWEP.CustomizationMenuScale = 0.025
 	local text = translate.Get("right_click_to_hammer_nail")
 	local strNails = "nails_x"
@@ -291,7 +297,7 @@ function SWEP:SecondaryAttack()
 	for _, nail in pairs(trent:GetNails()) do
 		if nail:GetDeployer() == owner then
 			count = count + 1
-			if count >= 3 then
+			if count >= 6 then
 				return
 			end
 		end
@@ -307,7 +313,7 @@ function SWEP:SecondaryAttack()
 
 	if trent:IsValid() then
 		for _, nail in pairs(ents.FindByClass("prop_nail")) do
-			if nail:GetParent() == trent and nail:GetActualPos():Distance(tr.HitPos) <= 16 then
+			if nail:GetParent() == trent and nail:GetActualPos():Distance(tr.HitPos) <= 1 then
 				owner:PrintTranslatedMessage(HUD_PRINTCENTER, "too_close_to_another_nail")
 				return
 			end

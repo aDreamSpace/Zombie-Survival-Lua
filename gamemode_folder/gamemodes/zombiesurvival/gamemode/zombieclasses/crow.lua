@@ -13,7 +13,7 @@ CLASS.JumpPower = 230
 CLASS.PainSounds = {"NPC_Crow.Pain"}
 CLASS.DeathSounds = {"NPC_Crow.Die"}
 
-CLASS.Unlocked = true
+CLASS.Unlocked = false 
 
 
 CLASS.Hull = {Vector(-4, -4, 0), Vector(4, 4, 9)}

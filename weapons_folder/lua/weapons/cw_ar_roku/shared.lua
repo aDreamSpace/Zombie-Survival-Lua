@@ -180,20 +180,20 @@ SWEP.Primary.DefaultClip	= 150
 SWEP.Primary.Automatic		= true
 SWEP.Primary.Ammo			= "AR2"
 
-SWEP.FireDelay = 0.064034151547492
+SWEP.FireDelay = 0.054034151547492
 SWEP.FireSound = "CW_ICHI_ROKU_FIRE"
 SWEP.FireSoundSuppressed = "CW_ICHI_ROKU_FIRE_SUPPRESSED"
-SWEP.Recoil = 0.5
+SWEP.Recoil = 0.3
 
-SWEP.HipSpread = 0.155
+SWEP.HipSpread = 0.025
 SWEP.AimSpread = 0.003
 SWEP.VelocitySensitivity = 1.8
 SWEP.MaxSpreadInc = 0.15
 SWEP.SpreadPerShot = 0.015
 SWEP.SpreadCooldown = 0.13
 SWEP.Shots = 1
-SWEP.Damage = 189
-SWEP.DeployTime = 0.6
+SWEP.Damage = 250
+SWEP.DeployTime = 0.3
 
 SWEP.ReloadSpeed = 1.15
 SWEP.ReloadTime = 1.4

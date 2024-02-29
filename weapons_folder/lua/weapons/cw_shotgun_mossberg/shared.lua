@@ -135,7 +135,7 @@ SWEP.Primary.DefaultClip	= 32
 SWEP.Primary.Automatic		= false
 SWEP.Primary.Ammo			= "Buckshot"
 
-SWEP.FireDelay = 1.3
+SWEP.FireDelay = 0.8
 SWEP.FireSound = "CW_M500_FIRE"
 SWEP.FireSoundSuppressed = "CW_M500_FIRESIL"
 SWEP.Recoil = 6
@@ -148,12 +148,12 @@ SWEP.ClumpSpread = 0.013
 SWEP.SpreadPerShot = 0.01
 SWEP.SpreadCooldown = 0.8
 SWEP.Shots = 13
-SWEP.Damage = 23
+SWEP.Damage = 30
 SWEP.DeployTime = 1
 
-SWEP.ReloadStartTime = 0.5
-SWEP.InsertShellTime = 0.7
-SWEP.ReloadFinishWait = 1.3
+SWEP.ReloadStartTime = 0.2
+SWEP.InsertShellTime = 0.4
+SWEP.ReloadFinishWait = 1
 SWEP.ShotgunReload = true
 
 SWEP.Chamberable = false

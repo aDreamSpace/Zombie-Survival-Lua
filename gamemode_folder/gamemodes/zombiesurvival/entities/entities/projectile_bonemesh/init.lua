@@ -76,18 +76,16 @@ function ENT:Explode()
 end
 
 function ENT:PhysicsCollide(data, physobj)
-	if 20 < data.Speed and 0.2 < data.DeltaTime then
-		self:EmitSound("physics/body/body_medium_impact_hard"..math.random(6)..".wav", 74, math.Rand(95, 105))
-	end
+    if 20 < data.Speed and 0.2 < data.DeltaTime then
+        self:EmitSound("physics/body/body_medium_impact_hard"..math.random(6)..".wav", 74, math.Rand(95, 105))
+    end
 
-	local ent = data.HitEntity
-	if ent and ent:IsValid() and ent:IsPlayer() and ent:Team() ~= TEAM_UNDEAD then
-		self.ExplodeTime = 0
-		self:NextThink(CurTime())
-	else
-		local normal = data.OurOldVelocity:GetNormalized()
-		local DotProduct = data.HitNormal:Dot(normal * -1)
-
-		physobj:SetVelocityInstantaneous((2 * DotProduct * data.HitNormal + normal) * math.max(100, data.Speed) * 0.9)
-	end
+    local ent = data.HitEntity
+    if ent and ent:IsValid() and ent:IsPlayer() and ent:Team() ~= TEAM_UNDEAD then
+        self.ExplodeTime = 0
+        self:NextThink(CurTime())
+    else
+        -- Stop the physics object's motion
+        physobj:EnableMotion(false)
+    end
 end

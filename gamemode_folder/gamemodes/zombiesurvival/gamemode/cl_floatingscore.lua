@@ -48,3 +48,4 @@ function GM:FloatingScore(victim, effectname, frags, flags, override_allow)
 	end
 	util.Effect(effectname, effectdata, true, true)
 end
+

@@ -190,7 +190,7 @@ SWEP.SpreadPerShot = 0.012
 SWEP.SpreadCooldown = 0.33
 SWEP.RecoilToSpread = .2
 SWEP.Shots = 1
-SWEP.Damage = 275
+SWEP.Damage = 230
 SWEP.DeployTime = .8
 
 SWEP.ReloadSpeed = 1

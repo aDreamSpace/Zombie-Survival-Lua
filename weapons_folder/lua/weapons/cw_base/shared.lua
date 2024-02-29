@@ -1196,6 +1196,7 @@ function SWEP:CycleFiremodes()
 	end
 end
 
+
 -- utility funcs
 
 function SWEP:isAiming()

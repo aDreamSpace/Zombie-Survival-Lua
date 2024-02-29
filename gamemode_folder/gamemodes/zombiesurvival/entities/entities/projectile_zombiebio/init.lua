@@ -9,7 +9,7 @@ function ENT:Initialize()
 	
 	self:Fire("kill", "", 15)
 	
-	self:SetModel("models/Items/CrossbowRounds.mdl")
+	self:SetModel("models/Gibs/HGIBS.mdl")
 	self:PhysicsInit(SOLID_VPHYSICS)
 	self:SetTrigger(true)
 	
@@ -67,5 +67,5 @@ function ENT:StartTouch(ent)
 
 	self.Touched[ent] = true
 
-	ent:TakeDamage(10, owner, self)
+	ent:TakeDamage(22, owner, self)
 end

@@ -98,15 +98,34 @@ function CLASS:OnKilled(pl, attacker, inflictor, suicide, headshot, dmginfo, ass
 end
 
 if SERVER then
-	function CLASS:OnSpawned(pl)
-		pl:CreateAmbience("shadeambience")
-		pl:SetRenderMode(RENDERMODE_TRANSALPHA)
-	end
+    function CLASS:OnSpawned(pl)
+        pl:CreateAmbience("shadeambience")
+        pl:SetRenderMode(RENDERMODE_TRANSALPHA)
 
-	function CLASS:SwitchedAway(pl)
-		pl:SetRenderMode(RENDERMODE_NORMAL)
-	end
+        -- Start a timer that runs every second
+        timer.Create("DrainArmor"..pl:EntIndex(), 1, 0, function()
+            if not IsValid(pl) then return end  -- Stop if the Shade is no longer valid
+
+            -- Get all entities in a certain radius around the Shade
+            local entities = ents.FindInSphere(pl:GetPos(), 200)
+
+            -- Loop over all entities
+            for _, ent in pairs(entities) do
+                -- If the entity is a player and is on TEAM_HUMAN, reduce their armor
+                if ent:IsPlayer() and ent:Team() == TEAM_HUMAN then
+                    ent:SetArmor(math.max(0, ent:Armor() - 5))  -- Reduce armor by 5, but don't go below 0
+                end
+            end
+        end)
+    end
+
+    function CLASS:SwitchedAway(pl)
+        pl:SetRenderMode(RENDERMODE_NORMAL)
+        timer.Remove("DrainArmor"..pl:EntIndex())  -- Stop the timer when the Shade is no longer the current class
+    end
 end
+
+
 
 if not CLIENT then return end
 

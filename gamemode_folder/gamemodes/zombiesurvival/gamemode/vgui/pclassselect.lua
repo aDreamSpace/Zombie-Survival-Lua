@@ -31,7 +31,7 @@ end
 
 local PANEL = {}
 
-PANEL.Rows = 2
+PANEL.Rows = 3
 
 local bossmode = false
 local function BossTypeDoClick(self)

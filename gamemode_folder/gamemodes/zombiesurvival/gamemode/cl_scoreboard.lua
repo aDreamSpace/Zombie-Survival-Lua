@@ -83,17 +83,21 @@ function PANEL:PerformLayout()
 	self.m_TitleLabel:SetPos(self.m_TitleLabel:GetWide() / 2, 16)
 	self.m_ServerNameLabel:SetPos(math.min(self:GetWide() - self.m_ServerNameLabel:GetWide(), self:GetWide() * 0.75 - self.m_ServerNameLabel:GetWide() * 0.5), 32 - self.m_ServerNameLabel:GetTall() / 2)
 
-	self.m_HumanHeading:SetSize(self:GetWide() / 2 - 32, 28)
+	self.m_HumanHeading:SetSize(self:GetWide() / 2 - 32, 40) -- Increase the height to 40
 	self.m_HumanHeading:SetPos(self:GetWide() * 0.25 - self.m_HumanHeading:GetWide() * 0.5, 110 - self.m_HumanHeading:GetTall())
 
-	self.m_ZombieHeading:SetSize(self:GetWide() / 2 - 32, 28)
+	self.m_ZombieHeading:SetSize(self:GetWide() / 2 - 32, 40) -- Increase the height to 40
 	self.m_ZombieHeading:SetPos(self:GetWide() * 0.75 - self.m_ZombieHeading:GetWide() * 0.5, 110 - self.m_ZombieHeading:GetTall())
 
-	self.HumanList:SetSize(self:GetWide() / 2 - 24, self:GetTall() - 150)
+	local humanListWidth = self:GetWide() / 2 - 24
+	local humanListHeight = self:GetTall() - 150
+	self.HumanList:SetSize(humanListWidth, humanListHeight)
 	self.HumanList:AlignBottom(16)
 	self.HumanList:AlignLeft(8)
 
-	self.ZombieList:SetSize(self:GetWide() / 2 - 24, self:GetTall() - 150)
+	local zombieListWidth = self:GetWide() / 2 - 24
+	local zombieListHeight = self:GetTall() - 150
+	self.ZombieList:SetSize(zombieListWidth, zombieListHeight)
 	self.ZombieList:AlignBottom(16)
 	self.ZombieList:AlignRight(8)
 end
@@ -218,38 +222,44 @@ end
 local function empty() end
 
 function PANEL:Init()
-	self:SetTall(32)
+	self:SetTall(64)
 
 	self.m_AvatarButton = self:Add("DButton", self)
 	self.m_AvatarButton:SetText(" ")
-	self.m_AvatarButton:SetSize(32, 32)
+	self.m_AvatarButton:SetSize(64, 64)
 	self.m_AvatarButton:Center()
 	self.m_AvatarButton.DoClick = AvatarDoClick
 	self.m_AvatarButton.Paint = empty
 	self.m_AvatarButton.PlayerPanel = self
 
 	self.m_Avatar = vgui.Create("AvatarImage", self.m_AvatarButton)
-	self.m_Avatar:SetSize(32, 32)
+	self.m_Avatar:SetSize(64, 64)
 	self.m_Avatar:SetVisible(false)
 	self.m_Avatar:SetMouseInputEnabled(false)
 
 	self.m_SpecialImage = vgui.Create("DImage", self)
-	self.m_SpecialImage:SetSize(16, 16)
+	self.m_SpecialImage:SetSize(32, 32)
 	self.m_SpecialImage:SetMouseInputEnabled(true)
 	self.m_SpecialImage:SetVisible(false)
 
 	self.m_ClassImage = vgui.Create("DImage", self)
-	self.m_ClassImage:SetSize(22, 22)
+	self.m_ClassImage:SetSize(44, 44)
 	self.m_ClassImage:SetMouseInputEnabled(false)
 	self.m_ClassImage:SetVisible(false)
 
 	self.m_PlayerLabel = EasyLabel(self, " ", "ZSScoreBoardPlayer", COLOR_WHITE)
+	self.m_PlayerLabel:SetFont("ZSScoreBoardPlayer")
+	self.m_PlayerLabel:SetSize(128, 32)
+
 	self.m_ScoreLabel = EasyLabel(self, " ", "ZSScoreBoardPlayerSmall", COLOR_WHITE)
+	self.m_ScoreLabel:SetFont("ZSScoreBoardPlayerSmall")
+	self.m_ScoreLabel:SetSize(128, 32)
 
 	self.m_PingMeter = vgui.Create("DPingMeter", self)
 	self.m_PingMeter.PingBars = 5
 
 	self.m_Mute = vgui.Create("DImageButton", self)
+	self.m_Mute:SetSize(32, 32)
 	self.m_Mute.DoClick = MuteDoClick
 end
 
@@ -329,6 +339,10 @@ function PANEL:Refresh()
 	if #name > 26 then
 		name = string.sub(name, 1, 24)..".."
 	end
+
+	-- Get the player's level and append it to their name
+	local level = SimpleXPGetLevel(pl)
+	name = name .. " (Level " .. level .. ")"
 
 	if pl:IsBot() then
 		name = name.." "..tEmotes[math.random(#tEmotes)]

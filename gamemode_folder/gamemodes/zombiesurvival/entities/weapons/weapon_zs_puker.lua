@@ -18,7 +18,7 @@ SWEP.ShowWorldModel = false
 SWEP.CSMuzzleFlashes = false
 
 SWEP.ReloadSound = Sound("") 
-SWEP.Primary.Damage = 3
+SWEP.Primary.Damage = 4
 SWEP.Primary.Delay = 0.1
 
 SWEP.Primary.ClipSize = 999999

@@ -225,25 +225,27 @@ function meta:Give(weptype)
 end
 
 function meta:StartFeignDeath(force)
-	local feigndeath = self.FeignDeath
-	if feigndeath and feigndeath:IsValid() then
-		if CurTime() >= feigndeath:GetStateEndTime() then
-			feigndeath:SetState(1)
-			feigndeath:SetStateEndTime(CurTime() + 1.5)
-		end
-	elseif force or self:IsOnGround() and not self:IsPlayingTaunt() then
-		local wep = self:GetActiveWeapon()
-		if force or wep:IsValid() and not wep:IsSwinging() and CurTime() > wep:GetNextPrimaryFire() then
-			if wep:IsValid() and wep.StopMoaning then
-				wep:StopMoaning()
-			end
+    local feigndeath = self.FeignDeath
+    if feigndeath and feigndeath:IsValid() then
+        if CurTime() >= feigndeath:GetStateEndTime() then
+            feigndeath:SetState(1)
+            feigndeath:SetStateEndTime(CurTime() + 1.5)
+        end
+    elseif force or self:IsOnGround() and not self:IsPlayingTaunt() then
+        local wep = self:GetActiveWeapon()
+        if wep and wep:IsValid() then
+            if not wep:IsSwinging() and CurTime() > wep:GetNextPrimaryFire() then
+                if wep.StopMoaning then
+                    wep:StopMoaning()
+                end
 
-			local status = self:GiveStatus("feigndeath")
-			if status and status:IsValid() then
-				status:SetStateEndTime(CurTime() + 1.5)
-			end
-		end
-	end
+                local status = self:GiveStatus("feigndeath")
+                if status and status:IsValid() then
+                    status:SetStateEndTime(CurTime() + 1.5)
+                end
+            end
+        end
+    end
 end
 
 function meta:UpdateLegDamage()
