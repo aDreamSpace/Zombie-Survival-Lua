@@ -1,6 +1,0 @@
-VertexLitGeneric
-{
-$baseTexture "models\humans\suits/gasmask"
-$bumpmap "models\humans\suits/gasmask_n"
-$nocull "1"
-}

@@ -1,8 +1,0 @@
-"vertexlitgeneric"
-{
-	"$baseTexture" "models/cod4soldiers\rs/opfroce_gas_mask_lens_col_sp"
-"$envmap" 			"env_cubemap"
- 	"$translucent" 1
-
-}
-

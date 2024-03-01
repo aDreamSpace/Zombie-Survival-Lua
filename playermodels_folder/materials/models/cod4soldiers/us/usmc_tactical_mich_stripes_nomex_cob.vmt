@@ -1,8 +1,0 @@
-"vertexlitgeneric"
-{
-	"$baseTexture" "models/cod4soldiers\us/usmc_tactical_mich_stripes_nomex_cob"
-
-        "$bumpmap" "models/cod4soldiers\us/usmc_tactical_mich_stripes_nomex_nml"
-
-}
-

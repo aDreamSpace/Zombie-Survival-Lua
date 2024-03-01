@@ -1,8 +1,0 @@
-"vertexlitgeneric"
-{
-	"$baseTexture" "models/cod4soldiers\us/sf/usmc_body_woodland_mp_col"
-
-        "$bumpmap" "models/cod4soldiers\us/sf/usmc_body_woodland_mp_nml"
-
-}
-

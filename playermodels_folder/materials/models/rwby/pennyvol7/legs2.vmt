@@ -1,9 +1,0 @@
-"VertexLitGeneric"
-{
-	"$baseTexture"	"models\RWBY\PennyVol7\Legs2"
-	"$halflambert"	"1"
-	"$nocull" "1"
-	
-	"$selfillum" 1
-	"$selfillummask" "models\RWBY\PennyVol7\Legs2_glow"
-}

@@ -1,8 +1,0 @@
-"vertexlitgeneric"
-{
-	"$baseTexture" "models/cod4soldiers\us/sf/accessories_mp_col"
-
-        "$bumpmap" "models/cod4soldiers\us/sf/accessories_mp_nml"
-
-}
-

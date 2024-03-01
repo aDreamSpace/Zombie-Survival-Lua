@@ -1,9 +1,0 @@
-VertexLitGeneric
-{
-	"$basetexture"	"models\TAI\heavy\uddd"
-	 "$bumpmap" "models/TAI/heavy\uddd_n"
- 	"$phong" "1"
-	"$phongexponent" "94.8"
-	"$phongboost"	"0.35"
-	"$phongfresnelranges"	"[.1 .1 1]"
-}

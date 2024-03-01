@@ -1,6 +1,0 @@
-"VertexLitGeneric"
-{
-	"$basetexture" "models/deltawood/accessories_col_desert_mp"
-
-        "$bumpmap" "models/deltawood/accessories_col_desert_mp_nomal"
-}

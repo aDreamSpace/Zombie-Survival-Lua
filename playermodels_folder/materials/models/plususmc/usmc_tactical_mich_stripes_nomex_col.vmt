@@ -1,8 +1,0 @@
-"vertexlitgeneric"
-{
-	"$baseTexture" "models/plususmc/usmc_tactical_mich_stripes_nomex_col"
-
-        "$bumpmap" "models/plususmc/usmc_tactical_mich_stripes_nomex_nml"
-
-}
-

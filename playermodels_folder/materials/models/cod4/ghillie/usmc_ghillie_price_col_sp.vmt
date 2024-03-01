@@ -1,6 +1,0 @@
-"VertexLitGeneric"
-{
-	"$basetexture" "models/cod4/ghillie/usmc_ghillie_price_col_sp"
-
-        "$bumpmap" "models/cod4/ghillie/usmc_ghillie_price_nml_sp"
-}

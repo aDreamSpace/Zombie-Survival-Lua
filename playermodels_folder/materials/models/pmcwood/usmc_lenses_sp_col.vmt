@@ -1,6 +1,0 @@
-"VertexLitGeneric"
-{
-	"$basetexture" "models/wood/usmc_lenses_sp_col"
-
-        "$bumpmap" "models/wood/usmc_lenses_sp_col_nomal"
-}

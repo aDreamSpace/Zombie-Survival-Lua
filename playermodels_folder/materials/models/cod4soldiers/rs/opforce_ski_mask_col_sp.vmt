@@ -1,8 +1,0 @@
-"vertexlitgeneric"
-{
-	"$baseTexture" "models/cod4soldiers\rs/opforce_ski_mask_col_sp"
-
-        "$bumpmap" "models/cod4soldiers\rs/opforce_ski_mask_nml_sp"
-
-}
-

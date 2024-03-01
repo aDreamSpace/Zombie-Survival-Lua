@@ -1,2 +1,0 @@
-list.Set( "PlayerOptionsModel", "Dragon_Warrior", "models/nikout/darksouls2/characters/blackdragon.mdl" )
-player_manager.AddValidModel( "Dragon_Warrior", "models/nikout/darksouls2/characters/blackdragon.mdl" )

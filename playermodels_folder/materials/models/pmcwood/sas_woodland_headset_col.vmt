@@ -1,6 +1,0 @@
-"VertexLitGeneric"
-{
-	"$basetexture" "models/pmcwood/sas_woodland_headset_col"
-
-        "$bumpmap" "models/pmcwood/sas_woodland_headset_col_nomal"
-}

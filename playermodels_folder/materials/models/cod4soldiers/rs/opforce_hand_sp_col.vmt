@@ -1,8 +1,0 @@
-"vertexlitgeneric"
-{
-	"$baseTexture" "models/cod4soldiers\rs/opforce_hand_sp_col"
-
-        "$bumpmap" "models/cod4soldiers\rs/opforce_hand_sp_nml"
-
-}
-

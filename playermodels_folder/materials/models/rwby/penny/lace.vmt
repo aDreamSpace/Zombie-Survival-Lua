@@ -1,7 +1,0 @@
-"VertexLitGeneric"
-{
-	"$baseTexture"	"models\RWBY\Penny\Lace"
-	"$halflambert"	"1"
-	"$nocull" "1"
-	"$alphatest"	"1"
-}

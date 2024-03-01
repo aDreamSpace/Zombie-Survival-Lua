@@ -1,6 +1,0 @@
-"vertexlitGeneric"
-{
-	"$basetexture" "models/shaklin/payday2/hoxton/head_hoxton"
-	"$bumpmap" "models/shaklin/payday2/hoxton/head_hoxton_n"
-	"$halflambert" 1
-}

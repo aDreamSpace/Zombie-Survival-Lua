@@ -1,8 +1,0 @@
-"vertexlitgeneric"
-{
-	"$baseTexture" "usmc/usmc_helmet_hands_sp_col"
-
-        "$bumpmap" "usmc/usmc_helmet_hands_sp_nml"
-
-}
-
