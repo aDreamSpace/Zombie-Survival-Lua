@@ -20,7 +20,7 @@ CLASS.SWEP = "weapon_zs_skeletor"
 
 CLASS.PainSounds = {"npc/zombie/zombie_pain1.wav", "npc/zombie/zombie_pain2.wav", "npc/zombie/zombie_pain3.wav", "npc/zombie/zombie_pain4.wav", "npc/zombie/zombie_pain5.wav", "npc/zombie/zombie_pain6.wav"}
 CLASS.DeathSounds = {"npc/zombie/zombie_die1.wav", "npc/zombie/zombie_die2.wav", "npc/zombie/zombie_die3.wav"}
-
+CLASS.DamageResistance = 0.8
 CLASS.VoicePitch = 2
 
 CLASS.CanFeignDeath = false

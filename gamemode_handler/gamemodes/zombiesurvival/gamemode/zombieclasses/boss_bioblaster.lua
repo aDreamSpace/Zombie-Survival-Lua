@@ -20,7 +20,7 @@ CLASS.Points = 50
 
 CLASS.PainSounds = {"NPC_PoisonZombie.Pain"}
 CLASS.DeathSounds = {Sound("npc/zombie_poison/pz_call1.wav")}
-
+CLASS.DamageResistance = 0.4
 CLASS.VoicePitch = 0.5
 
 CLASS.ModelScale = 1

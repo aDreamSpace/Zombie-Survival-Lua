@@ -13,7 +13,7 @@ CLASS.Health = 3100
 CLASS.Speed = 225
 
 CLASS.CanTaunt = true
-
+CLASS.DamageResistance = 0.4
 CLASS.FearPerInstance = 1
 
 CLASS.Points = 70

@@ -1,16 +1,10 @@
 CLASS.Name = "Scorpio"
 CLASS.TranslationName = "class_scorpio"
 
-CLASS.Wave = 4 / 5
+CLASS.Wave = 4
 
 CLASS.Health = 1105
-CLASS.Speed = 153
-
---[[
-CLASS.ZTraits = {
-	["10spd"] = {safename = "+10% Speed", cost = 400},
-}
-]]
+CLASS.Speed = 175
 
 CLASS.Points = 12
 
@@ -19,10 +13,10 @@ CLASS.CanTaunt = true
 CLASS.SWEP = "weapon_zs_scorpion"
 
 CLASS.Model = Model("models/echo/ark/scorpion_pm.mdl")
-CLASS.DamageResistance = 0.4
+CLASS.DamageResistance = 0.33
 CLASS.VoicePitch = 0.4
 
-CLASS.CanFeignDeath = true
+
 
 local math_random = math.random
 local math_Rand = math.Rand

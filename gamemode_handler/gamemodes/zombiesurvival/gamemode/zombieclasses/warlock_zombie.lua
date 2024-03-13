@@ -11,7 +11,7 @@ CLASS.Speed = 121
 --CLASS.Mass = DEFAULT_MASS * 2
 
 CLASS.CanTaunt = true
-
+CLASS.DamageResistance = 0.9
 CLASS.Points = 6
 CLASS.Scale = 1.2
 --[[

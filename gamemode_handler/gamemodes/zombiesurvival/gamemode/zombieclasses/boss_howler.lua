@@ -12,7 +12,7 @@ CLASS.FearPerInstance = 1
 CLASS.CanTaunt = true
 
 CLASS.Points = 30
-
+CLASS.DamageResistance = 0.4
 CLASS.SWEP = "weapon_zs_howler"
 
 CLASS.Model = Model("models/player/zombie_classic.mdl")

@@ -5,7 +5,7 @@ CLASS.Help = "controls_dweller"
 
 CLASS.Wave = 1 / 5
 CLASS.Unlocked = true
-CLASS.DamageResistance = 0.8
+
 CLASS.Health = 325
 CLASS.Speed = 143
 

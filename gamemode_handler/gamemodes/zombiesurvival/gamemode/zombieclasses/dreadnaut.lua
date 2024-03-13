@@ -3,7 +3,7 @@ CLASS.TranslationName = "class_dreadnaut"
 CLASS.Description = "description_dreadnaut"
 CLASS.Help = "controls_dreadnaut"
 
-CLASS.Wave = 3 / 5
+CLASS.Wave = 3
 
 CLASS.Health = 750
 CLASS.Speed = 125

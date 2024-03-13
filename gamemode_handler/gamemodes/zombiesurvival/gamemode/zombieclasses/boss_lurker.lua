@@ -16,7 +16,7 @@ CLASS.Points = 50
 CLASS.Unlocked = true
 CLASS.Hidden = true
 CLASS.Boss = true
-
+CLASS.DamageResistance = 0.4
 --[[
 CLASS.ZTraits = {
 	["25hlth"] = {safename = "+25% Health", cost = 200},

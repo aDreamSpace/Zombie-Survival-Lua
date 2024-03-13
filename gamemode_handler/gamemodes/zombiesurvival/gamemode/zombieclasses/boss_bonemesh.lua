@@ -15,7 +15,7 @@ CLASS.Speed = 150
 CLASS.FearPerInstance = 1
 
 CLASS.Points = 30
-
+CLASS.DamageResistance = 0.4
 CLASS.SWEP = "weapon_zs_bonemesh"
 
 CLASS.Model = Model("models/player/zombie_fast.mdl")

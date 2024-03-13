@@ -131,7 +131,7 @@ Discord.Config = {
 
             Displayed as the bot's status. Max 32 characters.
         ]]
-        BotStatus = 'Playing on Project Anon',
+        BotStatus = 'on Project Anon',
 
         --[[
             NamePrefix
@@ -496,8 +496,8 @@ Discord.Config = {
         ]]
         SyncableDiscordRanks = {
     
-            ['Owner'] = 'superadmin',
-            ['Member'] = 'user',
+            ['➜Anon'] = 'superadmin',
+            ['➜Member'] = 'user',
         },
 
         --[[

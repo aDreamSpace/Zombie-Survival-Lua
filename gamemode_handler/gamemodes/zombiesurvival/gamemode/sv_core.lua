@@ -1,17 +1,3 @@
-
-
-
-
-// Resource Distribution
-resource.AddWorkshop("3115659752") -- Metro Space  1
-resource.AddWorkshop("3124366636") -- Metro Space  2
-resource.AddWorkshop("3124367696") -- Metro Space  3 
-resource.AddWorkshop("3124370076") -- Metro Space  4
-resource.AddWorkshop("3170418574") -- Metro Space 5 
-resource.AddWorkshop("3128227121") -- Metro Space PlayerModels
-
-
-
 // Physgun Pick up for Zombies + Humans
 hook.Add("PhysgunPickup", "AllowHumanUndeadPickup", function(ply, target)
     if target:IsPlayer() and (target:Team() == TEAM_UNDEAD or target:Team() == TEAM_HUMAN) then
@@ -19,73 +5,56 @@ hook.Add("PhysgunPickup", "AllowHumanUndeadPickup", function(ply, target)
     end
 end)
 
+// Bot Handler 
+-- Store the last interaction time for each object
+-- Store the last attack time for each bot
+local lastBotAttackTimes = {}
+
+-- The attack cooldown period in seconds
+local botAttackCooldown = 0.1
+
+-- Assume `BotAttack` is the function that bots call to attack
+function BotAttack(bot, target)
+    local curTime = CurTime()
+    local lastBotAttackTime = lastBotAttackTimes[bot:EntIndex()] or 0
+
+    -- If the bot attacked less than `botAttackCooldown` seconds ago, ignore the attack
+    if curTime - lastBotAttackTime < botAttackCooldown then
+        return
+    end
+
+    -- Otherwise, update the last attack time and proceed with the attack
+    lastBotAttackTimes[bot:EntIndex()] = curTime
+
+end
+
+
 
 // Damage handler 
-local att, wep, dist, mul, vwep, zatt
-local vTgtFwd, dot, degrees
-
-local function HandleDamage(ent, d)
-    att = d:GetInflictor()
-    zatt = d:GetAttacker()
-
+hook.Add("EntityTakeDamage", "HandleDamage", function(target, dmg)
     -- Handle damage resistance for players
-    if ent:IsPlayer() then
-        local classname = ent:GetZombieClass()
+    if target:IsPlayer() then
+        local classname = target:GetZombieClass()
         local classtab = GAMEMODE.ZombieClasses[classname]
         if classtab and classtab.DamageResistance then
             local reduction = 1 - classtab.DamageResistance
-            d:ScaleDamage(reduction)
+            dmg:ScaleDamage(reduction)
         end
     end
 
     -- Handle other cases
     if TEAM_HUMAN then -- IF ZOMBIE SURVIVAL
-        if ent:IsPlayer() then
-            if ent:Team() == TEAM_HUMAN  and d:IsDamageType(64) then return true end
+        if target:IsPlayer() then
+            if target:Team() == TEAM_HUMAN  and dmg:IsDamageType(64) then return true end
         end
     end
 
-    if ent:GetClass() then
-        if d:IsDamageType(DMG_BLAST) and table.HasValue({"prop_physics", "prop_physics_multiplayer", "prop_arsenalcrate", "prop_resupplybox", "prop_constructor", "prop_medstation", "prop_teleporter", "prop_nail"}, ent:GetClass()) then
+    if target:GetClass() then
+        if dmg:IsDamageType(DMG_BLAST) and table.HasValue({"prop_physics", "prop_physics_multiplayer", "prop_arsenalcrate", "prop_resupplybox", "prop_constructor", "prop_medstation", "prop_teleporter", "prop_nail"}, target:GetClass()) then
             return true
         end
     end
-
-    if att:IsPlayer() then
-        wep = att:GetActiveWeapon()
-
-        if IsValid(wep) and wep.CW20Weapon then
-            if not wep.NoDistance and wep.EffectiveRange then
-                dist = ent:GetPos():Distance(att:GetPos())
-                
-                if dist >= wep.EffectiveRange * 0.5 then
-                    dist = dist - wep.EffectiveRange * 0.5
-                    mul = math.Clamp(dist / wep.EffectiveRange, 0, 1)
-
-                    d:ScaleDamage(1 - wep.DamageFallOff * mul)
-                end
-            end
-        end
-    end
-
-    if zatt:IsPlayer() then
-        if ent and ent:IsValid() and ent:IsPlayer() then
-            vwep = ent:GetActiveWeapon()
-            if vwep and vwep:IsValid() and vwep.CanBlock and vwep.IsBlocking then
-                --dot product calculation
-                vTgtFwd = (ent:GetPos() - zatt:GetPos())
-                vTgtFwd:Normalize()
-                dot = zatt:GetAimVector():Dot(vTgtFwd)
-                if math.deg(math.acos(dot)) < 90 then
-                    d:ScaleDamage(vwep.BlockFactor)
-                    ent:EmitSound("weapons/cw_melee/block.ogg", 75, 100, 1)
-                end
-            end
-        end
-    end
-end
-
-hook.Add("EntityTakeDamage", "HandleDamage", HandleDamage)
+end)
 
 
 local zombieBossClasses = {"Carni", "Spitter", "Puker", "Brute", "The Butcher"}

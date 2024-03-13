@@ -17,7 +17,7 @@ CLASS.ZTraits = {
 CLASS.Points = 10
 
 CLASS.CanTaunt = true
-
+CLASS.DamageResistance = 0.7
 CLASS.SWEP = "weapon_zs_combinehunter"
 
 CLASS.Model = Model("models/echo/hunter_playermodel.mdl")

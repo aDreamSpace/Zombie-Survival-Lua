@@ -15,7 +15,7 @@ CLASS.Health = 5500
 CLASS.SWEP = "weapon_zs_pukepus"
 CLASS.DamageMultiplier = 0.50 
 CLASS.Model = Model("models/Zombie/Poison.mdl")
-
+CLASS.DamageResistance = 0.4
 CLASS.Speed = 185
 CLASS.Points = 50
 

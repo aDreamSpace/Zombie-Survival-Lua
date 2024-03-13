@@ -40,56 +40,59 @@ local function BossTypeDoClick(self)
 end
 
 function PANEL:Init()
-	self.ClassButtons = {}
+    self.ClassButtons = {}
 
-	self.ClassTypeButton = EasyButton(nil, bossmode and "Open Normal Class Selection" or "Open Boss Class Selection", 8, 4)
-	self.ClassTypeButton:SetFont("ZSHUDFontSmall")
-	self.ClassTypeButton:SizeToContents()
-	self.ClassTypeButton.DoClick = BossTypeDoClick
+    self.ClassTypeButton = EasyButton(nil, bossmode and "Open Normal Class Selection" or "Open Boss Class Selection", 8, 4)
+    self.ClassTypeButton:SetFont("ZSHUDFontSmall")
+    self.ClassTypeButton:SizeToContents()
+    self.ClassTypeButton.DoClick = BossTypeDoClick
 
-	self.CloseButton = EasyButton(nil, "Close", 8, 4)
-	self.CloseButton:SetFont("ZSHUDFontSmall")
-	self.CloseButton:SizeToContents()
-	self.CloseButton.DoClick = function() Window:Remove() end
+    self.CloseButton = EasyButton(nil, "Close", 8, 4)
+    self.CloseButton:SetFont("ZSHUDFontSmall")
+    self.CloseButton:SizeToContents()
+    self.CloseButton.DoClick = function() Window:Remove() end
 
-	self.ButtonGrid = vgui.Create("DGrid", self)
-	self.ButtonGrid:SetContentAlignment(5)
-	self.ButtonGrid:Dock(FILL)
+    self.ButtonGrid = vgui.Create("DGrid", self)
+    self.ButtonGrid:SetContentAlignment(5)
+    self.ButtonGrid:Dock(FILL)
 
-	local already_added = {}
-	local use_better_versions = GAMEMODE:ShouldUseBetterVersionSystem()
+    -- Set the number of rows based on the bossmode
+    self.Rows = bossmode and 2 or 3
 
-	for i=1, #GAMEMODE.ZombieClasses do
-		local classtab = GAMEMODE.ZombieClasses[GAMEMODE:GetBestAvailableZombieClass(i)]
+    local already_added = {}
+    local use_better_versions = GAMEMODE:ShouldUseBetterVersionSystem()
 
-		if classtab and not classtab.Disabled and not already_added[classtab.Index] then
-			already_added[classtab.Index] = true
+    for i=1, #GAMEMODE.ZombieClasses do
+        local classtab = GAMEMODE.ZombieClasses[GAMEMODE:GetBestAvailableZombieClass(i)]
 
-			local ok
-			if bossmode then
-				ok = classtab.Boss
-			else
-				ok = not classtab.Boss and
-					(not classtab.Hidden or classtab.CanUse and classtab:CanUse(MySelf)) and
-					(not GAMEMODE.ObjectiveMap or classtab.Unlocked)
-			end
+        if classtab and not classtab.Disabled and not already_added[classtab.Index] then
+            already_added[classtab.Index] = true
 
-			if ok then
-				if not use_better_versions or not classtab.BetterVersionOf or GAMEMODE:IsClassUnlocked(classtab.Index) then
-					local button = vgui.Create("ClassButton")
-					button:SetClassTable(classtab)
-					button.Wave = classtab.Wave or 1
+            local ok
+            if bossmode then
+                ok = classtab.Boss
+            else
+                ok = not classtab.Boss and
+                    (not classtab.Hidden or classtab.CanUse and classtab:CanUse(MySelf)) and
+                    (not GAMEMODE.ObjectiveMap or classtab.Unlocked)
+            end
 
-					table.insert(self.ClassButtons, button)
+            if ok then
+                if not use_better_versions or not classtab.BetterVersionOf or GAMEMODE:IsClassUnlocked(classtab.Index) then
+                    local button = vgui.Create("ClassButton")
+                    button:SetClassTable(classtab)
+                    button.Wave = classtab.Wave or 1
 
-					self.ButtonGrid:AddItem(button)
-				end
-			end
-		end
-	end
+                    table.insert(self.ClassButtons, button)
 
-	self.ButtonGrid:SortByMember("Wave")
-	self:InvalidateLayout()
+                    self.ButtonGrid:AddItem(button)
+                end
+            end
+        end
+    end
+
+    self.ButtonGrid:SortByMember("Wave")
+    self:InvalidateLayout()
 end
 
 function PANEL:PerformLayout()

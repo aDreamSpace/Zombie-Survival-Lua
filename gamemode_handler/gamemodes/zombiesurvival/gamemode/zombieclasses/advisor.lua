@@ -15,7 +15,7 @@ CLASS.ZTraits = {
 ]]
 
 CLASS.Points = 8
-
+CLASS.DamageResistance = 0.4
 CLASS.CanTaunt = true
 
 CLASS.SWEP = "weapon_zs_advisor"
