@@ -164,7 +164,7 @@ SWEP.Attachments = {[1] = {header = "Sight", offset = {400, -600},  atts = {"md_
 	[3] = {header = "Handguard", offset = {-300, -100}, atts = {"md_foregrip", "md_bipod", "md_m203"}},
 	[4] = {header = "Magazine Upgrade", offset = {200, -300}, atts = {"a_zsmagar1", "a_zsmagar2", "a_zsmagar3"}},
 	 [5] = {header = "Perks", offset = {500, 300}, atts = {"Cod_Extreme_Conditioning", "Cod_Fast_Hands", "Cod_Steady_Aim", "Perk_Force", "Cod_Double_Tap", "Perk_Stopping_Power"}},
-	["+reload"] = {header = "Ammo", offset = {800, -100}, atts = {"am_hqb2", "am_magnum2", "am_matchgrade2", "am_luckylast2", "am_duplex2", "am_depleteduranium2"}}}
+	["+reload"] = {header = "Ammo", offset = {800, -100}, atts = {"am_highcaliberrounds2", "am_hqb2", "am_magnum2", "am_matchgrade2", "am_luckylast2", "am_duplex2", "am_depleteduranium2"}}}
 	
 SWEP.AttachmentExclusions = {
 	["md_foregrip"] = {"md_uecw_cmag"},

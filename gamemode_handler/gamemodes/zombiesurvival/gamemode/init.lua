@@ -1442,8 +1442,8 @@ function GM:EndRound(winner)
     end
 	
 	if self.OverrideEndSlomo == nil or self.OverrideEndSlomo then
-		game.SetTimeScale(0.25)
-		timer.Simple(2, function() game.SetTimeScale(1) end)
+	--	game.SetTimeScale(0.25)
+	--	timer.Simple(2, function() game.SetTimeScale(1) end)
 	end
 
 	hook.Add("PlayerCanHearPlayersVoice", "EndRoundCanHearPlayersVoice", function() return true end)
@@ -3836,10 +3836,10 @@ function GM:PlayerSpawn(pl)
 			hands:Spawn()
 		end
 	end
---[[
+
 	pl:DoMuscularBones()
 	pl:DoNoodleArmBones()
---]]
+
 	local pcol = Vector(pl:GetInfo("cl_playercolor"))
 	pcol.x = math.Clamp(pcol.x, 0, 2.5)
 	pcol.y = math.Clamp(pcol.y, 0, 2.5)

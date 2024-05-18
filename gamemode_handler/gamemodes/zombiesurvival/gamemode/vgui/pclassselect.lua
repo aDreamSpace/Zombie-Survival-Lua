@@ -125,19 +125,19 @@ end
 local texUpEdge = surface.GetTextureID("gui/gradient_up")
 local texDownEdge = surface.GetTextureID("gui/gradient_down")
 function PANEL:Paint()
-	local wid, hei = self:GetSize()
-	local edgesize = 16
+    local w, h = self:GetSize()
 
-	DisableClipping(true)
-	surface.SetDrawColor(Color(0, 0, 0, 220))
-	surface.DrawRect(0, 0, wid, hei)
-	surface.SetTexture(texUpEdge)
-	surface.DrawTexturedRect(0, -edgesize, wid, edgesize)
-	surface.SetTexture(texDownEdge)
-	surface.DrawTexturedRect(0, hei, wid, edgesize)
-	DisableClipping(false)
+    if self.LastEnabledState == 2 then
+        -- Draw a green box
+        surface.SetDrawColor(0, 255, 0, 255)
+        surface.DrawOutlinedRect(0, 0, w, h)
+    elseif self.LastEnabledState == 0 then
+        -- Draw a red box
+        surface.SetDrawColor(255, 0, 0, 255)
+        surface.DrawOutlinedRect(0, 0, w, h)
+    end
 
-	return true
+    return true
 end
 
 vgui.Register("ClassSelect", PANEL, "Panel")

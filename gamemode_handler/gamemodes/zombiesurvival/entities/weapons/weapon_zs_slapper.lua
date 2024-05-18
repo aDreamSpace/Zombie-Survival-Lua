@@ -3,6 +3,7 @@ AddCSLuaFile()
 SWEP.Base = "weapon_zs_zombie"
 SWEP.PrintName = "Slapper"
 
+SWEP.KnockbackScale = 0
 SWEP.MeleeDelay = 0.25
 SWEP.MeleeReach = 40
 SWEP.MeleeDamage = 34

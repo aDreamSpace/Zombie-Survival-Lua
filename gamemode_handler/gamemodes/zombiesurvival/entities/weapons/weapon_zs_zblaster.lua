@@ -18,8 +18,8 @@ SWEP.ShowWorldModel = false
 SWEP.CSMuzzleFlashes = false
 
 SWEP.ReloadSound = Sound("") 
-SWEP.Primary.Damage = 6
-SWEP.Primary.Delay = 0.21
+SWEP.Primary.Damage = 20
+SWEP.Primary.Delay = 0.25
 
 SWEP.Primary.ClipSize = 999999
 SWEP.Primary.DefaultClip = 999999
@@ -69,12 +69,17 @@ function SWEP:ShootBullets(dmg, numbul, cone)
     bullet.Dir = self.Owner:GetAimVector()
     bullet.Spread = Vector(cone, cone, 0)
     bullet.Tracer = 0
-    bullet.TracerName = ""
     bullet.Force = 10
     bullet.Damage = dmg
-    bullet.ForceMaterial = "" -- Add this line
     bullet.Callback = function(attacker, tr, dmginfo)
         self.BulletCallback(attacker, tr, dmginfo)
+    
+        -- Create multiple "bioblaster" effects along the bullet's path
+        local effectdata = EffectData()
+        for i = 0, 1, 0.01 do -- Decrease the step size to create more effects
+            effectdata:SetOrigin(bullet.Src + bullet.Dir * tr.HitPos:Distance(bullet.Src) * i)
+            util.Effect("bioblaster", effectdata)
+        end
     end
 
     self.Owner:FireBullets(bullet)

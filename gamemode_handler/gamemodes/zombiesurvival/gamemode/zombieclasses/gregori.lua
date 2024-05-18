@@ -12,8 +12,9 @@ CLASS.Speed = 150
 
 CLASS.CanTaunt = true
 CLASS.DamageResistance = 0.5
+CLASS.HealthRegenRate = 75
 CLASS.Points = 10
-CLASS.Scale = 1.3
+CLASS.Scale = 1
 
 --[[
 CLASS.ZTraits = {

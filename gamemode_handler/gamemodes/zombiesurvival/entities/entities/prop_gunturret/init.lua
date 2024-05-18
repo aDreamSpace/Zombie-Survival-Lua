@@ -10,7 +10,7 @@ ENT.TurretHealth = 250
 ENT.TurretAmmo = "smg1"
 
 --info for bullet struct
-ENT.TurretDamage = 12
+ENT.TurretDamage = 52
 ENT.TurretSpread = Vector(0.05, 0.05, 0)
 ENT.TurretBulletCount = 2
 ENT.TurretForce = 1

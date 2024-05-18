@@ -3,7 +3,7 @@ CLASS.TranslationName = "class_dweller"
 CLASS.Description = "description_dweller"
 CLASS.Help = "controls_dweller"
 
-CLASS.Wave = 1 / 5
+CLASS.Wave = 2 / 5
 CLASS.Unlocked = true
 
 CLASS.Health = 325
@@ -16,7 +16,7 @@ CLASS.ZTraits = {
 ]]
 
 CLASS.Points = 8
-
+CLASS.HealthRegenRate = 50
 CLASS.CanTaunt = true
 
 CLASS.SWEP = "weapon_zs_dweller"

@@ -10,7 +10,7 @@ CLASS.Hidden = true
 CLASS.Boss = true
 
 CLASS.FearPerInstance = 1
-
+CLASS.ArmorRegenRate = 75
 CLASS.Health = 5000
 CLASS.SWEP = "weapon_zs_zblaster"
 

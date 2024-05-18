@@ -5,7 +5,7 @@ CLASS.Help = "controls_headcrab"
 
 CLASS.Model = Model("models/headcrabclassic.mdl")
 
-CLASS.Wave = 0
+CLASS.Wave = 1 / 5
 CLASS.Unlocked = true
 
 CLASS.SWEP = "weapon_zs_headcrab"

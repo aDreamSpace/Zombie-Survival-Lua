@@ -3,15 +3,15 @@ CLASS.TranslationName = "class_dreadnaut"
 CLASS.Description = "description_dreadnaut"
 CLASS.Help = "controls_dreadnaut"
 
-CLASS.Wave = 3
+CLASS.Wave = 2 / 5
 
 CLASS.Health = 750
 CLASS.Speed = 125
 --CLASS.JumpPower = 225
 --CLASS.Mass = DEFAULT_MASS * 2
-
+CLASS.HealthRegenRate = 2 
 CLASS.CanTaunt = true
-CLASS.DamageResistance = 0.7
+CLASS.DamageResistance = 0.5
 CLASS.Points = 9
 
 --[[

@@ -86,17 +86,26 @@ function SWEP:GetTracerOrigin()
         return self.CenterPos
     end
 
-    local tInfo = self:getMuzzlePosition()
-    if tInfo and tInfo.Pos then
-        return tInfo.Pos
-    else
-        print("GetTracerOrigin Called with Invalid MuzzlePosition!")
-        debug.Trace() --where is this coming from?
-        print(owner)
-        print(self)
+    if not IsValid(self:GetOwner()) then
+        print("SWEP:GetTracerOrigin() called with invalid owner!")
+        return Vector(0, 0, 0)
     end
 
-    return Vector(0, 0, 0) -- Return a default position instead of nil
+    local tInfo = self:getMuzzlePosition()
+
+    if tInfo then
+        print("tInfo:", tInfo) -- Print the tInfo table
+    end
+
+    if tInfo and tInfo.Pos and type(tInfo.Pos) == "Vector" then
+        return tInfo.Pos
+    else
+        print("GetTracerOrigin called with Invalid MuzzlePosition!")
+        debug.Trace() -- Trace the error
+        print(owner)
+        print(self)
+        return Vector(0, 0, 0) -- Return a default position instead of nil
+    end
 end
 
 function SWEP:FireAnimationEvent(pos, ang, event, name)

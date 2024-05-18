@@ -163,7 +163,7 @@ SWEP.Attachments = {[1] = {header = "Sight", offset = {100, -600},  atts = {"md_
 	[3] = {header = "Handguard", offset = {-500, -100}, atts = {"md_foregrip", "md_bipod"}},
 	[4] = {header = "Magazine Upgrade", offset = {-300, 350}, atts = {"a_zsmagar1", "a_zsmagar2", "a_zsmagar3"}},
 	 [5] = {header = "Perks", offset = {100, -200}, atts = {"Cod_Extreme_Conditioning", "Cod_Fast_Hands", "Cod_Steady_Aim", "Perk_Force", "Cod_Double_Tap", "Perk_Stopping_Power"}},
-	["+reload"] = {header = "Ammo", offset = {500, 400}, atts = {"am_hqb2", "am_magnum2", "am_matchgrade2", "am_luckylast2", "am_duplex2", "am_depleteduranium2"}}}
+	["+reload"] = {header = "Ammo", offset = {500, 400}, atts = {"am_highcaliberrounds2", "am_hqb2", "am_magnum2", "am_matchgrade2", "am_luckylast2", "am_duplex2", "am_depleteduranium2"}}}
 
 if CustomizableWeaponry_KK_HK416 then
 	table.insert( SWEP.Attachments[1].atts, 7, "md_fas2_aimpoint" )

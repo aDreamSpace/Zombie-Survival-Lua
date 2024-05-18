@@ -3,8 +3,8 @@ CLASS.TranslationName = "class_advisor"
 CLASS.Description = "description_advisor"
 CLASS.Help = "controls_advisor"
 
-CLASS.Wave = 4 / 5
-
+CLASS.Wave = 5 / 5
+CLASS.ArmorRegenRate = 75
 CLASS.Health = 1025
 CLASS.Speed = 150
 
@@ -15,7 +15,7 @@ CLASS.ZTraits = {
 ]]
 
 CLASS.Points = 8
-CLASS.DamageResistance = 0.4
+CLASS.DamageResistance = 0.7
 CLASS.CanTaunt = true
 
 CLASS.SWEP = "weapon_zs_advisor"
@@ -24,7 +24,6 @@ CLASS.Model = Model("models/echo/hla/advisor_pm.mdl")
 
 CLASS.VoicePitch = 0.4
 
-CLASS.CanFeignDeath = true
 
 local math_random = math.random
 local math_Rand = math.Rand

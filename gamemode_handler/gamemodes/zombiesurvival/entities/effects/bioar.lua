@@ -10,7 +10,7 @@ local function CollideCallback(particle, hitpos, hitnormal)
 	particle:SetDieTime(0)
 
 	if math.random(3) == 3 then
-		sound.Play("physics/flesh/flesh_squishy_impact_hard"..math.random(4)..".wav", hitpos, 50, math.Rand(140, 150))
+		sound.Play("buttons/button14.wav", hitpos, 50, math.Rand(140, 150)) -- HL2 button sound
 	end
 
 	if math.random(3) == 3 then
@@ -26,17 +26,18 @@ function EFFECT:Init(data)
 	emitter:SetNearClip(24, 48)
 
 	local grav = Vector(0, 0, -500)
-	for i = 1, math.random(60, 85) do
+	local numParticles = 1
+	for i = 1, numParticles do
 		local particle = emitter:Add("particles/smokey", pos)
 		particle:SetVelocity(VectorRand():GetNormalized() * math.Rand(32, 72) + hitnormal * math.Rand(48, 198))
-		particle:SetDieTime(math.Rand(0.9, 2))
+		particle:SetDieTime(math.Rand(0.2, 0.5))
 		particle:SetStartAlpha(200)
 		particle:SetEndAlpha(0)
-		particle:SetStartSize(math.Rand(1, 5))
+		particle:SetStartSize(math.Rand(1, 3))
 		particle:SetEndSize(0)
 		particle:SetRoll(math.Rand(0, 360))
 		particle:SetRollDelta(math.Rand(-15, 15))
-		particle:SetColor(math.Rand(25, 130), math.Rand(10, 140), math.Rand(25, 130))
+		particle:SetColor(math.Rand(100, 150), math.Rand(0, 50), math.Rand(200, 255)) -- Dark red and purple colors
 		particle:SetLighting(false)
 		particle:SetGravity(grav)
 		particle:SetCollide(true)
@@ -45,6 +46,4 @@ function EFFECT:Init(data)
 	emitter:Finish()
 
 	util.Decal("Impact.AlienFlesh", pos + hitnormal, pos - hitnormal)
-
-	sound.Play("npc/antlion_grub/squashed.wav", pos, 74, math.random(95, 110))
 end

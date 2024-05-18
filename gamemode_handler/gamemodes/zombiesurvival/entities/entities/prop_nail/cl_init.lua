@@ -32,7 +32,7 @@ end
 
 local matOutlineWhite = Material("white_outline")
 local ScaleOutline = 1.4
-local colNail = Color(0, 0, 5, 220)
+local colNail = Color(102, 0, 218, 220)
 
 local drawowner
 local displayowner
@@ -54,9 +54,9 @@ local repairs
 local ru
 local mu
 local green
-local strFontSmaller = "ZS3D2DFont2Smaller"
+local strFontSmaller = "ZS3D2DFont2"
 local strSlash = " / "
-local colNailOwner = Color(0, 177, 255)
+local colNailOwner = Color(149, 0, 255)
 function ENT:DrawTranslucent()
 	vPos = self:GetPos()
 	vEPos = EyePos()
@@ -130,7 +130,8 @@ function ENT:DrawTranslucent()
 			end
 
 			if displayowner then
-				draw.SimpleText(displayowner, strFontSmaller, 0, y + 38, redname and COLOR_DARKRED or colNailOwner, TEXT_ALIGN_CENTER)
+				local yOffset = y + hei + 3 + (0.05 * ScrH()) -- Increase y-coordinate by 5% of the screen height
+				draw.SimpleText(displayowner, strFontSmaller, 0, yOffset, redname and COLOR_DARKRED or colNailOwner, TEXT_ALIGN_CENTER)
 			end
 		cam.End3D2D()
 	end

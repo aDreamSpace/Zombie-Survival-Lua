@@ -245,8 +245,8 @@ SWEP.MaxSpreadInc = 0.06
 SWEP.ClumpSpread = 0.015
 SWEP.SpreadPerShot = 0.01
 SWEP.SpreadCooldown = 0.8
-SWEP.Shots = 12
-SWEP.Damage = 40
+SWEP.Shots = 15
+SWEP.Damage = 55
 SWEP.DeployTime = 2
 
 SWEP.ReloadStartTime = 0.2

@@ -10,7 +10,7 @@ CLASS.KnockbackScale = 0
 CLASS.Health = 5000
 CLASS.Speed = 165 -- 150
 CLASS.Boss = true 
-
+CLASS.ArmorRegenRate = 75
 CLASS.CanTaunt = true
 
 CLASS.Points = 50
@@ -18,8 +18,8 @@ CLASS.Points = 50
 CLASS.SWEP = "weapon_zs_ancientnightmare"
 
 CLASS.Model = Model("models/player/skeleton.mdl")
-
-CLASS.DamageResistance = 0.4
+CLASS.HealthRegenRate = 10
+CLASS.DamageResistance = 0.5
 CLASS.VoicePitch = 0.65
 
 CLASS.PainSounds = {"npc/zombie/zombie_pain1.wav", "npc/zombie/zombie_pain2.wav", "npc/zombie/zombie_pain3.wav", "npc/zombie/zombie_pain4.wav", "npc/zombie/zombie_pain5.wav", "npc/zombie/zombie_pain6.wav"}

@@ -66,6 +66,7 @@ function ENT:Think()
 		render.SuppressEngineLighting(true)
 		render.SetColorModulation(1, 1, 1)
 		self:DrawModel()
+		render.SuppressEngineLighting(false)
 	
 		render.SetColorModulation(r, g, b)
 		

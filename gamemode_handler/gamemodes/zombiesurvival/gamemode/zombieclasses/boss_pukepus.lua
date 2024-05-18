@@ -13,12 +13,11 @@ CLASS.FearPerInstance = 1
 
 CLASS.Health = 5500
 CLASS.SWEP = "weapon_zs_pukepus"
-CLASS.DamageMultiplier = 0.50 
 CLASS.Model = Model("models/Zombie/Poison.mdl")
-CLASS.DamageResistance = 0.4
-CLASS.Speed = 185
+CLASS.DamageResistance = 0.65
+CLASS.Speed = 210
 CLASS.Points = 50
-
+CLASS.ArmorRegenRate = 75
 CLASS.PainSounds = {"NPC_PoisonZombie.Pain"}
 CLASS.DeathSounds = {Sound("npc/zombie_poison/pz_call1.wav")}
 

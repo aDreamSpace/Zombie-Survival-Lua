@@ -23,6 +23,9 @@ function ENT:Initialize()
     end
 end
 
+
+
+
 function ENT:Think()
     if (!self.ns or CurTime() >= self.ns) then
         self.ns = CurTime() + 5 -- Reset the timer for healing

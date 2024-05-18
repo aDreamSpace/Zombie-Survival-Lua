@@ -8,16 +8,15 @@ CLASS.Threshold = 0
 CLASS.Unlocked = true
 CLASS.Hidden = true
 CLASS.Boss = true
-
+CLASS.ArmorRegenRate = 75
 CLASS.Health = 5200
 CLASS.Speed = 150
 
 CLASS.FearPerInstance = 1
-
+CLASS.HealthRegenRate = 10
 CLASS.Points = 30
-CLASS.DamageResistance = 0.4
+CLASS.DamageResistance = 0.55
 CLASS.SWEP = "weapon_zs_bonemesh"
-
 CLASS.Model = Model("models/player/zombie_fast.mdl")
 
 CLASS.VoicePitch = 0.8
@@ -91,37 +90,6 @@ function CLASS:DoAnimationEvent(pl, event, data)
 		pl:AnimRestartGesture(GESTURE_SLOT_ATTACK_AND_RELOAD, ACT_GMOD_GESTURE_RANGE_ZOMBIE_SPECIAL, true)
 		return ACT_INVALID
 	end
-end
-
-if SERVER then
-    function CLASS:OnSpawned(pl)
-        local status = pl:GiveStatus("overridemodel")
-        if status and status:IsValid() then
-            status:SetModel("models/Zombie/Poison.mdl")
-        end
-
-        pl:CreateAmbience("bonemeshambience")
-
-        -- Start a timer that runs every second
-        timer.Create("HealZombies"..pl:EntIndex(), 1, 0, function()
-            if not IsValid(pl) then return end  -- Stop if the Bonemesh is no longer valid
-
-            -- Get all entities in a certain radius around the Bonemesh
-            local entities = ents.FindInSphere(pl:GetPos(), 200)
-
-            -- Loop over all entities
-            for _, ent in pairs(entities) do
-                -- If the entity is a player and is on TEAM_UNDEAD, increase their health
-                if ent:IsPlayer() and ent:Team() == TEAM_UNDEAD then
-                    ent:SetHealth(math.min(ent:GetMaxHealth(), ent:Health() + 35))  -- Increase health by 35, but don't go above max health
-                end
-            end
-        end)
-    end
-
-    function CLASS:SwitchedAway(pl)
-        timer.Remove("HealZombies"..pl:EntIndex())  -- Stop the timer when the Bonemesh is no longer the current class
-    end
 end
 
 

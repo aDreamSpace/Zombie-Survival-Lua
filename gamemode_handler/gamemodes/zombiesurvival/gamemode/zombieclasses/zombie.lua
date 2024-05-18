@@ -3,7 +3,7 @@ CLASS.TranslationName = "class_zombie"
 CLASS.Description = "description_zombie"
 CLASS.Help = "controls_zombie"
 
-CLASS.Wave = 0
+CLASS.Wave = 1 / 5
 CLASS.Unlocked = true
 CLASS.IsDefault = true
 CLASS.Order = 0

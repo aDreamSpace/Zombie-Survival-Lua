@@ -1895,6 +1895,8 @@ end
 
 function SWEP:PrimaryAttack()
 	--first see if we need to override this for cw melee
+	if self:GetNextPrimaryFire() > CurTime() then return end
+	
 	if self.CW20Melee then
 		if not self:canAttack() then
 			return

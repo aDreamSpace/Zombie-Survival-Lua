@@ -9,7 +9,7 @@ if CLIENT then
 
 	SWEP.HUD3DPos = Vector(4, -3.5, -1.2)
 	SWEP.HUD3DAng = Angle(90, 0, -30)
-	SWEP.HUD3DScale = 0.02
+	SWEP.HUD3DScale = 0.03
 	SWEP.HUD3DBone = "SS.Grip.Dummy"
 end
 
@@ -25,9 +25,9 @@ SWEP.ReloadDelay = 0.4
 SWEP.Primary.Sound = Sound("Weapon_Shotgun.Single")
 SWEP.Primary.Damage = 25
 SWEP.Primary.NumShots = 7
-SWEP.Primary.Delay = 0.64
+SWEP.Primary.Delay = 0.57
 
-SWEP.Primary.ClipSize = 5
+SWEP.Primary.ClipSize = 7
 SWEP.Primary.Automatic = true
 SWEP.Primary.Ammo = "buckshot"
 GAMEMODE:SetupDefaultClip(SWEP.Primary)
@@ -55,31 +55,30 @@ function SWEP:Reload()
 end
 
 function SWEP:Think()
-	if self.reloading and self.reloadtimer < CurTime() then
-		self.reloadtimer = CurTime() + self.ReloadDelay
-		self:SendWeaponAnim(ACT_VM_RELOAD)
+    if self.reloading then
+        if self.reloadtimer < CurTime() then
+            if self:Clip1() < self.Primary.ClipSize and self.Owner:GetAmmoCount(self.Primary.Ammo) > 0 then
+                self.reloadtimer = CurTime() + self.ReloadDelay
+                self:SendWeaponAnim(ACT_VM_RELOAD)
 
-		self.Owner:RemoveAmmo(1, self.Primary.Ammo, false)
-		self:SetClip1(self:Clip1() + 1)
-		self:EmitSound("Weapon_Shotgun.Reload")
+                self.Owner:RemoveAmmo(1, self.Primary.Ammo, false)
+                self:SetClip1(self:Clip1() + 1)
+                self:EmitSound("Weapon_Shotgun.Reload")
+            else
+                self:SendWeaponAnim(ACT_SHOTGUN_RELOAD_FINISH)
+                self.reloading = false
+                self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
+            end
+        end
+    elseif self.nextreloadfinish > 0 and self.nextreloadfinish < CurTime() then
+        self:EmitSound("Weapon_M3.Pump")
+        self:SendWeaponAnim(ACT_SHOTGUN_PUMP)
+        self.nextreloadfinish = 0
+    end
 
-		if self.Primary.ClipSize <= self:Clip1() or self.Owner:GetAmmoCount(self.Primary.Ammo) <= 0 then
-			self.nextreloadfinish = CurTime() + self.ReloadDelay
-			self.reloading = false
-			self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
-		end
-	end
-
-	local nextreloadfinish = self.nextreloadfinish
-	if nextreloadfinish ~= 0 and nextreloadfinish < CurTime() then
-		self:EmitSound("Weapon_M3.Pump")
-		self:SendWeaponAnim(ACT_SHOTGUN_PUMP)
-		self.nextreloadfinish = 0
-	end
-
-	if self:GetIronsights() and not self.Owner:KeyDown(IN_ATTACK2) then
-		self:SetIronsights(false)
-	end
+    if self:GetIronsights() and not self.Owner:KeyDown(IN_ATTACK2) then
+        self:SetIronsights(false)
+    end
 end
 
 function SWEP:CanPrimaryAttack()

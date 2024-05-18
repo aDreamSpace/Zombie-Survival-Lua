@@ -8,7 +8,7 @@ SWEP.MeleeDelay = 0.55
 SWEP.MeleeReach = 50
 SWEP.MeleeSize = 1.5
 SWEP.MeleeDamage = 30
-SWEP.MeleeForceScale = 2
+SWEP.MeleeForceScale = 0
 SWEP.MeleeDamageType = DMG_SLASH
 
 SWEP.AlertDelay = 2.5
@@ -214,7 +214,7 @@ end
 
 function SWEP:PrimaryAttack()
     if CurTime() < self:GetNextPrimaryFire() or IsValid(self.Owner.FeignDeath) then return end
-
+    self.LastPrimaryFire = CurTime()
     self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
     self:SetNextSecondaryFire(self:GetNextPrimaryFire() + 0.5)
 

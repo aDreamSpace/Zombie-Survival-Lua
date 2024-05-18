@@ -6,7 +6,6 @@ function ENT:Initialize()
     self:EmitSound("ambient/atmosphere/tunnel1.wav", 40, math.random(180, 200))
 end 
 
-
 function ENT:DrawTranslucent()
     local h = LocalPlayer():Team() == TEAM_HUMAN
     self:DrawModel()
@@ -24,7 +23,7 @@ function ENT:DrawTranslucent()
             self.NextPoints = CurTime() + 20 -- Reset the timer
         end
 
-        local pos = self:GetPos() + Vector(0, 0, 40) -- Adjust this as needed
+        local pos = self:GetPos() + Vector(0, 0, 40 * 1.7) -- Adjust this as needed, moved up by 70%
         local ang = (LocalPlayer():GetPos() - pos):Angle()
         ang:RotateAroundAxis(ang:Right(), -90)
         ang:RotateAroundAxis(ang:Up(), 90)
@@ -45,32 +44,41 @@ function ENT:DrawTranslucent()
     self:DrawParticles()
 end
 
+local matGlow = Material("effects/splashwake1")
+local matGlow2 = Material("sprites/glow04_noz")
+local matWhite = Material("models/debug/debugwhite")
+local vector_origin = vector_origin
+
 function ENT:DrawParticles()
-    local curtime = CurTime()
-    local sat = math.abs(math.sin(curtime))
-    local colsat = sat * 0.125
-    local healthperc = self:GetObjectHealth() / self:GetMaxObjectHealth()
-    local r, g, b = 0.15 + colsat, 0.4 + colsat, 1
-    local radius = 180 + math.cos(sat) * 40
-    local whiteradius = 122 + math.sin(sat) * 32
-    local up = self:GetUp()
-    local spritepos = self:GetPos() + up
-    local spritepos2 = self:WorldSpaceCenter()
+    local alt = self:GetDTBool(0)
+    local spritepos = self:GetPos() + self:GetUp()
+
+    -- Removed the lines that modify render settings
+
+    -- Emit from matGlow2
+    render.SetMaterial(matGlow2)
+    render.DrawSprite(spritepos, alt and 25 or 50, alt and 25 or 50, Color(143, alt and 89 or 100, 240, 240))
+
+    -- Emit from matGlow
+    render.SetMaterial(matGlow)
+    render.DrawSprite(spritepos, alt and 6 or 12, alt and 6 or 12, Color(143, alt and 88 or 240, 240))
 
     local emitter = ParticleEmitter(spritepos)
     emitter:SetNearClip(24, 32)
 
     local particle = emitter:Add("sprites/glow04_noz", spritepos)
-    particle:SetDieTime(math.Rand(1.5, 2))
-    particle:SetVelocity(Vector(0, 0, math.Rand(32, 64)))
-    particle:SetStartAlpha(0)
-    particle:SetEndAlpha(155)
-    particle:SetStartSize(math.Rand(8, 17))
-    particle:SetEndSize(0)
-    particle:SetRoll(math.Rand(0, 360))
-    particle:SetRollDelta(math.Rand(-1, 1))
-    particle:SetColor(r * 255, g * 255, b * 255)
-    particle:SetCollide(true)
-
+    if particle then
+        particle:SetDieTime(math.Rand(1.5, 2))
+        particle:SetVelocity(Vector(0, 0, math.Rand(64, 128))) -- Increase velocity to make particles rise faster
+        particle:SetStartAlpha(255) -- Start fully opaque
+        particle:SetEndAlpha(0) -- Fade out
+        particle:SetStartSize(math.Rand(8, 17))
+        particle:SetEndSize(0)
+        particle:SetRoll(math.Rand(0, 360))
+        particle:SetRollDelta(math.Rand(-1, 1))
+        particle:SetColor(0, 0, 255) -- Set color to cyan
+        particle:SetCollide(true)
+    end
+    -- Color(0, 0, 255)
     emitter:Finish()
 end

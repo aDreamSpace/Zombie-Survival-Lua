@@ -246,7 +246,7 @@ SWEP.SpreadPerShot = 0.01
 SWEP.SpreadCooldown = 0.8
 SWEP.Shots = 14
 //Do not forget to edit damage and add mag system
-SWEP.Damage =  40
+SWEP.Damage =  52
 SWEP.DeployTime = 1
 SWEP.magType = "brMag"
 

@@ -441,14 +441,17 @@ function MakepWorth()
 
 -- Define WeaponStatBarVals as a global variable
 WeaponStatBarVals = {
-    {"Damage", "Damage", 1, 105, false, false},
-    {"Primary.Delay", "Attack Delay", 0.05, 2, true, "Primary"},
-    {"Primary.ClipSize", "Clip Size", 1, 35, false, "Primary"},
-    {"FireDelay", "Firerate", 0.05, 2, true, "Primary"},
-    {"ClipSize", "Clip Size", 1, 35, false, "Primary"},
-    {"MeleeDamage", "Melee Damage", 1, 105, false, false},
-    {"Shots", "Shots", 1, 10, false, "Primary"} -- Add this line
+	{"Damage", "Damage", 1, 105, false, false},
+	{"Primary.Delay", "Fire Rate", 0.05, 2, true, "Primary"},
+	{"Primary.ClipSize", "Clip Size", 1, 35, false, "Primary"},
+	{"FireDelay", "Firerate", 0.05, 2, true, "Primary"},
+	{"ClipSize", "Clip Size", 1, 35, false, "Primary"},
+	{"MeleeDamage", "Melee Damage", 1, 105, false, false},
+	{"Shots", "Shots", 1, 10, false, "Primary"},
+	{"Primary.Damage", "Primary Damage", 1, 105, false, "Primary"},
+	{"Primary.NumShots", "Number of Shots", 1, 10, false, "Primary"}
 }
+
 
 
 for catid, catname in ipairs(GAMEMODE.ItemCategories) do
@@ -528,28 +531,32 @@ end
 	worthlab:SetPos(8, frame:GetTall() - worthlab:GetTall() - 8)
 	frame.WorthLab = worthlab
 
-	local checkout = vgui.Create("DButton", frame)
-	checkout:SetFont("ZSHUDFontSmall")
-	checkout:SetText("Checkout")
-	checkout:SizeToContents()
-	checkout:SetSize(130, 30)
-	checkout:AlignBottom(8)
-	checkout:CenterHorizontal()
-	checkout.DoClick = CheckoutDoClick
+-- Checkout Button
+local checkout = vgui.Create("DButton", frame)
+checkout:SetFont("ZSHUDFontSmall")
+checkout:SetText("Checkout")
+checkout:SizeToContents()
+checkout:SetSize(130, 30)
+checkout:AlignBottom(8)
+checkout:CenterHorizontal()
+checkout.DoClick = CheckoutDoClick
 
-	local randombutton = vgui.Create("DButton", frame)
-	randombutton:SetText("Random")
-	randombutton:SetSize(64, 16)
-	randombutton:AlignBottom(8)
-	randombutton:AlignRight(8)
-	randombutton.DoClick = RandDoClick
+-- Random Button
+local randombutton = vgui.Create("DButton", frame)
+randombutton:SetText("Random")
+randombutton:SetSize(64, 16)
+randombutton:AlignBottom(8)
+randombutton:AlignRight(8)
+randombutton.DoClick = RandDoClick
 
-	local clearbutton = vgui.Create("DButton", frame)
-	clearbutton:SetText("Clear")
-	clearbutton:SetSize(64, 16)
-	clearbutton:AlignRight(8)
-	clearbutton:MoveAbove(randombutton, 8)
-	clearbutton.DoClick = ClearCartDoClick
+-- Clear Button
+local clearbutton = vgui.Create("DButton", frame)
+clearbutton:SetText("Clear")
+clearbutton:SetSize(64, 16)
+clearbutton:AlignRight(8)
+clearbutton:MoveAbove(randombutton, 8)
+clearbutton.DoClick = ClearCartDoClick
+
 
 	--[[
 	--rules appear at the end of the list

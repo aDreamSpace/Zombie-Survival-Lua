@@ -554,33 +554,6 @@ if ply.m_MarkedForRespawn == true and !game.GetMap():StartWith("zs_obj") then
 end
 end)
 
-hook.Add("EntityTakeDamage", "dmgBuff", function(ply, dmginfo)
-	if ply:IsValid() and ply:IsPlayer() and ply:Team() == TEAM_HUMAN then
-		local attacker = dmginfo:GetAttacker()
-		if attacker:IsValid() and attacker:IsPlayer() and attacker:Team() == TEAM_UNDEAD and attacker.m_MarkedPlayer == ply and ply.m_MarkedBySkeletor == attacker and attacker:GetZombieClassTable().Name == "Skeleton" then
-			dmginfo:SetDamage(dmginfo:GetDamage() * 3)
-		end
-	end
-end)
-
---anti resupply launch and source machine disabler
-local bIncludeNailedProps = true
-hook.Add("EntityTakeDamage", "NoPropTeamDamage", function(ply, dmginfo)
-	if ply:IsValid() and ply:IsPlayer() and ply:Team() == TEAM_HUMAN then
-		local prop = dmginfo:GetInflictor()
-		local attacker = dmginfo:GetAttacker()
-		if IsEntity(prop) and prop:GetMoveType() == MOVETYPE_VPHYSICS and not string.StartWith(prop:GetClass(), "func_") then --Allow func_ entites to deal damage since they are KINO on nysc
-			if bIncludeNailedProps or not prop:IsNailed() then --add an optional check for nailed props
-				if not (attacker:IsValid() and attacker:IsPlayer() and attacker:Team() == TEAM_UNDEAD) and attacker ~= ply then --prevent expl. barrels from not causing suicide
-					local pPhysAttacker = prop:GetPhysicsAttacker()
-					if not (pPhysAttacker:IsValid() and pPhysAttacker:IsPlayer() and pPhysAttacker:Team() == TEAM_UNDEAD) then --prevent propkills from doing no damage
-						return true
-					end
-				end
-			end
-		end
-	end
-end)
 
 --antiafk glitch
 hook.Add("PlayerCanCheckout", "AntiAFKExploit", function(ply)
@@ -1807,15 +1780,6 @@ end
 function OneHit(ply, time, ban, aply)
 	ChangePunishment(ply, time, ban, aply, "1HKO")
 end
-
-hook.Add("EntityTakeDamage", "OneHitDamageHandler", function(ply, dmginfo)
-	local attacker = dmginfo:GetAttacker()
-	if ply["1HKO"] and attacker and attacker:IsValid() and attacker:IsPlayer() and attacker ~= ply then
-		print(ply, "one hit by", attacker)
-		dmginfo:SetDamage(4000)
-	end
-end)
-
 
 util.AddNetworkString("zs_playerinfo")
 util.AddNetworkString("zs_playerinfo_comments")

@@ -1,3 +1,128 @@
+--[[Here's a brief overview of the main functionalities:
+
+    Spray Cooldown: Prevents players from spamming sprays.
+    Hammer Damage Handler: Adjusts damage taken by entities when attacked by specified hammers.
+    Bot Adjustment: Modifies the number of bots in the game based on player points and frags.
+    Physgun Pickup: Allows players to pick up both humans and zombies using the Physgun.
+    Class Health Regeneration: Regenerates health for players based on their zombie class.
+    Award Points for Killing Zombies: Gives players points when they kill zombies.
+    Class Damage Handler: Adjusts damage taken by players based on their zombie class.
+    Demi Boss Classes: Randomly assigns boss classes to zombies under certain conditions.
+    Sigil Node System: Handles spawning of entities based on predefined node locations.
+    NPC Reward System: Rewards players with points for killing specific NPCs.
+    Zombie Abilities & Powers: Implements various abilities and powers for zombies, such as speed reduction for humans near specific zombie classes.
+    Soundtrack System: Plays random soundtracks for players upon joining.
+    
+]]
+
+
+
+// Spray Cooldown
+// Prevent people from spamming sprays
+local sprayCooldown = {}
+
+hook.Add("PlayerSpray", "LimitSprayUsage", function(ply)
+    if not IsValid(ply) then return end
+
+    local curTime = CurTime()
+    if sprayCooldown[ply] and sprayCooldown[ply] > curTime then
+        return true
+    end
+
+    sprayCooldown[ply] = curTime + 10
+end)
+
+
+
+-- Configuration: points required to add bots
+local pointsToBots = {
+    [100] = 1,
+    [300] = 2,
+    [500] = 3,
+    [700] = 4,
+    [1500] = 5,
+    [3000] = 7,
+    [4000] = 10,
+    [6000] = 15,
+    [12000] = 25 
+}
+
+-- Function to adjust bots based on total points
+local function adjustBotsBasedOnPoints()
+    local totalPoints = 0
+
+    -- Calculate total points for human players
+    for _, ply in ipairs(player.GetAll()) do
+        if ply:Team() == TEAM_HUMAN then
+            totalPoints = totalPoints + ply:Frags()
+        end
+    end
+
+    -- Find the threshold closest to totalPoints
+    local maxThreshold = nil
+    for threshold, _ in pairs(pointsToBots) do
+        if threshold <= totalPoints and (not maxThreshold or threshold > maxThreshold) then
+            maxThreshold = threshold
+        end
+    end
+
+    -- Adjust bots if a threshold was found
+    if maxThreshold then
+        local desiredBotCount = pointsToBots[maxThreshold]
+        local currentBotCount = #player.GetBots()
+
+        if desiredBotCount > currentBotCount then
+            RunConsoleCommand("botmod", desiredBotCount)
+        end
+    end
+end
+
+-- Function to adjust bots based on frags
+local function adjustBotsBasedOnFrags()
+    local totalFrags = 0
+
+    -- Calculate total frags for human players
+    for _, ply in ipairs(player.GetAll()) do
+        if ply:Team() == TEAM_HUMAN then
+            totalFrags = totalFrags + ply:Frags()
+        end
+    end
+
+    -- Find the threshold closest to totalFrags
+    local maxThreshold = nil
+    for threshold, _ in pairs(pointsToBots) do
+        if threshold <= totalFrags and (not maxThreshold or threshold > maxThreshold) then
+            maxThreshold = threshold
+        end
+    end
+
+    -- Adjust bots if a threshold was found
+    if maxThreshold then
+        local desiredBotCount = pointsToBots[maxThreshold]
+        local currentBotCount = #player.GetBots()
+
+        if desiredBotCount > currentBotCount then
+            RunConsoleCommand("botmod", desiredBotCount)
+        end
+    end
+end
+
+-- Timer to adjust bots every 10 seconds based on points
+timer.Create("AdjustBotsBasedOnPointsTimer", 10, 0, adjustBotsBasedOnPoints)
+
+-- Timer to adjust bots every 10 seconds based on frags
+timer.Create("AdjustBotsBasedOnFragsTimer", 10, 0, adjustBotsBasedOnFrags)
+
+-- Adjust bots when a player kills another player
+hook.Add("PlayerDeath", "AdjustBotsOnPlayerKill", function(victim, inflictor, attacker)
+    if attacker:IsPlayer() and attacker:Team() == TEAM_HUMAN then
+        adjustBotsBasedOnPoints()
+        adjustBotsBasedOnFrags()
+    end
+end)
+
+
+
 // Physgun Pick up for Zombies + Humans
 hook.Add("PhysgunPickup", "AllowHumanUndeadPickup", function(ply, target)
     if target:IsPlayer() and (target:Team() == TEAM_UNDEAD or target:Team() == TEAM_HUMAN) then
@@ -5,32 +130,44 @@ hook.Add("PhysgunPickup", "AllowHumanUndeadPickup", function(ply, target)
     end
 end)
 
-// Bot Handler 
--- Store the last interaction time for each object
--- Store the last attack time for each bot
-local lastBotAttackTimes = {}
 
--- The attack cooldown period in seconds
-local botAttackCooldown = 0.1
 
--- Assume `BotAttack` is the function that bots call to attack
-function BotAttack(bot, target)
-    local curTime = CurTime()
-    local lastBotAttackTime = lastBotAttackTimes[bot:EntIndex()] or 0
+//Class Health Handler
+hook.Add("PlayerSpawn", "HandleHealthRegen", function(player)
+    -- Get the player's zombie class
+    local classname = player:GetZombieClass()
+    local classtab = GAMEMODE.ZombieClasses[classname]
 
-    -- If the bot attacked less than `botAttackCooldown` seconds ago, ignore the attack
-    if curTime - lastBotAttackTime < botAttackCooldown then
-        return
+    -- Check if the class has a HealthRegenRate
+    if classtab and classtab.HealthRegenRate then
+        -- Create a timer that regenerates health
+        timer.Create(player:EntIndex() .. "HealthRegen", 7, 0, function()
+            if IsValid(player) then
+                local maxHealth = player:GetMaxHealth()
+                if player:Health() < maxHealth then
+                    player:SetHealth(math.min(player:Health() + classtab.HealthRegenRate , maxHealth))
+                end
+            else
+                -- Player is no longer valid, remove the timer
+                timer.Remove(player:EntIndex() .. "HealthRegen")
+            end
+        end)
     end
+end)
 
-    -- Otherwise, update the last attack time and proceed with the attack
-    lastBotAttackTimes[bot:EntIndex()] = curTime
+hook.Add("PlayerDeath", "AwardPointsForKill", function(victim, inflictor, attacker)
+    -- Check if the victim is a player and on TEAM_UNDEAD
+    if IsValid(victim) and victim:IsPlayer() and victim:Team() == TEAM_UNDEAD then
+        -- Check if the attacker is a player
+        if IsValid(attacker) and attacker:IsPlayer() then
+            -- Award 1 PointShop point to the attacker
+            attacker:PS_GivePoints(2)
+           -- attacker:PS_Notify("You've earned 1 point for killing a zombie!")
+        end
+    end
+end)
 
-end
-
-
-
-// Damage handler 
+//  Damage handler 
 hook.Add("EntityTakeDamage", "HandleDamage", function(target, dmg)
     -- Handle damage resistance for players
     if target:IsPlayer() then
@@ -40,9 +177,28 @@ hook.Add("EntityTakeDamage", "HandleDamage", function(target, dmg)
             local reduction = 1 - classtab.DamageResistance
             dmg:ScaleDamage(reduction)
         end
+
+        -- Handle damage multiplier for zombie classes
+        local class = target:GetZombieClassTable()
+        if class and class.DamageMultiplier then
+            local reducedDamage = dmg:GetDamage() * class.DamageMultiplier
+            dmg:SetDamage(reducedDamage)
+        end
+
+        -- Handle damage buff for marked players
+        local attacker = dmg:GetAttacker()
+        if attacker:IsValid() and attacker:IsPlayer() and attacker:Team() == TEAM_UNDEAD and attacker.m_MarkedPlayer == target and target.m_MarkedBySkeletor == attacker and attacker:GetZombieClassTable().Name == "Skeleton" then
+            dmg:SetDamage(dmg:GetDamage() * 3)
+        end
+
+        -- Handle one hit damage
+        if target["1HKO"] and attacker and attacker:IsValid() and attacker:IsPlayer() and attacker ~= target then
+            print(target, "one hit by", attacker)
+            dmg:SetDamage(4000)
+        end
     end
 
-    -- Handle other cases
+    -- Handle Self Explosive Damage to humans
     if TEAM_HUMAN then -- IF ZOMBIE SURVIVAL
         if target:IsPlayer() then
             if target:Team() == TEAM_HUMAN  and dmg:IsDamageType(64) then return true end
@@ -54,8 +210,23 @@ hook.Add("EntityTakeDamage", "HandleDamage", function(target, dmg)
             return true
         end
     end
-end)
 
+    -- Check if the attacker is a player
+    local attacker = dmg:GetAttacker()
+    if not attacker:IsPlayer() then return end
+
+    -- Check if the attacker's weapon is one of the specified hammers
+    local weapon = attacker:GetActiveWeapon()
+    if not weapon:IsValid() then return end
+    local weaponClass = weapon:GetClass()
+    if weaponClass ~= "cw_tool_hammer" and weaponClass ~= "weapon_zs_hammer" and weaponClass ~= "weapon_zs_hammerplank" then return end
+
+    -- Check if the target is not a player
+    if target:IsPlayer() then return end
+
+    -- Set the damage to 500
+    dmg:SetDamage(500)
+end)
 
 local zombieBossClasses = {"Carni", "Spitter", "Puker", "Brute", "The Butcher"}
 local maxBossesAllowed = 9
@@ -85,6 +256,14 @@ local function setZombieBossClass(ply)
     end
 end
 
+hook.Add("EndRound", "SlayBotsOnRoundEnd", function(winningTeam)
+    for _, player in ipairs(player.GetAll()) do
+        if player:IsBot() then
+            player:Kill()
+        end
+    end
+end)
+
 -- Console command to toggle boss class assignment
 concommand.Add("toggleBossClassAssignment", function(ply, cmd, args)
     if not ply:IsAdmin() then
@@ -103,7 +282,7 @@ concommand.Add("toggleBossClassAssignment", function(ply, cmd, args)
     end
 end)
 
--- Set zombie boss classes periodically
+
 -- Set zombie boss classes periodically
 timer.Create("ZombieBossClassSetter", 45, 0, function()
     -- Check if boss class assignment is enabled
@@ -200,17 +379,21 @@ if SERVER then
     local entities = {
         {name = "sigil_barricadetower", chance = 0.35},
         {name = "sigil_medicaltower", chance = 0.3},
-        {name = "sigil_ammotower", chance = 0.25},
+        {name = "sigil_ammotower", chance = 0.2},
         {name = "sigil_pointstower", chance = 0.2},
-        {name = "sigil_pctower", chance = 0.3},
-        {name = "zsigil_undead_haunted", chance = 0.4}
+        {name = "sigil_pctower", chance = 0.2}
+     --   {name = "zsigil_undead_haunted", chance = 0.1}
     }
 
     -- We have big maps, so we twice the amount of sigils
     local mapExceptions = {
         ["zs_abandoned_mall_v10"] = 6,
-        ["zs_abandoned_mallmart_b4"] = 6,
-        ["zs_damiens_house_v2c"] = 8, -- This map is very small, so we need more sigils 
+        ["zs_abandoned_mallmart_b4"] = 7,
+        ["zs_damiens_house_v2c"] = 8,
+        ["zs_onett_v6"] = 6, 
+        ["zs_krusty_krab_large_v5"] = 6, 
+        ["zs_resistance_rising_v1"] = 5,
+        
     }
 
     local evilentities = {"zsigil_undead_haunted"}
@@ -506,7 +689,7 @@ hook.Add("Think", "AncientNightmareSpeedReduction", function()
             end
 
             -- If within range, reduce walk speed
-            if closestDist <= 500 then  -- Change this to your desired range
+            if closestDist <= 1000 then  -- Change this to your desired range
                 if not originalWalkSpeeds[ply] then
                     originalWalkSpeeds[ply] = ply:GetWalkSpeed()
                 end
@@ -521,17 +704,6 @@ hook.Add("Think", "AncientNightmareSpeedReduction", function()
     end
 end)
 
--- Class Damage Resistance Function 
-
-function GM:EntityTakeDamage(target, dmginfo)
-    if target:IsPlayer() then
-        local class = target:GetZombieClassTable()
-        if class.DamageMultiplier then
-            local reducedDamage = dmginfo:GetDamage() * class.DamageMultiplier
-            dmginfo:SetDamage(reducedDamage)
-        end
-    end
-end
 
 
 
@@ -557,7 +729,9 @@ hook.Add("OnNPCKilled", "AddPointsOnZombieDeath", function(npc, attacker, inflic
     end
 end)
 
+-- This does work, but it's not good to use it in a gamemode like Zombie Survival
 
+--[[
 -- Soundtrack System
 -- SUCH a headache 
 -- Define the soundtracks
@@ -604,3 +778,5 @@ hook.Add("PlayerInitialSpawn", "PlayInitialSoundtrack", function(ply)
         end
     end)
 end)
+]]
+

@@ -140,7 +140,7 @@ SWEP.Primary.DefaultClip	= 72
 SWEP.Primary.Automatic		= false
 SWEP.Primary.Ammo			= "Pistol"
 
-SWEP.FireDelay = 0.55
+SWEP.FireDelay = 0.25
 SWEP.FireSound = "CW_M29_SATAN_FIRE"
 SWEP.Recoil = 3
 
@@ -151,7 +151,7 @@ SWEP.MaxSpreadInc = 0.15
 SWEP.SpreadPerShot = 0.15
 SWEP.SpreadCooldown = 0.20
 SWEP.Shots = 1
-SWEP.Damage = 500
+SWEP.Damage = 750
 SWEP.DeployTime = 0.75
 SWEP.Chamberable = false
 

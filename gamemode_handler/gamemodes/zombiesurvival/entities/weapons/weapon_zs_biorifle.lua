@@ -59,18 +59,49 @@ SWEP.IronSightsPos = Vector(1.95, 3, 2.75)
 SWEP.IronSightsAng = Vector(-0.15, -1, 2)
 
 
+function SWEP:ShootBullets(dmg, numbul, cone)
+	local bullet = {}
+	bullet.Num = numbul
+	bullet.Src = self.Owner:GetShootPos()
+	bullet.Dir = self.Owner:GetAimVector()
+	bullet.Spread = Vector(cone, cone, 0)
+	bullet.Tracer = 0
+	bullet.Force = 10
+	bullet.Damage = dmg
+	bullet.Callback = function(attacker, tr, dmginfo)
+		self.BulletCallback(attacker, tr, dmginfo)
+	
+		local effectdata = EffectData()
+		local distance = tr.HitPos:Distance(bullet.Src)
+		for i = 0, 1, 0.1 do 
+			effectdata:SetOrigin(bullet.Src + bullet.Dir * distance * i)
+			util.Effect("biorifle", effectdata)
+		end
+	end
+
+	self.Owner:FireBullets(bullet)
+
+	self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
+	self.Owner:MuzzleFlash()
+	self.Owner:SetAnimation(PLAYER_ATTACK1)
+
+	if not self.Primary.Automatic then
+		self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
+	end
+end
+
 function SWEP.BulletCallback(attacker, tr, dmginfo)
 	local ent = tr.Entity
 	if ent:IsValid() and ent:IsPlayer() and ent:Team() == TEAM_UNDEAD then
 		ent:AddLegDamage(8)
 	end
-
+	
 	local e = EffectData()
-		e:SetOrigin(tr.HitPos)
-		e:SetNormal(tr.HitNormal)
-		e:SetRadius(8)
-		e:SetMagnitude(1)
-		e:SetScale(1)
+	e:SetOrigin(tr.HitPos)
+	e:SetNormal(tr.HitNormal)
+	e:SetRadius(8)
+	e:SetMagnitude(1)
+	e:SetScale(1)
 	util.Effect("biorifle", e)
 
 	GenericBulletCallback(attacker, tr, dmginfo)

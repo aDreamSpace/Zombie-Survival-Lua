@@ -25,16 +25,24 @@ function Player:PS_PlayerDeath()
 end
 
 function Player:PS_PlayerInitialSpawn()
-	self.PS_Points = 0
-	self.PS_Items = {}
+    self.PS_Points = 0
+    self.PS_Items = {}
 
-	-- Send stuff
-	timer.Simple(1, function()
-		if !IsValid(self) then return end
+    -- Send stuff
+    timer.Simple(15, function()
+        if !IsValid(self) then return end
 
-		self:PS_LoadData()
-		self:PS_SendClientsideModels()
-	end)
+        self:PS_LoadData()
+        self:PS_SendClientsideModels()
+
+        -- Re-equip items
+        for item_id, item in pairs(self.PS_Items) do
+            if item.Equipped then
+                local ITEM = PS.Items[item_id]
+                ITEM:OnEquip(self, item.Modifiers)
+            end
+        end
+    end)
 
 	if PS.Config.NotifyOnJoin then
 		if PS.Config.ShopKey ~= '' then

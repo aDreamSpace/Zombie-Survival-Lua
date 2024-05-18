@@ -15,7 +15,7 @@ CLASS.Speed = 300
 CLASS.CanTaunt = true
 CLASS.DamageResistance = 0.4
 CLASS.FearPerInstance = 1
-
+CLASS.ArmorRegenRate = 75
 CLASS.Points = 50
 
 CLASS.SWEP = "weapon_zs_graveshovelz"

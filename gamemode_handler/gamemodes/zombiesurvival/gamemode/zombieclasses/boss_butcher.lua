@@ -11,7 +11,7 @@ CLASS.Boss = false
 
 CLASS.Health = 3100
 CLASS.Speed = 225
-
+CLASS.ArmorRegenRate = 75
 CLASS.CanTaunt = true
 CLASS.DamageResistance = 0.4
 CLASS.FearPerInstance = 1

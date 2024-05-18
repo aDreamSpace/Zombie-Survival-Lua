@@ -1,4 +1,7 @@
--- Client-side script
+
+
+
+// Client side code for the boss system
 net.Receive("PlayerBecomeBoss", function()
     local message = net.ReadString()
     AddMessage(message)  -- Add the message to the messages table
@@ -131,9 +134,10 @@ hook.Add("PostDrawOpaqueRenderables", "DrawSigilSpritesAndHints", function()
 end)
 
 
-
+--[[
 net.Receive("PlaySoundtrack", function()
     local soundtrack = net.ReadString()
     surface.PlaySound(soundtrack)
 end)
+]]
 

@@ -3,13 +3,13 @@ att.name = "am_highcaliberrounds2"
 att.displayName = "High Caliber Rounds"
 att.displayNameShort = "HCR"
 
-att.statModifiers = {DamageMult = 0.15,
+att.statModifiers = {DamageMult = 0.75,
     EffectiveRangeMult = 1/5,
 	RecoilMult = .15,
 	DrawSpeedMult = -0.15,
 	ReloadSpeedMult = -0.30}
 	
-att.price = 75
+att.price = 300
 
 --Their added mass slows handling and reload speed.--
 

@@ -161,6 +161,7 @@ killicon.Add("weapon_zs_avatarrifle", "materials/zombiesurvival/weapons/bio3.png
 killicon.Add("cw_melee_knife","materials/zombiesurvival/weapons/knife.png", color_white)
 killicon.Add("cw_melee_crowbar","materials/zombiesurvival/weapons/crowbar.png", color_white)
 killicon.Add("cw_melee_stunstick","materials/zombiesurvival/weapons/stunbaton.png", color_white)
+killicon.Add("weapon_zs_baton","materials/zombiesurvival/weapons/stunbaton.png", COLOR_GREEN)
 killicon.Add("cw_melee_dagger","materials/zombiesurvival/weapons/dagger.png", color_white)
 killicon.Add("cw_melee_brokensword","materials/zombiesurvival/weapons/brokensword.png", color_white)
 killicon.Add("cw_melee_cutjavelin","materials/zombiesurvival/weapons/cutjavelin.png", color_white)

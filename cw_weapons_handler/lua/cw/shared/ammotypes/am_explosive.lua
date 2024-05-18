@@ -4,10 +4,10 @@ att.displayName = "Explosive Shot"
 att.displayNameShort = "Explosive"
 
 att.statModifiers = {DamageMult = 8.5,
-	HipSpreadMult = 0,
+	HipSpreadMult = 1.1,
 	ShotsMult = -.875,
 }
-att.price = 110
+att.price = 200
 
 if CLIENT then
 	att.displayIcon = surface.GetTextureID("zombiesurvival/cwicons/explosive")

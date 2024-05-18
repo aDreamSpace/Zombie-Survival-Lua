@@ -113,7 +113,7 @@ local function ItemPanelThink(self)
 					self.m_NameLabel:InvalidateLayout()
 					self.m_BuyButton:SetImage("zombiesurvival/cwui/nobuy.png")
 					self.m_BuyButton:SetSize(64, 64)
-					self.m_BuyButton:SetPos(800, 10) -- Adjust the position of the button here
+					self.m_BuyButton:SetPos(800, 0) -- Adjust the position of the button here
             end
         end
 
@@ -384,7 +384,7 @@ function GM:OpenPointsShop()
 			for index, tables in pairs(attMTbl) do
 				if tables.header then
 					local itempan = vgui.Create("DPanel")
-					itempan:SetSize(list:GetWide(), 40)
+					itempan:SetSize(list:GetWide(), 20)
 					itempan:SetAlpha(255)
 					itempan.ID = "info"
 					list:AddItem(itempan)
@@ -486,7 +486,7 @@ function GM:OpenPointsShop()
 						local button = vgui.Create("DImageButton", itempan)
 						button:SetImage("zombiesurvival/cwui/buy.png")
 						button:SizeToContents()
-						button:SetPos(itempan:GetWide() - 90 - button:GetWide(), itempan:GetTall() - 150)
+						button:SetPos(itempan:GetWide() - 90 - button:GetWide(), itempan:GetTall() - 140)
 						button:SetTooltip("Purchase "..name)
 						button.ID = itempan.ID
 						button.att = placeholderName

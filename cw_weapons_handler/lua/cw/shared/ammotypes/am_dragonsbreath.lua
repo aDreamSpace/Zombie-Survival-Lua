@@ -3,9 +3,9 @@ att.name = "am_dragonsbreath2"
 att.displayName = "Dragon's Breath"
 att.displayNameShort = "Incendiary"
 
-att.statModifiers = {DamageMult = 1.25, 
-ClumpSpreadMult = 3.5,
-RecoilMult = 2.9}
+att.statModifiers = {DamageMult = 2.25, 
+ClumpSpreadMult = 0.5,
+RecoilMult = 1.9}
 att.price = 425
 
 if CLIENT then

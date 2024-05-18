@@ -3,7 +3,7 @@ CLASS.TranslationName = "class_flesh_creeper"
 CLASS.Description = "description_flesh_creeper"
 CLASS.Help = "controls_flesh_creeper"
 
-CLASS.Wave = 0
+CLASS.Wave = 1 / 5
 CLASS.Hidden = true
 CLASS.Unlocked = true
 CLASS.Health = 250

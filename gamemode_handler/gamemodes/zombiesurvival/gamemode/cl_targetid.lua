@@ -74,27 +74,27 @@ local targetEnts = {
 
 
 }
-function GM:HUDDrawTargetID(teamid)
-	local start = EyePos()
-	trace.start = start
-	trace.endpos = start + EyeAngles():Forward() * 2048
-	trace.filter[1] = MySelf
-	trace.filter[2] = MySelf:GetObserverTarget()
+function GM:HUDDrawTargetID()
+    local start = EyePos()
+    trace.start = start
+    trace.endpos = start + EyeAngles():Forward() * 2048
+    trace.filter[1] = MySelf
+    trace.filter[2] = MySelf:GetObserverTarget()
 
-	local isspectator = MySelf:IsSpectator()
+    local isspectator = MySelf:IsSpectator()
 
-	local entity = util.TraceHull(trace).Entity
-	if entity:IsValid() and entity:IsPlayer() and (entity:Team() == teamid or isspectator) then
-		entitylist[entity] = CurTime()
-	elseif entity:IsValid() and targetEnts[entity:GetClass()] then
-		entitylist[entity] = CurTime()
-	end
+    local entity = util.TraceHull(trace).Entity
+    if entity:IsValid() and entity:IsPlayer() then
+        entitylist[entity] = CurTime()
+    elseif entity:IsValid() and targetEnts[entity:GetClass()] then
+        entitylist[entity] = CurTime()
+    end
 
-	for ent, time in pairs(entitylist) do
-		if ent:IsValid() and CurTime() < time + 2 then
-			self:DrawTargetID(ent, 1 - math.Clamp((CurTime() - time) / 2, 0, 1))
-		else
-			entitylist[ent] = nil
-		end
-	end
+    for ent, time in pairs(entitylist) do
+        if ent:IsValid() and CurTime() < time + 2 then
+            self:DrawTargetID(ent, 1 - math.Clamp((CurTime() - time) / 2, 0, 1))
+        else
+            entitylist[ent] = nil
+        end
+    end
 end

@@ -1,43 +1,43 @@
 AddCSLuaFile("shared.lua")
 include("shared.lua")
 
-util.AddNetworkString("ActivateAbility")
-util.AddNetworkString("DeactivateAbility")
+util.AddNetworkString("ActivateAxeAbility")
+util.AddNetworkString("DeactivateAxeAbility")
 
 function SWEP:Initialize()
-    self:SetNWFloat("AbilityCooldown", 0)
-    self:SetNWBool("AbilityActive", false)
+    self:SetNWFloat("AbilityAxeCooldown", 0)
+    self:SetNWBool("AbilityAxeActive", false)
 end
 
 function SWEP:SecondaryAttack()
-    if CurTime() < self:GetNWFloat("AbilityCooldown") or self:GetNWBool("AbilityActive") then return end
+    if CurTime() < self:GetNWFloat("AbilityAxeCooldown") or self:GetNWBool("AbilityAxeActive") then return end
     self:ActivateAbility()
 end
 
 function SWEP:ActivateAbility()
-    if self:GetNWBool("AbilityActive") then return end
+    if self:GetNWBool("AbilityAxeActive") then return end
     self.Primary.Delay = self.Primary.Delay * 0.5
-    self.MeleeDamage = self.MeleeDamage * 2.5
-    self:SetNWBool("AbilityActive", true)
+    self.MeleeDamage = self.MeleeDamage * 5
+    self:SetNWBool("AbilityAxeActive", true)
 
-    timer.Simple(5, function() -- Change 5 to the duration of the ability
+    timer.Simple(5, function() 
         if IsValid(self) then
             self:DeactivateAbility()
         end
     end)
 
-    net.Start("ActivateAbility")
+    net.Start("ActivateAxeAbility")
     net.WriteEntity(self)
     net.Broadcast()
 end
 
 function SWEP:DeactivateAbility()
     self.Primary.Delay = self.Primary.Delay / 0.5
-    self.MeleeDamage = self.MeleeDamage / 2.5
-    self:SetNWBool("AbilityActive", false)
-    self:SetNWFloat("AbilityCooldown", CurTime() + 30)
+    self.MeleeDamage = self.MeleeDamage / 5
+    self:SetNWBool("AbilityAxeActive", false)
+    self:SetNWFloat("AbilityAxeCooldown", CurTime() + 15)
 
-    net.Start("DeactivateAbility")
+    net.Start("DeactivateAxeAbility")
     net.WriteEntity(self)
     net.Broadcast()
 end

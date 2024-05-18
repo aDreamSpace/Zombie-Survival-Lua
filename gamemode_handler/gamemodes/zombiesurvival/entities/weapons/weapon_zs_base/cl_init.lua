@@ -35,9 +35,36 @@ function SWEP:PreDrawViewModel(vm)
     end
 end
 
+hook.Add("HUDPaint", "DrawAttackCooldownBar", function()
+    local ply = MySelf
+
+    local wep = ply:GetActiveWeapon()
+    if IsValid(wep) and wep:IsWeapon() and wep.Base == "weapon_zs_base" then
+        local nextAttackTime = wep:GetNextPrimaryFire() + 0.01 
+        local cooldown = nextAttackTime - CurTime()
+
+        if cooldown < 0 then return end
+
+        local x, y = ScrW() / 2, ScrH() / 2 + 30
+        local width, height = 200, 20
+        local padding = 10
+
+        draw.RoundedBoxEx(0, x - width / 2, y + padding + 10, width, height, Color(0, 0, 0, 150), false, false, false, false)
+
+        local delay = wep.Primary and wep.Primary.Delay or 1
+        local lastPrimaryFire = wep.LastPrimaryFire or nextAttackTime - delay
+        local maxCooldown = nextAttackTime - lastPrimaryFire
+        local progress = math.Clamp(cooldown / maxCooldown, 0, 1)
+        draw.RoundedBoxEx(0, x - width / 2, y + padding + 10, width * (1 - progress), height, Color(123, 0, 255), false, false, false, false)
+
+        draw.SimpleText(string.format("%4.2fs", cooldown), "ZSHUDFontSmall", x, y + padding + height / 2 + 10, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    end
+end)
+
+
 function SWEP:PostDrawViewModel(vm)
     if self.ShowViewModel == false then
-        render.SetBlend(1)
+        return
     end
 
     if not self.HUD3DPos or GAMEMODE.WeaponHUDMode == 1 then return end
@@ -88,6 +115,8 @@ local function GetAmmoColor(clip, maxclip)
 		colAmmo.b = sat * 255
 	end
 end
+
+
 
 function SWEP:Draw3DHUD(vm, pos, ang)
 	local wid, hei = 180, 200

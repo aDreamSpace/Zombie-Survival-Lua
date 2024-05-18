@@ -13,9 +13,12 @@ function GM:IsClassUnlocked(classname)
 
     local wave = classtab.Wave
     local curwave = self:GetWave()
+
+    -- Check if the current wave is less than the wave required for the class
+    if wave and curwave < wave then return false end
+
     return classtab.Unlocked
     or wave and curwave >= wave
-    or wave and not self:GetWaveActive() and curwave + 1 >= wave
     or classtab.DamageResistance -- Added damage resistance
     --or sigil sanity stuff
 end

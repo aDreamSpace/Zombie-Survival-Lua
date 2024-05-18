@@ -2,7 +2,7 @@ CLASS.Name = "Mech Dog"
 CLASS.TranslationName = "class_mechdog"
 
 
-CLASS.Wave = 4 / 5
+CLASS.Wave = 4   / 5
 
 CLASS.Health = 1075 
 CLASS.Speed = 200
@@ -20,10 +20,11 @@ CLASS.CanTaunt = true
 CLASS.SWEP = "weapon_zs_mechdog"
 
 CLASS.Model = Model("models/player/dog.mdl")
-CLASS.DamageResistance = 0.4
+CLASS.DamageResistance = 0.65
+CLASS.HealthRegenRate = 22 
 CLASS.VoicePitch = 0.4
-
-CLASS.CanFeignDeath = true
+CLASS.NoFallDamage = true
+CLASS.NoFallSlowdown = true
 
 local math_random = math.random
 local math_Rand = math.Rand

@@ -76,7 +76,7 @@ function ENT:AttachTo(baseent, attachent, physbone, physbone2)
 	local nt = self:GetNailType() or NAILTYPE_NONE
 	if not baseent.NailType then
 		if nt == NAILTYPE_HEAVY then
-			baseent:SetBarricadeRepairs(math.min(baseent:GetBarricadeRepairs() * 1.25, baseent:GetMaxBarricadeRepairs())) --increase the repairs!
+			baseent:SetBarricadeRepairs(math.min(baseent:GetBarricadeRepairs() * 1.75, baseent:GetMaxBarricadeRepairs())) --increase the repairs!
 			baseent._OLDMAT = baseent:GetMaterial()
 			baseent:SetMaterial("debug/env_cubemap_model")
 			self:SetMaterial("debug/env_cubemap_model")
@@ -85,7 +85,7 @@ function ENT:AttachTo(baseent, attachent, physbone, physbone2)
 		end
 
 		if nt == NAILTYPE_BARBED then
-			baseent:SetMaxBarricadeHealth(baseent:GetMaxBarricadeHealth() * 0.75) --reduce the health!
+			baseent:SetMaxBarricadeHealth(baseent:GetMaxBarricadeHealth() * 0.25) --reduce the health!
 
 			if baseent:GetBarricadeHealth() > baseent:GetMaxBarricadeHealth() then
 				baseent:SetBarricadeHealth(baseent:GetMaxBarricadeHealth())
@@ -98,9 +98,9 @@ function ENT:AttachTo(baseent, attachent, physbone, physbone2)
 		end
 
 		if nt == NAILTYPE_GALVANIZED then --all around good nail
-			baseent:SetBarricadeRepairs(math.min(baseent:GetBarricadeRepairs() * 1.1, baseent:GetMaxBarricadeRepairs())) --increase the repairs!
-			baseent:SetMaxBarricadeHealth(baseent:GetMaxBarricadeHealth() * 1.15) --increase the health!
-			baseent:SetBarricadeHealth(math.min(baseent:GetMaxBarricadeHealth(), baseent:GetBarricadeHealth() * 1.15)) --up our current health!
+			baseent:SetBarricadeRepairs(math.min(baseent:GetBarricadeRepairs() * 1.2, baseent:GetMaxBarricadeRepairs())) --increase the repairs!
+			baseent:SetMaxBarricadeHealth(baseent:GetMaxBarricadeHealth() * 1.35) --increase the health!
+			baseent:SetBarricadeHealth(math.min(baseent:GetMaxBarricadeHealth(), baseent:GetBarricadeHealth() * 1.35)) --up our current health!
 
 			baseent._OLDCOLOR = baseent:GetColor()
 			baseent:SetColor(Color(70, 70, 70)) --gray color
@@ -109,8 +109,8 @@ function ENT:AttachTo(baseent, attachent, physbone, physbone2)
 		end
 
 		if nt == NAILTYPE_STEEL then --good nail for increasing prop hp
-			baseent:SetMaxBarricadeHealth(baseent:GetMaxBarricadeHealth() * 1.35) --increase the health!
-			baseent:SetBarricadeHealth(math.min(baseent:GetMaxBarricadeHealth(), baseent:GetBarricadeHealth() * 1.35)) --up our current health!
+			baseent:SetMaxBarricadeHealth(baseent:GetMaxBarricadeHealth() * 2.2) --increase the health!
+			baseent:SetBarricadeHealth(math.min(baseent:GetMaxBarricadeHealth(), baseent:GetBarricadeHealth() * 2.2)) --up our current health!
 
 			baseent._OLDCOLOR = baseent:GetColor()
 			baseent:SetColor(Color(0, 255, 0)) --green color

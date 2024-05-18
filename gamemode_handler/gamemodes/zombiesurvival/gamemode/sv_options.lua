@@ -41,7 +41,7 @@ cvars.AddChangeCallback("zs_endwavehealthbonus", function(cvar, oldvalue, newval
 	GAMEMODE.EndWaveHealthBonus = tonumber(newvalue) or 0
 end)
 
-GM.GibLifeTime = CreateConVar("zs_giblifetime", "25", FCVAR_ARCHIVE, "Specifies how many seconds player gibs will stay in the world if not eaten or destroyed."):GetFloat()
+GM.GibLifeTime = CreateConVar("zs_giblifetime", "10", FCVAR_ARCHIVE, "Specifies how many seconds player gibs will stay in the world if not eaten or destroyed."):GetFloat()
 cvars.AddChangeCallback("zs_giblifetime", function(cvar, oldvalue, newvalue)
 	GAMEMODE.GibLifeTime = tonumber(newvalue) or 1
 end)
@@ -76,7 +76,7 @@ cvars.AddChangeCallback("zs_maxpropsinbarricade", function(cvar, oldvalue, newva
 	GAMEMODE.MaxPropsInBarricade = tonumber(newvalue) or 8
 end)
 
-GM.MaxDroppedItems = CreateConVar("zs_maxdroppeditems", "32", FCVAR_ARCHIVE + FCVAR_NOTIFY, "Maximum amount of dropped items. Prevents spam or lag when lots of people die."):GetInt()
+GM.MaxDroppedItems = CreateConVar("zs_maxdroppeditems", "20", FCVAR_ARCHIVE + FCVAR_NOTIFY, "Maximum amount of dropped items. Prevents spam or lag when lots of people die."):GetInt()
 cvars.AddChangeCallback("zs_maxdroppeditems", function(cvar, oldvalue, newvalue)
 	GAMEMODE.MaxDroppedItems = tonumber(newvalue) or 32
 end)
@@ -96,7 +96,7 @@ cvars.AddChangeCallback("zs_medkitpointsperhealth", function(cvar, oldvalue, new
 	GAMEMODE.MedkitPointsPerHealth = tonumber(newvalue) or 1
 end)
 
-GM.RepairPointsPerHealth = CreateConVar("zs_repairpointsperhealth", "30", FCVAR_ARCHIVE + FCVAR_NOTIFY, "Specifies the amount of repairing for players to be given a point. For use with nails and such."):GetInt()
+GM.RepairPointsPerHealth = CreateConVar("zs_repairpointsperhealth", "20", FCVAR_ARCHIVE + FCVAR_NOTIFY, "Specifies the amount of repairing for players to be given a point. For use with nails and such."):GetInt()
 cvars.AddChangeCallback("zs_repairpointsperhealth", function(cvar, oldvalue, newvalue)
 	GAMEMODE.RepairPointsPerHealth = tonumber(newvalue) or 1
 end)

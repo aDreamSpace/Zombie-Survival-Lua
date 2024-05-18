@@ -248,7 +248,7 @@ LANGUAGE.class_hunter						  = "Hunter"
 LANGUAGE.class_skeletor                 = "Skeletor"
 LANGUAGE.class_icepheonix						  = "Ice Pheonix"
 LANGUAGE.class_mechdog						  = "Mech Dog"
-LANGUAGE.class_scorpio                 = "Scorpio"
+LANGUAGE.class_scorpio                 = "Scorpion"
 
 
 -- Class descriptions

@@ -20,6 +20,8 @@ CLASS.ZTraits = {
 CLASS.Points = 7
 
 CLASS.CanTaunt = true
+CLASS.HealthRegenRate = 50
+CLASS.DamageResistance = 0.5
 
 CLASS.SWEP = "weapon_zs_jugg"
 

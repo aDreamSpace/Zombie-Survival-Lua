@@ -51,21 +51,22 @@ function ENT:Explode(hitpos, hitnormal)
 		effectdata:SetOrigin(hitpos)
 		effectdata:SetNormal(hitnormal)
 	util.Effect("hit_glass", effectdata)
-
 	if owner:IsValidHuman() then
 		for ent, dmg in pairs(util.BlastDamageExAlloc(self, owner, hitpos, 128, 60, DMG_SLASH)) do
-			if (ent:Team() == TEAM_UNDEAD or ent == owner) then
+			if ent:Team() == TEAM_UNDEAD and ent ~= owner then
 				ent:Ignite(dmg / 7)
 				for __, fire in pairs(ents.FindByClass("entityflame")) do
 					if fire:IsValid() and fire:GetParent() == ent then
 						fire:SetOwner(owner)
 						fire:SetPhysicsAttacker(owner)
 						fire.AttackerForward = owner
+						if fire:GetParent() == owner then
+							fire:Remove()
+						end
 					end
 				end
 			end
 		end
 	end
-
 	self:NextThink(CurTime())
 end

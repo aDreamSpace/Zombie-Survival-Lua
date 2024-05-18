@@ -11,3 +11,5 @@ ENT.GhostWeapon = "weapon_zs_resupplybox"
 ENT.GhostDistance = 64
 ENT.GhostLimitedNormal = 0.75
 ENT.GhostFlatGround = false
+
+

@@ -48,36 +48,36 @@ end
 if not SERVER then return end
 
 function SWEP:Think()
-	local pl = self.Owner
+    local pl = self.Owner
 
-	if self.PukeLeft > 0 and CurTime() >= self.NextPuke then
-		self.PukeLeft = self.PukeLeft - 1
-		local ent = ents.Create("projectile_pheonix")
-		if ent:IsValid() then
-			ent:SetPos(pl:EyePos())
-			ent:SetOwner(pl)
-			ent:SetPhysicsAttacker(pl)
-			ent:Spawn()
+    if self.PukeLeft > 0 and CurTime() >= self.NextPuke then
+        self.PukeLeft = self.PukeLeft - 1
+        local ent = ents.Create("projectile_pheonix")
+        if ent:IsValid() then
+            ent:SetPos(pl:EyePos())
+            ent:SetOwner(pl)
+            ent:SetPhysicsAttacker(pl)
+            ent:Spawn()
 
-			local phys = ent:GetPhysicsObject()
-			if phys:IsValid() then
-				local ang = pl:EyeAngles()
-				if not self.Focused then
-					ang:RotateAroundAxis(ang:Forward(), math.Rand(-30, 30))
-					ang:RotateAroundAxis(ang:Up(), math.Rand(-30, 30))
-				elseif self.Focused then
-					if self.PukeLeft == 1 then
-						self.Focused = false
-					end
-					ang:RotateAroundAxis(ang:Forward(), math.Rand(-4, 4))
-					ang:RotateAroundAxis(ang:Up(), math.Rand(-4, 4))
-				end
+            local phys = ent:GetPhysicsObject()
+            if phys:IsValid() then
+                local ang = pl:EyeAngles()
+                if not self.Focused then
+                    ang:RotateAroundAxis(ang:Forward(), math.Rand(-10, 10)) -- Decreased range
+                    ang:RotateAroundAxis(ang:Up(), math.Rand(-10, 10)) -- Decreased range
+                elseif self.Focused then
+                    if self.PukeLeft == 1 then
+                        self.Focused = false
+                    end
+                    ang:RotateAroundAxis(ang:Forward(), math.Rand(-2, 2)) -- Decreased range
+                    ang:RotateAroundAxis(ang:Up(), math.Rand(-2, 2)) -- Decreased range
+                end
 
-				phys:SetVelocityInstantaneous(ang:Forward() * math.Rand(600, 1000))
-			end
-		end
-	end
+                phys:SetVelocityInstantaneous(ang:Forward() * math.Rand(600, 1000))
+            end
+        end
+    end
 
-	self:NextThink(CurTime())
-	return true
+    self:NextThink(CurTime())
+    return true
 end

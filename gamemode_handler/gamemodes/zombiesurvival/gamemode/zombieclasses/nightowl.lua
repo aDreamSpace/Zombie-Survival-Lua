@@ -11,7 +11,7 @@ CLASS.SWEP = "weapon_zs_nightowl"
 --CLASS.Model = Model("models/player/skeleton.mdl")
 CLASS.Model = Model("models/player/zombine/combine_zombie.mdl")
 
-CLASS.Speed = 275
+CLASS.Speed = 305
 CLASS.Points = 7
 
 CLASS.Hidden = false

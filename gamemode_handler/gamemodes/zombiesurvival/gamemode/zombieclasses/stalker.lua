@@ -21,7 +21,7 @@ CLASS.CanTaunt = true
 CLASS.SWEP = "weapon_zs_zstalker"
 
 CLASS.Model = Model("models/player/fast_zombie.mdl")
-
+CLASS.ArmorRegenRate = 75
 CLASS.VoicePitch = 0.4
 
 CLASS.CanFeignDeath = true
@@ -92,38 +92,6 @@ function CLASS:DoAnimationEvent(pl, event, data)
 	end
 end
 
-function CLASS:OnSpawned(pl)
-    -- Start a timer that runs every second
-    timer.Create("StalkerPower"..pl:EntIndex(), 1, 0, function()
-        if not IsValid(pl) then
-            timer.Remove("StalkerPower"..pl:EntIndex())
-            return
-        end
-
-        -- Find all entities in the radius
-        local entities = ents.FindInSphere(pl:GetPos(), 100)
-
-        for _, ent in pairs(entities) do
-            -- Check if the entity is an undead player
-            if ent:IsPlayer() and ent:Team() == TEAM_UNDEAD then
-                -- Check if the entity's armor is less than 200
-                if ent:Armor() < 200 then
-                    -- Calculate the new armor
-                    local newArmor = ent:Armor() + 10
-
-                    -- Check if the new armor is more than 200
-                    if newArmor > 200 then
-                        -- Set the entity's armor to 200
-                        ent:SetArmor(200)
-                    else
-                        -- Set the entity's armor to the new armor
-                        ent:SetArmor(newArmor)
-                    end
-                end
-            end
-        end
-    end)
-end
 
 
 if not CLIENT then return end

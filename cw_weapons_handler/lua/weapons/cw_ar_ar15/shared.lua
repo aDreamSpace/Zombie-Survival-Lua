@@ -147,7 +147,7 @@ SWEP.Attachments = {[1] = {header = "Sight", offset = {950, -600}, atts = {"bg_f
 	[7] = {header = "Stock", offset = {1000, 300}, atts = {"bg_ar15sturdystock", "bg_ar15heavystock"}},
 	[8] = {header = "Rail", offset = {250, 300}, atts = {"md_anpeq15"}, dependencies = {bg_ris = true, bg_longris = true, bg_foldsight = true, md_microt1 = true, md_aimpoint = true}},
 	[9] = {header = "Perks", offset = {100, 100}, atts = {"Cod_Extreme_Conditioning", "Cod_Fast_Hands", "Cod_Steady_Aim", "Perk_Force", "Cod_Double_Tap", "Perk_Stopping_Power"}},
-	["+reload"] = {header = "Ammo", offset = {900, -100}, atts = {"am_hqb2", "am_magnum2", "am_matchgrade2", "am_luckylast2", "am_duplex2", "am_depleteduranium2"}}}
+	["+reload"] = {header = "Ammo", offset = {900, -100}, atts = {"am_highcaliberrounds2", "am_hqb2", "am_magnum2", "am_matchgrade2", "am_luckylast2", "am_duplex2", "am_depleteduranium2"}}}
 	
 SWEP.AttachmentDependencies = {
 	["md_m203"] = {"bg_longris"},

@@ -131,7 +131,7 @@ SWEP.MaxSpreadInc = 0.01
 SWEP.SpreadPerShot = 0.001
 SWEP.SpreadCooldown = 1
 SWEP.Shots = 1
-SWEP.Damage = 132
+SWEP.Damage = 160
 SWEP.DeployTime = 1
 
 SWEP.ReloadSpeed = 1.1
@@ -149,3 +149,37 @@ function SWEP:IndividualThink()
 	self.DamageFallOff = ((self.DamageFallOff - .045))
 	end
 end
+
+hook.Add("ScalePlayerDamage", "SlowZombieOnShot", function(player, hitgroup, dmginfo)
+    -- List of unaffected zombie classes
+    local unaffectedClasses = {
+        ["Night Owl"] = true,
+        ["Ancient Nightmare"] = true,
+        ["Advisor"] = true,
+        ["Hunter"] = true,
+        ["Mech Dog"] = true,
+        ["The Lurker"] = true,
+        ["Lacerator"] = true
+    }
+
+    -- Check if the player is on TEAM_UNDEAD and not in the list of unaffected classes
+    if player:Team() == TEAM_UNDEAD and not unaffectedClasses[player:GetZombieClass()] then
+        -- Check if the damage was caused by this weapon
+        local attacker = dmginfo:GetAttacker()
+        if IsValid(attacker) and attacker:IsPlayer() then
+            local weapon = attacker:GetActiveWeapon()
+            if IsValid(weapon) and weapon:GetClass() == "cw_sniper_delisle" then
+                -- Reduce the player's walk speed
+                local originalSpeed = player:GetWalkSpeed()
+                player:SetWalkSpeed(30)
+
+                -- Restore the player's walk speed after 1.5 seconds
+                timer.Simple(1.5, function()
+                    if IsValid(player) then
+                        player:SetWalkSpeed(originalSpeed)
+                    end
+                end)
+            end
+        end
+    end
+end)

@@ -1,7 +1,7 @@
-CLASS.Name = "Scorpio"
+CLASS.Name = "Scorpion"
 CLASS.TranslationName = "class_scorpio"
 
-CLASS.Wave = 4
+CLASS.Wave = 5 / 5
 
 CLASS.Health = 1105
 CLASS.Speed = 175
@@ -91,7 +91,7 @@ CLASS.IconColor = COLOR_BLUE
 
 if CLIENT then
     hook.Add("CalcView", "ScorpioThirdPersonView", function(ply, pos, angles, fov)
-        if ply:GetZombieClassTable().Name == "Scorpio" then
+        if ply:GetZombieClassTable().Name == "Scorpion" then
             local view = {}
             view.origin = pos - (angles:Forward() * 120)
             view.angles = angles
@@ -101,7 +101,7 @@ if CLIENT then
     end)
 
     hook.Add("ShouldDrawLocalPlayer", "ScorpioThirdPerson", function(ply)
-        if ply:GetZombieClassTable().Name == "Scorpio" then
+        if ply:GetZombieClassTable().Name == "Scorpion" then
             ply:DrawViewModel(false) -- Hide the viewmodel
             return true
         else

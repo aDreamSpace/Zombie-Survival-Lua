@@ -24,17 +24,17 @@ SWEP.MeleeDamage = 1
 SWEP.DefaultDamage = 1
 SWEP.MeleeRange = 65
 SWEP.MeleeSize = 1.5
-SWEP.Primary.Delay = 0.23
-SWEP.MaxDamage = 1200
+SWEP.Primary.Delay = 0.3
+SWEP.MaxDamage = 1500
 
 -- The player has to get a total of (MaxDamage - DefaultDamge) * 3 hits to get the max power
-SWEP.SwingTime = 0.23
+SWEP.SwingTime = 0.17
 SWEP.SwingRotation = Angle(60, 0, 0)
 SWEP.SwingOffset = Vector(0, -50, 0)
 SWEP.SwingHoldType = "grenade"
 
-local function AddBatonHits(ply, amt)
-	ply.BatonHits = (ply.BatonHits or 0) + amt
+function SWEP:AddBatonHits(amt)
+    self.Owner.BatonHits = (self.Owner.BatonHits or 0) + amt
 end
 
 function SWEP:PlaySwingSound()
@@ -65,11 +65,11 @@ function SWEP:PrimaryAttack()
 end
 
 if SERVER then
-	function SWEP:OnMeleeHit(hitent, hitflesh, tr)
-		if hitent:IsNPC() or (hitent:IsPlayer() and hitent:Team() == TEAM_UNDEAD) then
-			AddBatonHits(self:GetOwner(), 1)
-		end
-	end
+    function SWEP:OnMeleeHit(hitent, hitflesh, tr)
+        if hitent:IsNPC() or (hitent:IsPlayer() and hitent:Team() == TEAM_UNDEAD) then
+            self:AddBatonHits(2)
+        end
+    end
 end
 
 if CLIENT then
@@ -81,30 +81,33 @@ if CLIENT then
 	function SWEP:DrawHUD()
 		if GetConVarNumber("crosshair") ~= 1 then return end
 		self:DrawCrosshairDot()
-
+	
 		local screenscale = BetterScreenScale()
 		local wid, hei = 256, 16
 		local x, y = ScrW() - wid - 96, ScrH() - hei - 72
 		surface.SetFont("ZSHUDFontSmall")
 		local tw, th = surface.GetTextSize("Power")
 		local texty = y - 4 - th
-
+	
 		surface.SetDrawColor(5, 5, 5, 180)
-
+	
 		surface.DrawRect(x, y, wid, hei)
-
+	
 		local power = (self.MaxDamage - (self.DefaultDamage or 0)) * 3
-
 		local frac = math.min(1, math.max(1, self.Owner.BatonHits or 0) / power)
-
+	
+		local colBarEmpty = Color(255, 0, 0, 200)
+		local colBarFull = Color(0, 255, 0, 200)
+		local colBar = Color(255, 0, 0, 200)
+	
 		colBar.r = math.Approach(colBarEmpty.r, colBarFull.r, math.abs(colBarEmpty.r - colBarFull.r) * frac)
 		colBar.g = math.Approach(colBarEmpty.g, colBarFull.g, math.abs(colBarEmpty.g - colBarFull.g) * frac)
 		colBar.b = math.Approach(colBarEmpty.b, colBarFull.b, math.abs(colBarEmpty.b - colBarFull.b) * frac)
-
+	
 		surface.SetDrawColor(colBar)
 		surface.SetTexture(texGradDown)
 		surface.DrawTexturedRect(x, y, wid * frac , hei)
-
+	
 		draw.SimpleText("Power", "ZSHUDFontSmall", x, texty, COLOR_GREEN, TEXT_ALIGN_LEFT)
 	end
 end

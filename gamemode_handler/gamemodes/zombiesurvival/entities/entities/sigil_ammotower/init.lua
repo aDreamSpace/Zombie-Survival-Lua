@@ -36,6 +36,7 @@ local ammoTable = {
 	-- Add more ammo types as needed
 }
 
+
 function ENT:Think()
     if (self.Destroyed) then
         local pos = self:LocalToWorld(self:OBBCenter())

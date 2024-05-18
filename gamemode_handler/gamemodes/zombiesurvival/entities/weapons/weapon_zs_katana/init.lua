@@ -35,7 +35,7 @@ function SWEP:DeactivateAbility()
     self.Primary.Delay = self.Primary.Delay / 0.5
     self.MeleeDamage = self.MeleeDamage / 1.15
     self:SetNWBool("AbilityActive", false)
-    self:SetNWFloat("AbilityCooldown", CurTime() + 30)
+    self:SetNWFloat("AbilityCooldown", CurTime() + 15)
 
     net.Start("DeactivateAbility")
     net.WriteEntity(self)

@@ -339,6 +339,7 @@ GM:AddStartingItem("zpaxe", "Axe", "ACTIVE ABILITY: Sundering Strike", ITEMCAT_V
 GM:AddStartingItem("vcrwbar", "Crowbar", nil, ITEMCAT_VMELEE, 30, "weapon_zs_crowbar")
 GM:AddStartingItem("vstnbtn", "Stun Baton", nil, ITEMCAT_VMELEE, 25, "weapon_zs_stunbaton")
 GM:AddStartingItem("vcsknf", "Knife", nil, ITEMCAT_VMELEE, 20, "weapon_zs_swissarmyknife")
+GM:AddStartingItem("vbaton", "BloodHound Baton", "A baton that gets more powerful the more you use it!", ITEMCAT_VMELEE, 40, "weapon_zs_baton")
 GM:AddStartingItem("zpplnk", "Plank", nil, ITEMCAT_VMELEE, 20, "weapon_zs_plank")
 GM:AddStartingItem("zpfryp", "Frying Pan", nil, ITEMCAT_VMELEE, 20, "weapon_zs_fryingpan")
 GM:AddStartingItem("zpcpot", "Cooking Pot", nil, ITEMCAT_VMELEE, 20, "weapon_zs_pot")
@@ -391,8 +392,15 @@ item.Countables = "prop_drone"
 GM:AddStartingItem("wrench", "Mechanic's Wrench", nil, ITEMCAT_TOOLS, 15, "weapon_zs_wrench").NoClassicMode = true
 GM:AddStartingItem("crphmr", "Hammer", nil, ITEMCAT_TOOLS, 15, "cw_tool_hammer").NoClassicMode = true
 GM:AddStartingItem("hammerplank", "Hammer Plank", nil, ITEMCAT_TOOLS, 10, "weapon_zs_hammerplank").NoClassicMode = true
-GM:AddStartingItem("stlhd", "Steel Hammerhead", nil, ITEMCAT_TOOLS, 5, nil, function(ply) CustomizableWeaponry:giveAttachment(ply, "md_m_steelhammer2", false) ply:GiveAmmo(5, "GaussEnergy", true) end).NoClassicMode = true
-GM:AddStartingItem("pgrip", "Polymer Grip", nil, ITEMCAT_TOOLS, 5, nil, function(ply) CustomizableWeaponry:giveAttachment(ply, "md_m_polymergrip", false) ply:GiveAmmo(5, "GaussEnergy", true) end).NoClassicMode = true
+GM:AddStartingItem("stlhd", "Steel Hammerhead", nil, ITEMCAT_TOOLS, 5, nil, function(ply) CustomizableWeaponry:giveAttachment(ply, "md_m_steelhammer2", false) ply:GiveAmmo(5, "GaussEnergy", true) end)
+GM:AddStartingItem("pgrip", "Polymer Grip", nil, ITEMCAT_TOOLS, 5, nil, function(ply) CustomizableWeaponry:giveAttachment(ply, "md_m_polymergrip", false) ply:GiveAmmo(5, "GaussEnergy", true) end)
+GM:AddStartingItem("heavynails", "Heavy Nails", nil, ITEMCAT_TOOLS, 20, nil, function(ply) CustomizableWeaponry:giveAttachment(ply, "am_heavynails2", false) ply:GiveAmmo(5, "GaussEnergy", true) end)
+GM:AddStartingItem("galnails", "Galvanized Nails", nil, ITEMCAT_TOOLS, 10, nil, function(ply) CustomizableWeaponry:giveAttachment(ply, "am_gnails2", false) ply:GiveAmmo(5, "GaussEnergy", true) end)
+GM:AddStartingItem("barbednails", "Barbed Nails", nil, ITEMCAT_TOOLS, 5, nil, function(ply) CustomizableWeaponry:giveAttachment(ply, "am_barbed2", false) ply:GiveAmmo(5, "GaussEnergy", true) end)
+GM:AddStartingItem("steelnails", "Steel Nails", nil, ITEMCAT_TOOLS, 5, nil, function(ply) CustomizableWeaponry:giveAttachment(ply, "am_steelnails2", false) ply:GiveAmmo(5, "GaussEnergy", true) end)
+
+
+
 GM:AddStartingItem("6nails", "Box of 12 nails", "An extra box of nails for all your barricading needs.", ITEMCAT_TOOLS, 5, nil, function(pl) pl:GiveAmmo(12, "GaussEnergy", true) end, "models/Items/BoxMRounds.mdl")
 GM:AddStartingItem("junkpack", "Junk Pack", nil, ITEMCAT_TOOLS, 10, "weapon_zs_boardpack")
 GM:AddStartingItem("spotlamp", "Spot Lamp", nil, ITEMCAT_TOOLS, 5, "weapon_zs_spotlamp").Countables = "prop_spotlamp"
@@ -507,7 +515,7 @@ GM:AddPointShopItem("627", "S&W 627", "Performance Center are the ultimate expre
 GM:AddPointShopItem("python", "Python", "Pythons have a reputation for accuracy, smooth trigger pull, and a tight cylinder lock-up.", ITEMCAT_PISTOL, 360, "cw_pistol_python") 
 GM:AddPointShopItem("rex", "Rex", "The very name chosen for it communicates its core value: In fact, Rex comes from the Latin rex, regis and means king.", ITEMCAT_PISTOL, 440, "cw_pistol_rex") 
 GM:AddPointShopItem("satan", "M29 Satan", "A real collectors piece and hard to come by.  Kokusai also made .44 Magnum Devil.  The difference between the Satan and Devil was the Satan has round barrel and Devil square barrel.", ITEMCAT_PISTOL, 470, "cw_pistol_satan") 
-GM:AddPointShopItem("calico", "Calico M950", "The Calico M950 is a pistol manufactured by Calico Light Weapons Systems in the United States. Its main feature, along with all the other guns of the Calico system, is to feed from a proprietary helical magazine mounted on top, available in a 50 or 100-round capacity.", ITEMCAT_PISTOL, 600, "cw_pistol_calico") 
+GM:AddPointShopItem("calico", "Calico M950", "The Calico M950 is a pistol manufactured by Calico Light Weapons Systems in the United States. Its main feature, along with all the other guns of the Calico system, is to feed from a proprietary helical magazine mounted on top, available in a 50 or 100-round capacity.", ITEMCAT_PISTOL, 870, "cw_pistol_calico") 
 
 
 
@@ -612,7 +620,8 @@ GM:AddPointShopItem("zcrowbar", "Crowbar", nil, ITEMCAT_VMELEE, 60, "weapon_zs_c
 GM:AddPointShopItem("zstunbaton", "Stun Baton", nil, ITEMCAT_VMELEE, 60, "weapon_zs_stunbaton")
 GM:AddPointShopItem("zshovel", "Shovel", nil, ITEMCAT_VMELEE, 90, "weapon_zs_shovel")
 GM:AddPointShopItem("zsledgehammer", "Sledge Hammer", nil, ITEMCAT_VMELEE, 150, "weapon_zs_sledgehammer")
-GM:AddPointShopItem("zbutcherknife", "Chef Blade", nil, ITEMCAT_VMELEE, 230, "weapon_zs_butcherknife")
+
+GM:AddPointShopItem("zbutcherknife", "Chef Blade", nil, ITEMCAT_VMELEE, 230, "weapon_zs_butcherknife")GM:AddPointShopItem("zbloodhound", "BloodHound Baton", "A baton that gets more powerful the more you use it!", ITEMCAT_VMELEE, 180, "weapon_zs_baton")
 GM:AddPointShopItem("zcarver", "Carving Blade", nil, ITEMCAT_VMELEE, 290, "weapon_zs_carver")
 GM:AddPointShopItem("zosiris", "Osiris", nil, ITEMCAT_VMELEE, 320, "weapon_zs_osiris")
 GM:AddPointShopItem("zexcursion", "Excursion Blade", nil, ITEMCAT_VMELEE, 380, "weapon_zs_excursion")
@@ -633,14 +642,14 @@ GM:AddPointShopItem("zgravestone", "Gravestone", nil, ITEMCAT_VMELEE, 1000, "wea
 -- GM:AddPointShopItem("", "", nil, ITEMCAT_PULSE, 0, "") 
 -- BASE
 
-GM:AddPointShopItem("biopistol", "BIO-PISTOL-44z", nil, ITEMCAT_PULSE, 60, "weapon_zs_biopistol") 
-GM:AddPointShopItem("biosmg", "BIO-SMG-TT4z", nil, ITEMCAT_PULSE, 90, "weapon_zs_biosmg") 
-GM:AddPointShopItem("bioar", "BIO-AR-O5X", nil, ITEMCAT_PULSE, 160, "weapon_zs_bioar") 
-GM:AddPointShopItem("aliensmg", "BIO-AX-SMG", nil, ITEMCAT_PULSE, 275, "weapon_zs_aliensmg")
-GM:AddPointShopItem("alienrifle", "BIO-A-RIFLE", nil, ITEMCAT_PULSE, 380, "weapon_zs_alienrifle")
-GM:AddPointShopItem("biorifle", "BIO-RIFLE-UTD", nil, ITEMCAT_PULSE, 470, "weapon_zs_biorifle") 
-GM:AddPointShopItem("biocannon", "BIO-AUTO-CANNON", nil, ITEMCAT_PULSE, 600, "weapon_zs_bioshotgun")
-GM:AddPointShopItem("avatarrifle", "BIO-AV-RIFLE", nil, ITEMCAT_PULSE, 750, "weapon_zs_avatarrifle")
+GM:AddPointShopItem("biopistol", "BIO-PISTOL-44z", "The BIO-PISTOL-44z is a cheap and powerful lab-made weapon that fires bio-chemical rounds.", ITEMCAT_PULSE, 60, "weapon_zs_biopistol") 
+GM:AddPointShopItem("biosmg", "BIO-SMG-TT4z", "The BIO-SMG-TT4z is a compact submachine gun that utilizes bio-chemical ammunition for increased damage.", ITEMCAT_PULSE, 90, "weapon_zs_biosmg") 
+GM:AddPointShopItem("bioar", "BIO-AR-O5X", "The BIO-AR-O5X is an assault rifle modified to fire bio-chemical rounds, causing additional damage over time.", ITEMCAT_PULSE, 160, "weapon_zs_bioar") 
+GM:AddPointShopItem("aliensmg", "BIO-AX-SMG", "The BIO-AX-SMG is an advanced alien technology submachine gun that discharges bio-chemical projectiles.", ITEMCAT_PULSE, 275, "weapon_zs_aliensmg")
+GM:AddPointShopItem("alienrifle", "BIO-A-RIFLE", "The BIO-A-RIFLE is a high-powered rifle that fires bio-chemical rounds, capable of penetrating multiple targets.", ITEMCAT_PULSE, 380, "weapon_zs_alienrifle")
+GM:AddPointShopItem("biorifle", "BIO-RIFLE-UTD", "The BIO-RIFLE-UTD is an upgraded version of the bio-rifle, featuring improved range and accuracy.", ITEMCAT_PULSE, 470, "weapon_zs_biorifle") 
+GM:AddPointShopItem("biocannon", "BIO-AUTO-CANNON", "The BIO-AUTO-CANNON is a fully automatic shotgun that fires bio-chemical shells, causing devastating damage to enemies.", ITEMCAT_PULSE, 600, "weapon_zs_bioshotgun")
+GM:AddPointShopItem("avatarrifle", "BIO-AV-RIFLE", "The BIO-AV-RIFLE is a prototype rifle infused with alien DNA, granting it enhanced power and accuracy.", ITEMCAT_PULSE, 750, "weapon_zs_avatarrifle")
 
 
 -- VANILLA
@@ -799,7 +808,10 @@ GM:AddPointShopItem("bfmusc", "Strength➜ I", "Applies extra melee damage.", IT
 GM:AddPointShopItem("10hp", "Strength➜ II", "Increases health by 10", ITEMCAT_TRAITS, 50, nil, function(pl) pl:SetMaxHealth(pl:GetMaxHealth() + 10) pl:SetHealth(pl:Health() + 10) end, "models/healthvial.mdl")
 GM:AddPointShopItem("25hp", "Strength➜ III", "Increases health by 25", ITEMCAT_TRAITS, 75, nil, function(pl) pl:SetMaxHealth(pl:GetMaxHealth() + 25) pl:SetHealth(pl:Health() + 25) end, "models/items/healthkit.mdl")
 GM:AddPointShopItem("100hp", "Strength➜ IV", "Increases health by 100", ITEMCAT_TRAITS, 100, nil, function(pl) pl:SetMaxHealth(pl:GetMaxHealth() + 100) pl:SetHealth(pl:Health() + 100) end, "models/items/healthkit.mdl")
-GM:AddPointShopItem("150hp", "Strength➜ V", "Increases health by 150", ITEMCAT_TRAITS, 125, nil, function(pl) pl:SetMaxHealth(pl:GetMaxHealth() + 150) pl:SetHealth(pl:Health() + 100) end, "models/items/healthkit.mdl")
+GM:AddPointShopItem("150hp", "Strength➜ V", "Increases health by 150", ITEMCAT_TRAITS, 125, nil, function(pl) pl:SetMaxHealth(pl:GetMaxHealth() + 150) pl:SetHealth(pl:Health() + 150) end, "models/items/healthkit.mdl")
+GM:AddPointShopItem("200hp", "Strength➜ VI", "Increases health by 200", ITEMCAT_TRAITS, 150, nil, function(pl) pl:SetMaxHealth(pl:GetMaxHealth() + 200) pl:SetHealth(pl:Health() + 200) end, "models/items/healthkit.mdl")
+
+
 
 -- POWER CELLS
 GM:AddPointShopItem("pc1", "Power Cell➜ I", "Power Armor +1", ITEMCAT_TRAITS, 25, nil, function(pl)  pl:SetArmor(pl:Armor() + 20) end, "models/Items/combine_rifle_ammo01.mdl")
@@ -808,6 +820,12 @@ GM:AddPointShopItem("pc3", "Power Cell➜ III", "Power Armor +3", ITEMCAT_TRAITS
 GM:AddPointShopItem("pc4", "Power Cell➜ IV", "Power Armor +6", ITEMCAT_TRAITS, 100, nil, function(pl)  pl:SetArmor(pl:Armor() + 90) end, "models/Items/combine_rifle_ammo01.mdl")
 GM:AddPointShopItem("pc5", "Power Cell➜ V", "Power Armor +9", ITEMCAT_TRAITS, 125, nil, function(pl)  pl:SetArmor(pl:Armor() + 250) end, "models/Items/combine_rifle_ammo01.mdl")
 GM:AddPointShopItem("pc6", "Power Cell➜ VI", "Power Armor +15", ITEMCAT_TRAITS, 250, nil, function(pl)  pl:SetArmor(pl:Armor() + 300) end, "models/Items/combine_rifle_ammo01.mdl")
+GM:AddPointShopItem("pc7", "Power Cell➜ VII", "Power Armor +20", ITEMCAT_TRAITS, 300, nil, function(pl)  pl:SetArmor(pl:Armor() + 400) end, "models/Items/combine_rifle_ammo01.mdl")
+GM:AddPointShopItem("pc8", "Power Cell➜ VIII", "Power Armor +25", ITEMCAT_TRAITS, 350, nil, function(pl)  pl:SetArmor(pl:Armor() + 500) end, "models/Items/combine_rifle_ammo01.mdl")
+GM:AddPointShopItem("pc9", "Power Cell➜ IX", "Power Armor +30", ITEMCAT_TRAITS, 400, nil, function(pl)  pl:SetArmor(pl:Armor() + 600) end, "models/Items/combine_rifle_ammo01.mdl")
+GM:AddPointShopItem("pc10", "Power Cell➜ X", "Power Armor +35", ITEMCAT_TRAITS, 450, nil, function(pl)  pl:SetArmor(pl:Armor() + 700) end, "models/Items/combine_rifle_ammo01.mdl")
+GM:AddPointShopItem("pc11", "Power Cell➜ XI", "Power Armor +40", ITEMCAT_TRAITS, 500, nil, function(pl)  pl:SetArmor(pl:Armor() + 800) end, "models/Items/combine_rifle_ammo01.mdl")
+
 
 -- SPEED 
 GM:AddPointShopItem("5spd", "Speed➜ I", "5% Speed Increase", ITEMCAT_TRAITS, 25, nil, function(pl) pl.HumanSpeedAdder = (pl.HumanSpeedAdder or 0) + 7 pl:ResetSpeed() end, "models/props_lab/jar01a.mdl")
@@ -823,6 +841,9 @@ GM:AddPointShopItem("bfregen", "Medical➜ III", "1 HP every 6 seconds after 75%
 GM:AddPointShopItem("bfwpnmaster", "Medical➜ IV", "Adds Life Steal to CW Melee Weapons based on damage", ITEMCAT_TRAITS, 100, nil, function(pl) pl.WeaponMaster = 0.01 end, "models/healthvial.mdl")
 GM:AddPointShopItem("bfsurgeon2", "Medical➜ V", "70% Faster Healing", ITEMCAT_TRAITS, 125, nil, function(pl) pl.HumanHealMultiplier = (pl.HumanHealMultiplier or 1) + 0.7 end, "models/healthvial.mdl")
 GM:AddPointShopItem("bfwpnmaster2", "Medical➜ VI", "Infuses Sadist with Life Steal", ITEMCAT_TRAITS, 200, nil, function(pl) pl.WeaponMaster = 0.2 end, "models/healthvial.mdl")
+
+
+
 
 -- GIVE POINTS (ADMIN) 
 --GM:AddPointShopItem("giveupthepoints", "Give Points", "Gives the user pointshop points" , ITEMCAT_OTHER, -100000, "")
@@ -932,19 +953,19 @@ GM.WaveOneLength = 180
 GM.WaveOneLengthClassic = 120
 
 -- Add this many seconds for each additional wave.
-GM.TimeAddedPerWave = 30
+GM.TimeAddedPerWave = 10
 
 -- For Classic Mode
 GM.TimeAddedPerWaveClassic = 10
 
 -- New players are put on the zombie team if the current wave is this or higher. Do not put it lower than 1 or you'll break the game.
-GM.NoNewHumansWave = 3
+GM.NoNewHumansWave = 4
 
 -- Humans can not commit suicide if the current wave is this or lower.
 GM.NoSuicideWave = 0
 
 -- How long 'wave 0' should last in seconds. This is the time you should give for new players to join and get ready.
-GM.WaveZeroLength = 240 --210 is 3 minutes and 30 seconds, the previous values caused god cades to be made and give too much time for humans to prepare. Do not change this PLEASE.
+GM.WaveZeroLength = 300 --210 is 3 minutes and 30 seconds, the previous values caused god cades to be made and give too much time for humans to prepare. Do not change this PLEASE.
 
 -- Time humans have between waves to do stuff without NEW zombies spawning. Any dead zombies will be in spectator (crow) view and any living ones will still be living.
 GM.WaveIntermissionLength = 60 --FUCK OFF. This should be no more than 60 seconds, otherwise with recading and everything else, it is simply unfair for zombies.
@@ -954,10 +975,10 @@ GM.WaveIntermissionLength = 60 --FUCK OFF. This should be no more than 60 second
 GM.WaveIntermissionLengthClassic = 20
 
 -- Time in seconds between end round and next map.
-GM.EndGameTime = 45
+GM.EndGameTime = 30
 
 -- How many clips of ammo guns from the Worth menu start with. Some guns such as shotguns and sniper rifles have multipliers on this.
-GM.SurvivalClips = 2
+GM.SurvivalClips = 3
 
 -- Put your unoriginal, 5MB Rob Zombie and Metallica music here.
 GM.LastHumanSound = Sound("music/HL2_song15.mp3")
@@ -971,7 +992,7 @@ GM.HumanWinSound = Sound("music/HL1_song25_REMIX3.mp3")
 -- Sound played to a person when they die as a human.
 GM.DeathSound = Sound("")
 
-GM.UseBossScaling = false 
+GM.UseBossScaling = true 
 GM.UseWaveBossScaling = true
 
 --Scaling factor function that takes the current playercount and outputs a fraction for boss health. In sh_options since the equation can be modified.
@@ -984,6 +1005,15 @@ function GM:GetScaledHP(iPlys, fHP)
 	end
 	return math.Round(factor * fHP + wfactor)
 end
+
+-- Function to calculate the scaled HP based on the number of players and the current wave.
+-- The factor is calculated using a quadratic equation and clamped between 0.5 and 1.
+-- If wave boss scaling is enabled and the wave is greater than 1, an additional wave factor is added.
+-- The final scaled HP is calculated by multiplying the factor with the base HP and adding the wave factor.
+-- Returns the rounded scaled HP value.
+
+-- Example usage:
+-- local scaledHP = GAMEMODE:GetScaledHP(playerCount, baseHP)
 
 --custom redeem loadouts, table format is [WaveTheLoadoutShouldChange] = {Weapon = weaponame, Melee = meleename, AmmoType = additional ammotype, Amt = additional ammo}
 --[[ --Disabled, will be implemented sometime later

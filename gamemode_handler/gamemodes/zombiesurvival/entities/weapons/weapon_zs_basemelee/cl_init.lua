@@ -49,26 +49,28 @@ function SWEP:DrawWorldModel()
 end
 
 hook.Add("HUDPaint", "DrawMeleeCooldownBar", function()
-    local ply = LocalPlayer()
+    local ply = MySelf
 
-    -- Check if the player is using a melee weapon
     local wep = ply:GetActiveWeapon()
-    if IsValid(wep) and wep:IsWeapon() and wep:GetClass() == "weapon_zs_melee" then
-        local nextAttackTime = wep:GetNextPrimaryFire()
+    if IsValid(wep) and wep:IsWeapon() and wep.Base == "weapon_zs_basemelee" then
+        local nextAttackTime = wep:GetNextPrimaryFire() + 0.01 
         local cooldown = nextAttackTime - CurTime()
 
-        if cooldown > 0 then
-            local x, y = ScrW() / 2, ScrH() / 2 + 30
-            local width, height = 200, 20
-            local padding = 10
+        if cooldown < 0 then return end
 
-            -- Draw the background
-            draw.RoundedBox(8, x - width / 2, y + padding, width, height, Color(0, 0, 0, 150))
+        local x, y = ScrW() / 2, ScrH() / 2 + 30
+        local width, height = 200, 20
+        local padding = 10
 
-            -- Draw the cooldown bar
-            local progress = math.Clamp(cooldown / wep.Primary.Delay, 0, 1)
-            draw.RoundedBox(8, x - width / 2, y + padding, width * progress, height, Color(255, 0, 0, 255))
-        end
+        draw.RoundedBoxEx(0, x - width / 2, y + padding + 10, width, height, Color(0, 0, 0, 150), false, false, false, false)
+
+        local delay = wep.Primary and wep.Primary.Delay or 1
+        local lastPrimaryFire = wep.LastPrimaryFire or nextAttackTime - delay
+        local maxCooldown = nextAttackTime - lastPrimaryFire
+        local progress = math.Clamp(cooldown / maxCooldown, 0, 1)
+        draw.RoundedBoxEx(0, x - width / 2, y + padding + 10, width * (1 - progress), height, Color(255, 0, 0, 255), false, false, false, false)
+
+        draw.SimpleText(string.format("%4.2fs", cooldown), "ZSHUDFontSmall", x, y + padding + height / 2 + 10, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 end)
 

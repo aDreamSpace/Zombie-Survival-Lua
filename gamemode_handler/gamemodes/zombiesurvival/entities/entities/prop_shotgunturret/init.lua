@@ -10,11 +10,11 @@ ENT.TurretHealth = 350
 ENT.TurretAmmo = "buckshot"
 
 --info for bullet struct
-ENT.TurretDamage = 24
+ENT.TurretDamage = 45
 ENT.TurretSpread = Vector(0.05, 0.05, 0)
 ENT.TurretBulletCount = 8
-ENT.TurretForce = 1
-ENT.TurretTracer = 1
+ENT.TurretForce = 5
+ENT.TurretTracer = 3
 
 ENT.FireSound = "weapons/shotgun/shotgun_fire6.wav"
 

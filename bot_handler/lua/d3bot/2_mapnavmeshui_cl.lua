@@ -416,7 +416,7 @@ return function(lib)
 				local smartDraw = D3bot.Convar_Navmeshing_SmartDraw:GetBool()
 				local maxDrawingDistanceSqr = math.pow(math.min(D3bot.Convar_Navmeshing_DrawDistance:GetInt(), 500), 2)
 				if maxDrawingDistanceSqr <= 0 then maxDrawingDistanceSqr = 500*500 end
-				surface.SetFont("bahnschrift")
+				surface.SetFont("ZSHUDFontSmaller")
 				local eyePos = EyePos()
 				for id, item in pairs(lib.MapNavMesh.ItemById) do
 					local isCursored = item == cursoredItemOrNil
@@ -434,7 +434,7 @@ return function(lib)
 							surface.DrawRect(pos.x, pos.y, w, h)
 							surface.SetDrawColor(lib.Color.Black:Unpack())
 							surface.DrawOutlinedRect(pos.x, pos.y, w, h)
-							draw.DrawText(txt, "bahnschrift", pos.x + 5, pos.y + 5, lib.Color.Black)
+							draw.DrawText(txt, "ZSHUDFontSmaller", pos.x + 5, pos.y + 5, lib.Color.Black)
 						end
 					end
 				end

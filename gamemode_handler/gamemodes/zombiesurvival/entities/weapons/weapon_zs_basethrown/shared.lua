@@ -24,7 +24,8 @@ SWEP.AllowQualityWeapons = false
 function SWEP:Initialize()
 	self:SetWeaponHoldType("grenade")
 	--GAMEMODE:DoChangeDeploySpeed(self)
-
+	util.PrecacheModel(self.ViewModel)
+    util.PrecacheModel(self.WorldModel)
 	if CLIENT then
 		self:Anim_Initialize()
 	end

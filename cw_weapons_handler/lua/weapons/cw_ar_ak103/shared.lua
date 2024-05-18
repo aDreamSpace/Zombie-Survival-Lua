@@ -107,7 +107,7 @@ SWEP.Attachments = {[3] = {header = "Sight", offset = {600, -400},  atts = {"md_
 	[4] = {header = "Reciever", offset = {1100, 0}, atts = {"md_ak101"}},
 	[6] = {header = "Magazine Upgrade", offset = {-500, 200}, atts = {"a_zsmagar1", "a_zsmagar2", "a_zsmagar3"}}, 
 	 [5] = {header = "Perks", offset = {100, 300}, atts = {"Cod_Extreme_Conditioning", "Cod_Fast_Hands", "Cod_Steady_Aim", "Perk_Force", "Cod_Double_Tap", "Perk_Stopping_Power"}},
-	["+reload"] = {header = "Ammo", offset = {-150, -50}, atts = {"am_hqb2", "am_magnum2", "am_matchgrade2", "am_luckylast2", "am_duplex2", "am_depleteduranium2"}}}
+	["+reload"] = {header = "Ammo", offset = {-150, -50}, atts = {"am_highcaliberrounds2", "am_hqb2", "am_magnum2", "am_matchgrade2", "am_luckylast2", "am_duplex2", "am_depleteduranium2"}}}
 
 SWEP.Animations = {fire = {"ak47_fire1", "ak47_fire2", "ak47_fire3"},
 	reload = "ak47_reload",

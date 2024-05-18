@@ -32,7 +32,8 @@ SWEP.EmptyWhenPurchased = true
 
 function SWEP:Initialize()
 	if not self:IsValid() then return end --???
-
+	util.PrecacheModel(self.ViewModel)
+    util.PrecacheModel(self.WorldModel)
 	self:SetWeaponHoldType(self.HoldType)
 	self:SetDeploySpeed(1.1)
 
@@ -69,7 +70,7 @@ end
 function SWEP:PrimaryAttack()
 	if not self:CanPrimaryAttack() then return end
 	self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
-
+	self.LastPrimaryFire = CurTime()
 	self:EmitFireSound()
 	self:TakeAmmo()
 	self:ShootBullets(self.Primary.Damage, self.Primary.NumShots, self:GetCone())
@@ -103,34 +104,37 @@ function SWEP:SetIronsights(b)
 end
 
 function SWEP:Deploy()
-	self:SetNextReload(0)
-	gamemode.Call("WeaponDeployed", self.Owner, self)
-	self:SetIronsights(false)
+    self:SetNextReload(0)
+    gamemode.Call("WeaponDeployed", self.Owner, self)
+    self:SetIronsights(false)
 
-	if self.PreHolsterClip1 then
-		local diff = self:Clip1() - self.PreHolsterClip1
-		self:SetClip1(self.PreHolsterClip1)
-		if SERVER then
-			self.Owner:GiveAmmo(diff, self.Primary.Ammo, true)
-		end
-		self.PreHolsterClip1 = nil
-	end
-	if self.PreHolsterClip2 then
-		local diff = self:Clip2() - self.PreHolsterClip2
-		self:SetClip2(self.PreHolsterClip2)
-		if SERVER then
-			self.Owner:GiveAmmo(diff, self.Secondary.Ammo, true)
-		end
-		self.PreHolsterClip2 = nil
-	end
+    if self.PreHolsterClip1 then
+        local diff = self:Clip1() - self.PreHolsterClip1
+        self:SetClip1(self.PreHolsterClip1)
+        if SERVER then
+            self.Owner:GiveAmmo(diff, self.Primary.Ammo, true)
+        end
+        self.PreHolsterClip1 = nil
+    end
+    if self.PreHolsterClip2 then
+        local diff = self:Clip2() - self.PreHolsterClip2
+        self:SetClip2(self.PreHolsterClip2)
+        if SERVER then
+            self.Owner:GiveAmmo(diff, self.Secondary.Ammo, true)
+        end
+        self.PreHolsterClip2 = nil
+    end
 
-	self.IdleAnimation = CurTime() + self:SequenceDuration()
+    self.IdleAnimation = CurTime() + self:SequenceDuration()
 
-	if CLIENT then
-		self:CheckCustomIronSights()
-	end
+    -- Play the deploy animation
+    self:SendWeaponAnim(ACT_VM_DRAW)
 
-	return true
+    if CLIENT then
+        self:CheckCustomIronSights()
+    end
+
+    return true
 end
 
 function SWEP:Holster()
@@ -185,6 +189,27 @@ function SWEP:CanPrimaryAttack()
     return self:GetNextPrimaryFire() <= CurTime()
 end
 
+local swayScale = 2
+local tiltScale = 2 
+
+function SWEP:CalcViewModelView(ViewModel, oldPos, oldAng, pos, ang)
+    local owner = self.Owner
+    local forward = owner:GetAimVector()
+
+    local sway = forward:Cross(Vector(0, 0, 1)):GetNormalized()
+    local tilt = forward:Cross(sway):GetNormalized()
+
+    local movement = Vector(owner:EyeAngles().pitch, owner:EyeAngles().yaw, 0) * swayScale
+    local rotation = Vector(owner:EyeAngles().yaw, owner:EyeAngles().pitch, 0) * tiltScale
+
+    pos = pos + sway * movement.x - tilt * movement.y
+    ang:RotateAroundAxis(ang:Right(), rotation.x)
+    ang:RotateAroundAxis(ang:Up(), rotation.y)
+    ang:RotateAroundAxis(ang:Forward(), rotation.z)
+
+    return pos, ang
+end
+
 
 function SWEP:SecondaryAttack()
 	if self:GetNextSecondaryFire() <= CurTime() and not self.Owner:IsHolding() then
@@ -213,19 +238,25 @@ function SWEP:DoBulletKnockback(scale)
 end
 
 function GenericBulletCallback(attacker, tr, dmginfo)
-	local ent = tr.Entity
-	if ent:IsValid() then
-		if ent:IsPlayer() then
-			if ent:Team() == TEAM_UNDEAD and tempknockback then
-				tempknockback[ent] = ent:GetVelocity()
-			end
-		else
-			local phys = ent:GetPhysicsObject()
-			if ent:GetMoveType() == MOVETYPE_VPHYSICS and phys:IsValid() and phys:IsMoveable() then
-				ent:SetPhysicsAttacker(attacker)
-			end
-		end
-	end
+    local ent = tr.Entity
+    if ent:IsValid() then
+        if ent:IsPlayer() then
+            if ent:Team() == TEAM_UNDEAD and tempknockback then
+                tempknockback[ent] = ent:GetVelocity()
+            end
+        else
+            local phys = ent:GetPhysicsObject()
+            if ent:GetMoveType() == MOVETYPE_VPHYSICS and phys:IsValid() and phys:IsMoveable() then
+                ent:SetPhysicsAttacker(attacker)
+            end
+        end
+
+        if (ent:IsPlayer() or ent:IsNPC()) and dmginfo:GetDamage() > ent:Health() then
+            dmginfo:SetDamage(dmginfo:GetDamage() - ent:Health())
+        else
+            return
+        end
+    end
 end
 
 function SWEP:SendWeaponAnimation()

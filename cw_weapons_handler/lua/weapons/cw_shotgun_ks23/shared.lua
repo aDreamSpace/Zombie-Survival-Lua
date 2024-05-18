@@ -134,9 +134,9 @@ SWEP.Primary.DefaultClip	= 12
 SWEP.Primary.Automatic		= true
 SWEP.Primary.Ammo			= "Buckshot"
 
-SWEP.FireDelay = 1
+SWEP.FireDelay = 0.8
 SWEP.FireSound = "CW_M3SUPER90_FIRE"
-SWEP.Recoil = 5
+SWEP.Recoil = 3
 
 SWEP.HipSpread = 0.05
 SWEP.AimSpread = 0.002
@@ -145,8 +145,8 @@ SWEP.VelocitySensitivity = 1.5
 SWEP.ClumpSpread = 0.050
 SWEP.SpreadPerShot = 0.03
 SWEP.SpreadCooldown = 0.4
-SWEP.Shots = 12
-SWEP.Damage = 40
+SWEP.Shots = 20
+SWEP.Damage = 60
 SWEP.DeployTime = 1
 
 

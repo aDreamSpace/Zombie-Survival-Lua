@@ -56,7 +56,7 @@ local colOutline = Color(147, 0, 205, 255)
 local strKaH = "Kills as Human: "
 local strKaZ = "Kills as Zombie: "
 local strTHealed = "Total Healed: "
-local strNA = "N/A"
+local strNA = "Iniatializing..."
 local strNewLine = "\n"
 local hkills
 local zkills
@@ -66,9 +66,12 @@ local colBG2 = Color(27, 0, 43, 190)
 local x2, y2 = wid2 * 0, hei2 * 2.4
 
 
---local tKaZ = {strKaZ, nil}
---local tKaH = {strKaH, nil}
---local tTHealed = {strTHealed, nil}
+-- Load the materials
+local imgMetroAccount = Material("icon16/user_suit.png") 
+local imgKaH = Material("icon16/medal_gold_1.png")
+local imgKaZ = Material("icon16/medal_gold_2.png")
+local imgTHealed = Material("icon16/heart.png")
+local imgAnonCoins = Material("icon16/coins.png")
 
 hook.Add("HUDPaint", "creditAmount", function()
     hkills = MySelf.statHKills or strNA
@@ -76,21 +79,40 @@ hook.Add("HUDPaint", "creditAmount", function()
     theals = MySelf.statTHealed or strNA
 
     draw.RoundedBox(4, x2, y2, wid2, hei2, colBG2)
-    draw.SimpleText("Metro Account", font, wid2 * 0.25, hei2 * 2.5, Color(255, 255, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+
+	surface.SetDrawColor(75, 0, 130, 255)
+    surface.DrawOutlinedRect(x2, y2, wid2, hei2)
+
+ --   surface.SetMaterial(imgMetroAccount)
+ --   surface.SetDrawColor(255, 255, 255, 255) -- Set the color to white
+  --  surface.DrawTexturedRect(x2 + 10, y2 + 10, 16, 16) -- Adjust the position as needed
+    draw.SimpleText("Metro Account", font, x2 + 30, y2 + 10, Color(255, 255, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
 
     if statCookie == 1 then
-        draw.SimpleText(strKaZ..hkills, font, 10, 400, colStat, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-        draw.SimpleText(strKaH..zkills, font, 10, 425, colStat, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        surface.SetMaterial(imgKaZ)
+        surface.SetDrawColor(255, 255, 255, 255) 
+        surface.DrawTexturedRect(10, 400, 16, 16)
+        draw.SimpleText(strKaZ..hkills, font, 30, 400, colStat, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+
+        surface.SetMaterial(imgKaH)
+        surface.SetDrawColor(255, 255, 255, 255) 
+        surface.DrawTexturedRect(10, 425, 16, 16)
+        draw.SimpleText(strKaH..zkills, font, 30, 425, colStat, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+
         if healCookie == 1 then
-            draw.SimpleText(strTHealed..theals, font, 10, 450, colStat, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            surface.SetMaterial(imgTHealed)
+            surface.SetDrawColor(255, 255, 255, 255)
+            surface.DrawTexturedRect(10, 450, 16, 16)
+            draw.SimpleText(strTHealed..theals, font, 30, 450, colStat, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
         end
     end
 
     -- Always display PointShop points
-    if MySelf.PS then
-        local points = MySelf:PS_GetPoints()
-        draw.SimpleText("Anon Coins: "..points, font, 10, 475, colStat, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-    end
+    local points = MySelf:PS_GetPoints()
+    surface.SetMaterial(imgAnonCoins)
+    surface.SetDrawColor(255, 255, 255, 255) 
+    surface.DrawTexturedRect(10, 480, 16, 16)
+    draw.SimpleText("Anon Coins: "..points, font, 30, 480, colStat, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
 end)
 
 --settings
@@ -482,6 +504,8 @@ local step = 20
 local DEBUGStatHUDTime = "Time to draw status HUD: "
 local DEBUGHealthHUDTime = "Time to draw ENTIRE health HUD: "
 local DEBUGTotalTime = "Total time: "
+
+
 hook.Add("HUDPaint", "HealthHUDValidate", function()
 	if GetConVarNumber(strCvar) == 1 then
 		if not GAMEMODE.HealthHUD then
@@ -497,7 +521,7 @@ hook.Add("HUDPaint", "HealthHUDValidate", function()
 	local FT = FrameTime()
 	
 	local x, y = ScrW(), ScrH()
-	
+
 	MySelf.HUDColors.white.a = 255
 	MySelf.HUDColors.black.a = 255
 	local baseX, baseY = 90, y - 125
@@ -548,6 +572,11 @@ hook.Add("HUDPaint", "HealthHUDValidate", function()
 		surface.SetDrawColor(0, 125 + i * 6.5, 200 + i * 2.75, 255)
 		surface.DrawRect(baseX + (i - 1) * 12 + 1, baseY + 35, 5, 10)
 	end
+
+	// Border Boxes (UI Design)
+	surface.SetDrawColor(75, 0, 130, 255) 
+    surface.DrawOutlinedRect(baseX - 6, baseY - 16, 502, 107)
+
 
 	--now we should account for all the things zs does in terms of statuses
 	local t2 = SysTime()
@@ -702,8 +731,8 @@ local function RefreshTeamCounts()
 	iZombies = team.NumPlayers(TEAM_UNDEAD)
 end
 
-local strH = " H: "
-local strZ = " Z: "
+local strH = "H: "
+local strZ = "Z: "
 local strNewLine = "\n"
 local colHumans = team.GetColor(TEAM_HUMAN)
 local colZombies = team.GetColor(TEAM_UNDEAD)
@@ -728,6 +757,8 @@ local points2 = "Score: "
 local strSlash = " / "
 local nextRefresh = 0
 local t --debug var
+
+
 
 --Need these variables setup when the paint hook is first called, setting it up here sometimes causes errors
 local bFontsSetup = false
@@ -762,7 +793,9 @@ hook.Add("HUDPaint", "WavestateHUD", function()
 	end
 
 	draw.RoundedBox(8, x, y, wid, hei, colBG2)
-
+    surface.SetDrawColor(75, 0, 130, 255) -- Set the color to purple
+    surface.DrawOutlinedRect(x, y, wid, hei)
+	
 
 	--first lets draw the number of players on each team
 	--humans

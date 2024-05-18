@@ -124,7 +124,7 @@ end
 function SWEP:PrimaryAttack()
     if not self:CanPrimaryAttack() then return end
     self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
-
+    self.LastPrimaryFire = CurTime()
     if self.SwingTime == 0 then
         self:MeleeSwing()
     else

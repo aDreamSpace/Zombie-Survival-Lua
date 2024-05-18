@@ -125,6 +125,8 @@ function PANEL:Paint()
 	--PaintGenericFrame(self, 0, 0, wid, 64, 32)
 	surface.DrawRect(0, 0, wid, 64)
 
+	surface.SetDrawColor(75, 0, 130, 255) -- Set the color to purple
+    surface.DrawOutlinedRect(0, 0, wid, hei) 
 	--surface.SetDrawColor(5, 5, 5, 160)
 	--surface.DrawRect(wid * 0.5 - 16, 64, 32, hei - 128)
 	--surface.SetTexture(texRightEdge)

@@ -250,24 +250,27 @@ function ENT:Think()
 	return true
 end
 
-
 local function BulletCallback(attacker, tr, dmginfo)
-	local ent = tr.Entity
-	if ent:IsValid() then
-		if ent:IsPlayer() and ent:Team() == TEAM_UNDEAD then
-			if ent.NoTurretDmgTime and ent.NoTurretDmgTime > CurTime() then
-				dmginfo:SetDamage(0)
-			end
-		else
-			local phys = ent:GetPhysicsObject()
-			if ent:GetMoveType() == MOVETYPE_VPHYSICS and phys:IsValid() and phys:IsMoveable() then
-				ent:SetPhysicsAttacker(attacker)
-			end
-		end
-		
-		dmginfo:SetAttacker(attacker:GetObjectOwner())
-		dmginfo:SetInflictor(attacker)
-	end
+    local ent = tr.Entity
+    if ent:IsValid() then
+        if ent:IsPlayer() then
+            if ent:Team() == TEAM_UNDEAD then
+                if ent.NoTurretDmgTime and ent.NoTurretDmgTime > CurTime() then
+                    dmginfo:SetDamage(0)
+                end
+            elseif ent:Team() == TEAM_HUMAN then
+                dmginfo:SetDamage(0)
+            end
+        else
+            local phys = ent:GetPhysicsObject()
+            if ent:GetMoveType() == MOVETYPE_VPHYSICS and phys:IsValid() and phys:IsMoveable() then
+                ent:SetPhysicsAttacker(attacker)
+            end
+        end
+        
+        dmginfo:SetAttacker(attacker:GetObjectOwner())
+        dmginfo:SetInflictor(attacker)
+    end
 end
 
 local tBulInfo = {nil, nil, nil, nil, nil, nil, nil, nil, nil, nil}

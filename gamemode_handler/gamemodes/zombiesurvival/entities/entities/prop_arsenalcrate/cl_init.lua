@@ -28,7 +28,7 @@ local vLocal = Vector(1, 0, 0)
 local strName = translate.Get("arsenal_crate")
 local strFont = "ZS3D2DFont2"
 local strBuyText = translate.Get("purchase_now")
-local strFontSmall = "ZS3D2DFont2Small"
+local strFontSmall = "ZS3D2DFont2"
 local strLP = "("
 local strRP = ")"
 function ENT:Draw()

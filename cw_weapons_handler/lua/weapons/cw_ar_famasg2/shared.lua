@@ -110,7 +110,7 @@ SWEP.Attachments = {[1] = {header = "Sight", offset = {850, -600},  atts = {"md_
 	[4] = {header = "Magazine Upgrade", offset = {-300, 350}, atts = {"a_zsmagar1", "a_zsmagar2", "a_zsmagar3"}},
 	[5] = {header = "Rail", offset = {100, -600}, atts = {"md_anpeq15"}, dependencies = {md_microt1 = true, md_eotech = true, md_aimpoint = true, md_schmidt_shortdot = true, md_acog = true}},
 	[6] = {header = "Perks", offset = {-200, -500}, atts = {"Cod_Extreme_Conditioning", "Cod_Fast_Hands", "Cod_Steady_Aim", "Perk_Force", "Cod_Double_Tap", "Perk_Stopping_Power"}},
-	["+reload"] = {header = "Ammo", offset = {850, 350}, atts = {"am_hqb2", "am_magnum2", "am_matchgrade2", "am_luckylast2", "am_duplex2", "am_depleteduranium2"}}}
+	["+reload"] = {header = "Ammo", offset = {850, 350}, atts = {"am_highcaliberrounds2", "am_hqb2", "am_magnum2", "am_matchgrade2", "am_luckylast2", "am_duplex2", "am_depleteduranium2"}}}
 
 SWEP.Animations = {fire = {"shoot1", "shoot2", "shoot3"},
 	reload = "reload",
@@ -166,7 +166,7 @@ SWEP.SpreadCooldown = 0.16
 SWEP.RecoilToSpread = 0.7
 SWEP.BurstRecoilMul = 0.7
 SWEP.Shots = 1
-SWEP.Damage = 26
+SWEP.Damage = 31
 SWEP.DeployTime = 0.8
 
 SWEP.ReloadSpeed = 1.0
